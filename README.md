@@ -9,33 +9,6 @@ A dynamic typing effect displaying various professional titles.
 A gallery of certifications with clickable previews.
 Social media links and contact information.
 
-Folder Structure
-project-root/
-│
-├── css/                  # Contains all CSS files
-│   └── styles.css        # Main stylesheet
-│
-├── js/                   # Contains all JavaScript files
-│   ├── script.js         # Main JavaScript file with typing effect and initialization
-│   └── particles.json    # Configuration file for particles.js
-│
-├── images/               # Contains all image assets
-│   ├── compEngr.jpg      # Profile image
-│   ├── python-1.png      # Python certification image
-│   ├── Basic Web Development -1.png  # Web Development certification image
-│   ├── certicate of data sci.png     # Data Science certification image
-│   ├── Cybersecurity Fundamentals-1.png  # Cybersecurity certification image
-│   ├── ethicalhacking-1.png          # Ethical Hacking certification image
-│   ├── cyberhygiene-1.png            # Cyber Hygiene certification image
-│   ├── Certificate_of_Completion-1.png  # Completion certificate image
-│   ├── installingAndConfiguring-1.png   # System Configuration certification image
-│   ├── basicHardware-1.png             # Basic Hardware certification image
-│   ├── settingUpComputer-1.png         # Computer Setup certification image
-│   └── aviations-1.png                # Aviation Technology certification image
-│
-├── index.html            # Main HTML file
-│
-└── README.md             # Project documentation
 
 Prerequisites
 
@@ -90,3 +63,4 @@ License
 This project is for personal use and demonstration purposes. No commercial use is intended unless otherwise agreed with Tommy Paolma. All rights reserved © 2025.
 Contact
 For questions or collaborations, reach out via the contact section on the website or through the provided social media links.
+
