@@ -61,47 +61,38 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // ==================== LANGUAGES & TOOLS DATA ====================
-// Includes all frameworks: Python, R, Java, JavaScript, Electron, C#
 const toolsData = [
-    // Frontend (original)
+    // Frontend
     { name: "Tailwind CSS", icon: "", percent: 85, category: "frontend" },
     { name: "React", icon: "https://i.ibb.co/G4chpx4B/react.png", percent: 80, category: "frontend" },
     { name: "TypeScript", icon: "", percent: 75, category: "frontend" },
     { name: "Next.js", icon: "", percent: 70, category: "frontend" },
     { name: "Vue.js", icon: "", percent: 65, category: "frontend" },
-    // Mobile (original)
+    // Mobile
     { name: "React Native", icon: "", percent: 70, category: "mobile" },
     { name: "Flutter", icon: "", percent: 60, category: "mobile" },
-    
-    // ========== FRAMEWORKS (new) ==========
-    // Python Frameworks
+    // Frameworks (Python, R, Java, JS, Desktop, C#)
     { name: "FastAPI", icon: "", percent: 75, category: "framework" },
     { name: "Django", icon: "", percent: 80, category: "framework" },
     { name: "Reflex", icon: "", percent: 55, category: "framework" },
     { name: "Streamlit", icon: "", percent: 85, category: "framework" },
     { name: "Gradio", icon: "", percent: 70, category: "framework" },
-    // R Frameworks
     { name: "Shiny (R)", icon: "", percent: 65, category: "framework" },
     { name: "Tidyverse", icon: "", percent: 80, category: "framework" },
-    // Java Frameworks
     { name: "Spring Boot", icon: "", percent: 75, category: "framework" },
     { name: "Quarkus", icon: "", percent: 60, category: "framework" },
     { name: "Micronaut", icon: "", percent: 55, category: "framework" },
-    // JavaScript/Node.js Frameworks
     { name: "NestJS", icon: "", percent: 70, category: "framework" },
     { name: "Qwik", icon: "", percent: 50, category: "framework" },
     { name: "SvelteKit", icon: "", percent: 65, category: "framework" },
-    // Desktop Frameworks
     { name: "Electron", icon: "", percent: 75, category: "framework" },
     { name: "Tauri", icon: "", percent: 60, category: "framework" },
     { name: "Proton Native", icon: "", percent: 50, category: "framework" },
-    // C# (.NET) Frameworks
     { name: "ASP.NET Core", icon: "", percent: 80, category: "framework" },
     { name: "Blazor", icon: "", percent: 70, category: "framework" },
     { name: ".NET MAUI", icon: "", percent: 65, category: "framework" },
     { name: "SignalR", icon: "", percent: 65, category: "framework" },
-    
-    // Backend & DB (original + additions)
+    // Backend & DB
     { name: "Node.js", icon: "", percent: 70, category: "backend" },
     { name: "MongoDB", icon: "https://i.ibb.co/3ynqthQ6/mongodb-original-wordmark-logo-icon-146425.png", percent: 75, category: "backend" },
     { name: "MySQL", icon: "https://i.ibb.co/cXydcb2T/My-SQL-Logo-wine.png", percent: 80, category: "backend" },
@@ -110,7 +101,6 @@ const toolsData = [
     { name: "R Language", icon: "", percent: 60, category: "backend" },
     { name: "Java", icon: "", percent: 70, category: "backend" },
     { name: "C#", icon: "https://i.ibb.co/yncTV35r/C-removebg-preview.png", percent: 80, category: "backend" },
-    
     // DevOps
     { name: "Docker", icon: "", percent: 65, category: "devops" },
     { name: "GitHub Actions", icon: "", percent: 60, category: "devops" },
