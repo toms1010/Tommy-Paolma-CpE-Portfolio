@@ -1,4 +1,4 @@
-// Particles.js (using JSON config file)
+// Particles.js
 if (typeof particlesJS !== 'undefined') {
     particlesJS.load('particles-js', 'js/particles.json', function() {
         console.log('Particles loaded');
@@ -8,7 +8,7 @@ if (typeof particlesJS !== 'undefined') {
 // Typing effect
 const typingElement = document.getElementById('typing');
 if (typingElement) {
-    const roles = ['Computer Engineer', 'Software Developer', 'Cybersecurity Analyst', 'Data Analyst', 'Fullstack Developer', 'Tech Innovator'];
+    const roles = ['Computer Engineer', 'Software Developer', 'Cybersecurity Analyst', 'Data Scientist', 'Fullstack Engineer'];
     let roleIndex = 0, charIndex = 0, isDeleting = false;
     let typingSpeed = 100;
 
@@ -36,13 +36,103 @@ if (typingElement) {
     document.addEventListener('DOMContentLoaded', typeEffect);
 }
 
+// ==================== DATA FOR MARQUEES ====================
+// Certifications with actual image paths (same as certifications.html)
+const certificationsList = [
+    { name: "Python Programming", image: "images/python-1.png" },
+    { name: "Web Development", image: "images/Basic%20Web%20Development%20-1.png" },
+    { name: "C# Programming", image: "images/C%23.png" },
+    { name: "Java Basics", image: "images/java_basic_certif.png" },
+    { name: "SQL Fundamentals", image: "images/sql.png" },
+    { name: "Cybersecurity", image: "images/Cybersecurity%20Fundamentals-1.png" },
+    { name: "Ethical Hacking", image: "images/ethicalhacking-1.png" },
+    { name: "Google Cloud", image: "images/Google%20Cloud%20fundamentals.png" },
+    { name: "Data Science", image: "images/data%20science.png" },
+    { name: "Cyber Hygiene", image: "images/cyberhygiene-1.png" },
+    { name: "Advanced Training", image: "images/Certificate_of_Completion-1.png" },
+    { name: "System Config", image: "images/installingAndConfiguring-1.png" },
+    { name: "Basic Hardware", image: "images/basicHardware-1.png" },
+    { name: "Aviation Tech", image: "images/aviations-1.png" },
+    { name: "Certificate of Cyber", image: "images/certificate%20of%20cyber.png" },
+    { name: "Data Visualization", image: "images/Data%20Visualization%20Workshop.png" }
+];
+
+// Tools with icons and skill levels
+const toolsList = [
+    { name: "React", icon: "fab fa-react", level: "85%" },
+    { name: "Node.js", icon: "fab fa-node-js", level: "80%" },
+    { name: "Tailwind CSS", icon: "fab fa-css3-alt", level: "90%" },
+    { name: "Flutter", icon: "fab fa-flutter", level: "70%" },
+    { name: "MongoDB", icon: "fas fa-leaf", level: "75%" },
+    { name: "MySQL", icon: "fas fa-database", level: "80%" },
+    { name: "C++", icon: "fas fa-code", level: "75%" },
+    { name: "Python", icon: "fab fa-python", level: "88%" },
+    { name: "Docker", icon: "fab fa-docker", level: "65%" },
+    { name: "Git/GitHub", icon: "fab fa-github", level: "85%" },
+    { name: "TypeScript", icon: "fab fa-js", level: "75%" },
+    { name: "Next.js", icon: "fab fa-react", level: "72%" }
+];
+
+// Create certification marquee (with images)
+function createCertMarquee(containerId, items) {
+    const track = document.getElementById(containerId);
+    if (!track) return;
+    // Double the items for seamless loop
+    const doubled = [...items, ...items];
+    doubled.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'marquee-item cert-marquee-item';
+        div.innerHTML = `
+            <img src="${item.image}" alt="${item.name}" class="cert-marquee-img" onerror="this.style.display='none'">
+            <span>${item.name}</span>
+        `;
+        track.appendChild(div);
+    });
+}
+
+// Create tools marquee (with icons and percentages)
+function createToolsMarquee(containerId, items) {
+    const track = document.getElementById(containerId);
+    if (!track) return;
+    const doubled = [...items, ...items];
+    doubled.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'marquee-item tool-marquee-item';
+        div.innerHTML = `
+            <i class="${item.icon}"></i>
+            <span>${item.name}</span>
+            <span class="skill-percent">${item.level}</span>
+        `;
+        track.appendChild(div);
+    });
+}
+
+// Initialize marquees when page loads
+document.addEventListener('DOMContentLoaded', () => {
+    createCertMarquee('certsTrack', certificationsList);
+    createToolsMarquee('toolsTrack', toolsList);
+});
+
+// Scroll progress bar
+const progressBar = document.querySelector('.scroll-progress');
+if (progressBar) {
+    window.addEventListener('scroll', () => {
+        const winScroll = document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - window.innerHeight;
+        const scrolled = (winScroll / height) * 100;
+        progressBar.style.width = scrolled + '%';
+    });
+}
+
 // Mobile menu toggle
-const burger = document.querySelector('.burger');
-const navLinks = document.querySelector('.nav-links');
-if (burger) {
-    burger.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-        burger.classList.toggle('toggle');
+const hamburger = document.querySelector('.hamburger');
+const navMenu = document.querySelector('.nav-menu');
+if (hamburger && navMenu) {
+    hamburger.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+    });
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => navMenu.classList.remove('active'));
     });
 }
 
@@ -55,94 +145,27 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         if (target) {
             e.preventDefault();
             target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            if (navLinks && navLinks.classList.contains('active')) navLinks.classList.remove('active');
+            if (navMenu && navMenu.classList.contains('active')) navMenu.classList.remove('active');
         }
     });
 });
 
-// ==================== LANGUAGES & TOOLS DATA ====================
-const toolsData = [
-    // Frontend
-    { name: "Tailwind CSS", icon: "", percent: 85, category: "frontend" },
-    { name: "React", icon: "https://i.ibb.co/G4chpx4B/react.png", percent: 80, category: "frontend" },
-    { name: "TypeScript", icon: "", percent: 75, category: "frontend" },
-    { name: "Next.js", icon: "", percent: 70, category: "frontend" },
-    { name: "Vue.js", icon: "", percent: 65, category: "frontend" },
-    // Mobile
-    { name: "React Native", icon: "", percent: 70, category: "mobile" },
-    { name: "Flutter", icon: "", percent: 60, category: "mobile" },
-    // Frameworks (Python, R, Java, JS, Desktop, C#)
-    { name: "FastAPI", icon: "", percent: 75, category: "framework" },
-    { name: "Django", icon: "", percent: 80, category: "framework" },
-    { name: "Reflex", icon: "", percent: 55, category: "framework" },
-    { name: "Streamlit", icon: "", percent: 85, category: "framework" },
-    { name: "Gradio", icon: "", percent: 70, category: "framework" },
-    { name: "Shiny (R)", icon: "", percent: 65, category: "framework" },
-    { name: "Tidyverse", icon: "", percent: 80, category: "framework" },
-    { name: "Spring Boot", icon: "", percent: 75, category: "framework" },
-    { name: "Quarkus", icon: "", percent: 60, category: "framework" },
-    { name: "Micronaut", icon: "", percent: 55, category: "framework" },
-    { name: "NestJS", icon: "", percent: 70, category: "framework" },
-    { name: "Qwik", icon: "", percent: 50, category: "framework" },
-    { name: "SvelteKit", icon: "", percent: 65, category: "framework" },
-    { name: "Electron", icon: "", percent: 75, category: "framework" },
-    { name: "Tauri", icon: "", percent: 60, category: "framework" },
-    { name: "Proton Native", icon: "", percent: 50, category: "framework" },
-    { name: "ASP.NET Core", icon: "", percent: 80, category: "framework" },
-    { name: "Blazor", icon: "", percent: 70, category: "framework" },
-    { name: ".NET MAUI", icon: "", percent: 65, category: "framework" },
-    { name: "SignalR", icon: "", percent: 65, category: "framework" },
-    // Backend & DB
-    { name: "Node.js", icon: "", percent: 70, category: "backend" },
-    { name: "MongoDB", icon: "https://i.ibb.co/3ynqthQ6/mongodb-original-wordmark-logo-icon-146425.png", percent: 75, category: "backend" },
-    { name: "MySQL", icon: "https://i.ibb.co/cXydcb2T/My-SQL-Logo-wine.png", percent: 80, category: "backend" },
-    { name: "Python", icon: "https://i.ibb.co/d4chTzQG/Python-logo.png", percent: 85, category: "backend" },
-    { name: "C++", icon: "https://i.ibb.co/k2F7sND9/ISO-C-Logo-svg.png", percent: 75, category: "backend" },
-    { name: "R Language", icon: "", percent: 60, category: "backend" },
-    { name: "Java", icon: "", percent: 70, category: "backend" },
-    { name: "C#", icon: "https://i.ibb.co/yncTV35r/C-removebg-preview.png", percent: 80, category: "backend" },
-    // DevOps
-    { name: "Docker", icon: "", percent: 65, category: "devops" },
-    { name: "GitHub Actions", icon: "", percent: 60, category: "devops" },
-    { name: "Git/GitHub", icon: "", percent: 80, category: "devops" }
-];
-
-function renderTools(filter = 'all') {
-    const grid = document.getElementById('toolsGrid');
-    if (!grid) return;
-    const filtered = toolsData.filter(t => filter === 'all' || t.category === filter);
-    grid.innerHTML = filtered.map(tool => `
-        <div class="tool-card" data-category="${tool.category}">
-            ${tool.icon ? `<img src="${tool.icon}" alt="${tool.name}" onerror="this.style.display='none'">` : `<i class="fas fa-code" style="font-size: 2rem; color: var(--accent); margin-bottom: 0.5rem;"></i>`}
-            <span>${tool.name}</span>
-            <div class="progress-bar"><div class="progress" style="width: ${tool.percent}%"></div></div>
-            <span class="percent">${tool.percent}%</span>
-        </div>
-    `).join('');
-}
-
-// Filter buttons event listeners
-const filterBtns = document.querySelectorAll('.filter-btn');
-if (filterBtns.length) {
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            filterBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            renderTools(btn.dataset.filter);
-        });
+// Fade-in scroll animation
+const fadeElements = document.querySelectorAll('.fade-up');
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
     });
-    renderTools('all');
-}
+}, { threshold: 0.1 });
+fadeElements.forEach(el => observer.observe(el));
 
-// Back to Top Button
+// Back to Top button
 const backToTop = document.getElementById('backToTop');
 if (backToTop) {
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
-            backToTop.style.display = 'flex';
-        } else {
-            backToTop.style.display = 'none';
-        }
+        backToTop.style.display = window.scrollY > 400 ? 'flex' : 'none';
     });
     backToTop.addEventListener('click', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -151,9 +174,9 @@ if (backToTop) {
 
 // Active nav link highlight
 const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-document.querySelectorAll('.nav-links a').forEach(link => {
+document.querySelectorAll('.nav-link').forEach(link => {
     const href = link.getAttribute('href');
-    if (href === currentPage || (currentPage === 'index.html' && href === 'index.html') || (currentPage === '' && href === 'index.html')) {
+    if (href === currentPage || (currentPage === 'index.html' && href === 'index.html')) {
         link.classList.add('active');
     }
 });
