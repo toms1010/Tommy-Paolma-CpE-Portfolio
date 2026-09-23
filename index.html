@@ -1,184 +1,68 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Tommy Paolma | Computer Engineer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
-    <div id="particles-js"></div>
-    <div class="scroll-progress"></div>
-
-    <!-- Sticky Glass Navbar -->
-    <nav class="glass-nav">
-        <div class="nav-container">
-            <div class="logo">TP</div>
-            <ul class="nav-menu">
-                <li><a href="index.html" class="nav-link active">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="projects.html">Projects</a></li>
-                <li><a href="certifications.html">Certifications</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-            <div class="hamburger">
-                <span></span><span></span><span></span>
-            </div>
-        </div>
-    </nav>
-
-    <main class="container">
-        <!-- Hero Section -->
-        <section class="hero-section fade-up">
-            <div class="hero-grid">
-                <div class="hero-content">
-                    <div class="hero-badge">✦ computer engineer</div>
-                    <h1>Tommy Paolma</h1>
-                    <div class="dynamic-title">
-                        <span class="static-text">I'm a </span>
-                        <span class="typing-wrapper"><span id="typing"></span><span class="cursor-glow"></span></span>
-                    </div>
-                    <p class="hero-description">Building high‑performance systems, secure architectures, and immersive digital experiences. Passionate about full‑stack innovation, cybersecurity & cutting‑edge tech.</p>
-                    <div class="hero-buttons">
-                        <a href="projects.html" class="btn-primary">View Projects <i class="fas fa-arrow-right"></i></a>
-                        <a href="assets/cv.pdf" class="btn-outline" download>Download CV <i class="fas fa-download"></i></a>
-                    </div>
-                    <div class="tech-stack-badge">
-                        <span>React</span><span>Next.js</span><span>TypeScript</span><span>C#</span><span>Python</span><span>Cybersecurity</span>
-                    </div>
-                </div>
-                <div class="hero-visual">
-                    <div class="profile-glint">
-                        <img src="images/compEngr.jpg" alt="Tommy Paolma" class="profile-hero">
-                    </div>
-                    <div class="floating-card floating-1"><i class="fas fa-code"></i> Projects</div>
-                    <div class="floating-card floating-2"><i class="fas fa-shield-alt"></i>Engineering</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- About Section -->
-        <section id="about" class="section-spacing fade-up">
-            <h2 class="section-title">About <span class="title-accent">Me</span></h2>
-            <div class="about-modern">
-                <div class="about-intro">
-                    <p>I'm a <strong>Computer Engineering</strong> student with relentless drive for building <strong>robust, scalable systems</strong>. From full‑stack web apps to embedded Arduino and ethical hacking — I blend hardware intuition with software craftsmanship.</p>
-                    <div class="achievement-grid">
-                        <div class="achievement"><i class="fas fa-trophy"></i><span>ICPEP 2026</span><small>C Programming</small></div>
-                        <div class="achievement"><i class="fas fa-certificate"></i><span>20+ certs</span><small>Security & Cloud</small></div>
-                        <div class="achievement"><i class="fas fa-chalkboard-user"></i><span>Mentor</span><small>20+ students</small></div>
-                    </div>
-                </div>
-                <div class="about-quote-card">
-                    <i class="fas fa-quote-left"></i>
-                    <p>"Technology is best when it brings people together — my mission is to engineer solutions that are both powerful and human‑centered."</p>
-                </div>
-            </div>
-            <div class="gallery-grid">
-                <div class="gallery-card"><div class="gallery-img-wrapper"><img src="https://i.ibb.co/jPrn3gfZ/code-for-the-website.webp" alt="coding"></div><p>Deep in the logic. 💻 Refining source code.</p></div>
-                <div class="gallery-card"><div class="gallery-img-wrapper"><img src="https://i.ibb.co/tw5vM5Fq/presentetation-of-website.webp" alt="presentation"></div><p>Pitching the vision. 🚀 Demonstrating features.</p></div>
-                <div class="gallery-card"><div class="gallery-img-wrapper"><img src="https://i.ibb.co/xqT0QYZG/programming.webp" alt="programming"></div><p>In the zone. ⌨️ Every semicolon counts.</p></div>
-                <div class="gallery-card"><div class="gallery-img-wrapper"><img src="https://i.ibb.co/xS72zNh6/awarding-for-c-programming.webp" alt="award"></div><p>Hard work pays off! 🏆 Honored for C Programming.</p></div>
-                <div class="gallery-card"><div class="gallery-img-wrapper"><img src="https://i.ibb.co/6JRLXTmQ/speaking-and-question-about-the-technology.webp" alt="speaking"></div><p>Sharing insights and defending the tech stack.</p></div>
-                <div class="gallery-card"><div class="gallery-img-wrapper"><img src="https://i.ibb.co/nNsPHxP1/questioning-about-the-technology.webp" alt="q&a"></div><p>The best way to learn is to ask. 💡 Technical Q&A.</p></div>
-            </div>
-            <div class="competition-wrapup">
-                <div class="wrapup-icon"><i class="fas fa-trophy"></i></div>
-                <p>"Excited to share my competition experience — from code to Q&A, and proud to place in C Programming. Applying these skills to Cybersecurity & Hardware‑Software Integration!"</p>
-            </div>
-        </section>
-
-        <!-- What I Do -->
-        <section class="section-spacing fade-up">
-            <h2 class="section-title">What <span class="title-accent">I Do</span></h2>
-            <div class="services-grid">
-                <div class="service-card"><i class="fas fa-globe"></i><h3>Web Design & Development</h3><p>React, Tailwind, Next.js, TypeScript, Vue</p></div>
-                <div class="service-card"><i class="fas fa-mobile-alt"></i><h3>Mobile App Development</h3><p>React Native, Flutter, MAUI, Xamarin</p></div>
-                <div class="service-card"><i class="fas fa-desktop"></i><h3>Desktop Development</h3><p>C#, WPF, .NET Core, WinForms</p></div>
-                <div class="service-card"><i class="fas fa-microchip"></i><h3>Embedded & Arduino</h3><p>C++, IoT, sensors, hardware programming</p></div>
-                <div class="service-card"><i class="fas fa-chalkboard-teacher"></i><h3>Tech Teaching & Mentoring</h3><p>Arduino workshops, programming fundamentals</p></div>
-                <div class="service-card"><i class="fas fa-shield-alt"></i><h3>Cybersecurity</h3><p>Ethical hacking, network security, system hardening</p></div>
-            </div>
-        </section>
-
-        <!-- INFINITE SCROLL: CERTIFICATIONS (with images) -->
-        <section class="marquee-section fade-up">
-            <div class="section-header">
-                <h2 class="section-title">Certifications <span class="title-accent">✦</span></h2>
-            </div>
-            <div class="marquee-container" id="certsMarquee">
-                <div class="marquee-track" id="certsTrack"></div>
-            </div>
-        </section>
-
-        <!-- INFINITE SCROLL: TECH STACK (opposite direction) -->
-        <section class="marquee-section fade-up">
-            <div class="section-header">
-                <h2 class="section-title">Tech Stack <span class="title-accent">⚡</span></h2>
-            </div>
-            <div class="marquee-container reverse-marquee" id="toolsMarquee">
-                <div class="marquee-track" id="toolsTrack"></div>
-            </div>
-        </section>
-
-        <!-- Hybrid Projects Showcase -->
-        <section class="section-spacing fade-up">
-            <h2 class="section-title">Featured <span class="title-accent">Projects</span></h2>
-            <div class="featured-projects-modern">
-                <div class="featured-project-card">
-                    <img src="https://i.ibb.co/zWdFT1MR/battle-of-band-registretion.png" alt="Battle of Bands">
-                    <div class="featured-project-info">
-                        <h3>Battle of Bands Registration</h3>
-                        <p>Real‑time entry management & QR check‑in system. Built with Google Apps Script and modern UI.</p>
-                        <a href="https://script.google.com/macros/s/AKfycbxRmkaE5fOwuG8KZj-TJBtDwBvFmKe_gPDik-jyjMYlCPRxmSBbi9vqbo9l0Qm3MPyhpw/exec" target="_blank">Live Demo →</a>
-                    </div>
-                </div>
-                <div class="project-mini-grid">
-                    <div class="project-mini-card"><img src="https://i.ibb.co/67C2Jm91/navigation.png" alt="nav"><h4>Campus Navigation</h4><a href="https://script.google.com/macros/s/AKfycbzeYL2aX3qKzQ4faMyn1o3wZ8-_o3XvmPw84rRW1r4_Fk1oBxftKIM8__y_GTd-rGHRfg/exec" target="_blank">Demo →</a></div>
-                    <div class="project-mini-card"><img src="https://i.ibb.co/b5zd8sHq/rating.png" alt="rating"><h4>Participant Rating</h4><a href="https://script.google.com/macros/s/AKfycbyeCGD4cl_fSFRwsYe2y0o0tFh46PiorDDgQ8gZfIekQDYqdwrpJ99gMZ-cmGFFW9C5/exec" target="_blank">Demo →</a></div>
-                    <div class="project-mini-card"><img src="https://i.ibb.co/FkBHnQvj/t-shirt-ordere.png" alt="tshirt"><h4>T‑Shirt Order</h4><a href="https://script.google.com/macros/s/AKfycbwfUhwke2t327QhKXQyuaZKOmk0wQEXHgy7_TQsUQrR83aJiqvvHd9SFvDjNKEc8gwskg/exec" target="_blank">Demo →</a></div>
-                    <div class="project-mini-card"><img src="https://i.ibb.co/spQndCCQ/sport.png" alt="sports"><h4>Sports Manager</h4><a href="https://script.google.com/macros/s/AKfycbzlp4gT7GG-uEdLfKCd76pdh8CloEl8HVc1UK5TuaTEdjI8TxTnFcqwAcecYWlP7cQVkQ/exec" target="_blank">Demo →</a></div>
-                </div>
-                <div class="view-all-wrap"><a href="projects.html" class="btn-outline">Explore All Projects <i class="fas fa-grid-2"></i></a></div>
-            </div>
-        </section>
-
-        <!-- Skills & Expertise -->
-        <section class="section-spacing fade-up">
-            <h2 class="section-title">Skills & <span class="title-accent">Expertise</span></h2>
-            <div class="skills-detailed">
-                <div class="skill-block"><h3><i class="fas fa-chalkboard-teacher"></i> Teaching & Leadership</h3><p>Arduino workshops, mentoring peers, STEM research guidance.</p><div class="teaching-images"><img src="https://i.ibb.co/fd6M0jS7/teaching-arduino1.jpg" alt="workshop" class="teaching-skill-img"><img src="https://i.ibb.co/1f6fFvXd/teaching-arduino2.jpg" alt="teaching" class="teaching-skill-img"></div></div>
-                <div class="skill-block"><h3><i class="fas fa-laptop-code"></i> Development</h3><p><strong>Full-Stack Web:</strong> React, Tailwind, Next.js, TypeScript, Vue.<br><strong>Mobile & Desktop:</strong> React Native, Flutter, .NET MAUI, C#.<br><strong>Embedded:</strong> Arduino, C++, IoT.</p></div>
-                <div class="skill-block"><h3><i class="fas fa-database"></i> Database & Backend</h3><p>Node.js, MongoDB, MySQL, REST APIs, GraphQL.</p></div>
-                <div class="skill-block"><h3><i class="fas fa-shield-alt"></i> Cybersecurity</h3><p>Ethical hacking, network security, cyber hygiene, penetration testing.</p></div>
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact" class="section-spacing fade-up">
-            <h2 class="section-title">Let's <span class="title-accent">Connect</span></h2>
-            <div class="contact-glass">
-                <p>Ready to build something remarkable? Reach out for collaborations or just to say hi.</p>
-                <a href="mailto:tpaolma@gmail.com" class="btn-primary">tpaolma@gmail.com <i class="fas fa-envelope"></i></a>
-                <div class="contact-social">
-                    <a href="https://x.com/TPaolma88394" target="_blank"><i class="fab fa-twitter"></i></a>
-                    <a href="https://github.com/toms1010" target="_blank"><i class="fab fa-github"></i></a>
-                    <a href="https://www.linkedin.com/in/tommy-paolma-65663b341/" target="_blank"><i class="fab fa-linkedin"></i></a>
-                    <a href="https://web.facebook.com/tommy.b.paolma" target="_blank"><i class="fab fa-facebook"></i></a>
-                </div>
-            </div>
-        </section>
-
-        <footer class="modern-footer">
-            <p>© 2025 Tommy Paolma</p>
-        </footer>
-    </main>
-
-    <button id="backToTop" class="back-to-top"><i class="fas fa-arrow-up"></i></button>
-
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script src="js/script.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tommy Paolma | Computer Engineering Student &amp; Software Developer</title>
+    <meta
+      name="description"
+      content="Portfolio of Tommy Paolma, a Computer Engineering student and aspiring software engineer building web apps, event management systems, and embedded projects with HTML, CSS, JavaScript, Python, C, C#, Java, SQL, and Arduino."
+    />
+    <link rel="canonical" href="https://toms1010.github.io/Tommy-Paolma-CpE-Portfolio/" />
+    <meta name="theme-color" content="#0a0c10" />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:title"
+      content="Tommy Paolma | Computer Engineering Student & Software Developer"
+    />
+    <meta
+      property="og:description"
+      content="Computer Engineering student building web apps, event systems, and embedded projects. View projects, certifications, and contact details."
+    />
+    <meta
+      property="og:image"
+      content="https://toms1010.github.io/Tommy-Paolma-CpE-Portfolio/images/tommy-paolma.jpg"
+    />
+    <meta property="og:url" content="https://toms1010.github.io/Tommy-Paolma-CpE-Portfolio/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Tommy Paolma | Computer Engineering Student & Software Developer"
+    />
+    <meta
+      name="twitter:description"
+      content="Computer Engineering student building web apps, event systems, and embedded projects."
+    />
+    <meta
+      name="twitter:image"
+      content="https://toms1010.github.io/Tommy-Paolma-CpE-Portfolio/images/tommy-paolma.jpg"
+    />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      // No-flash theme init: stored preference wins, otherwise system preference. Default: dark.
+      try {
+        var t = localStorage.getItem('tp-theme');
+        if (
+          t === 'light' ||
+          (t !== 'dark' && window.matchMedia('(prefers-color-scheme: light)').matches)
+        ) {
+          document.documentElement.classList.remove('dark');
+        } else {
+          document.documentElement.classList.add('dark');
+        }
+      } catch (e) {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
