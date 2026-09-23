@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://toms1010.github.io/Tommy-Paolma-CpE-Portfolio/sitemap.xml
