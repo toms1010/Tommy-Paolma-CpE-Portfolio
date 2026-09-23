@@ -22,6 +22,7 @@ import {
   Server,
   Smartphone,
   Gamepad2,
+  Cloud,
   Moon,
   Sun,
 } from 'lucide-react';
@@ -75,6 +76,7 @@ const SKILL_ICONS: Record<SkillIcon, LucideIcon> = {
   server: Server,
   mobile: Smartphone,
   game: Gamepad2,
+  cloud: Cloud,
 };
 
 const BRAND_PATHS: Record<'github' | 'linkedin' | 'facebook' | 'x', string> = {

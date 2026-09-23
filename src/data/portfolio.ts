@@ -1,17 +1,7 @@
-import type { NavItem, Project, SkillGroup } from '../types/portfolio';
+import type { Project, SkillGroup } from '../types/portfolio';
 import type { Certification, SocialLink, TimelineItem } from '../types/portfolio';
 
 export const EMAIL = 'tpaolma@gmail.com';
-
-export const NAV_ITEMS: NavItem[] = [
-  { label: 'Home', href: '#home' },
-  { label: 'About', href: '#about' },
-  { label: 'CpE', href: '#computer-engineering' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Skills', href: '#skills' },
-  { label: 'Resume', href: '#resume' },
-  { label: 'Contact', href: '#contact' },
-];
 
 export const SOCIAL_LINKS: SocialLink[] = [
   { label: 'Tommy Paolma on X (Twitter)', href: 'https://x.com/TPaolma88394', icon: 'x' },
@@ -216,6 +206,43 @@ export const SKILL_GROUPS: SkillGroup[] = [
     items: [
       { name: 'Git', note: 'Used', logo: 'images/tech/git.svg' },
       { name: 'JSON', logo: 'images/tech/json.svg' },
+    ],
+  },
+];
+
+/**
+ * Cloud & DevOps technologies currently being learned/explored.
+ * Kept separate from the core stack — every item carries a learning note,
+ * never a proficiency claim.
+ */
+export const LEARNING_GROUPS: SkillGroup[] = [
+  {
+    title: 'Cloud Platforms',
+    icon: 'cloud',
+    items: [
+      { name: 'AWS', note: 'Currently learning', logo: 'images/tech/aws.svg' },
+      { name: 'Microsoft Azure', note: 'Currently learning', logo: 'images/tech/azure.svg' },
+      { name: 'Google Cloud', note: 'Currently learning', logo: 'images/tech/gcloud.svg' },
+      { name: 'Firebase', note: 'Currently learning', logo: 'images/tech/firebase.svg' },
+      { name: 'Heroku', note: 'Currently learning', logo: 'images/tech/heroku.svg' },
+    ],
+  },
+  {
+    title: 'DevOps / Infrastructure',
+    icon: 'chip',
+    items: [
+      { name: 'Docker', note: 'Currently learning', logo: 'images/tech/docker.svg' },
+      { name: 'Terraform', note: 'Currently learning', logo: 'images/tech/terraform.png' },
+      { name: 'Ansible', note: 'Currently learning', logo: 'images/tech/ansible.svg' },
+    ],
+  },
+  {
+    title: 'Developer Platforms',
+    icon: 'tools',
+    items: [
+      { name: 'GitHub', note: 'Currently learning', logo: 'images/tech/github-mark.svg' },
+      { name: 'GitLab', note: 'Currently learning', logo: 'images/tech/gitlab.svg' },
+      { name: 'Bitbucket', note: 'Currently learning', logo: 'images/tech/bitbucket.svg' },
     ],
   },
 ];

@@ -36,7 +36,8 @@ export type SkillIcon =
   | 'tools'
   | 'server'
   | 'mobile'
-  | 'game';
+  | 'game'
+  | 'cloud';
 
 export interface SkillGroup {
   title: string;
@@ -64,11 +65,6 @@ export interface SocialLink {
   label: string;
   href: string;
   icon: SocialIcon;
-}
-
-export interface NavItem {
-  label: string;
-  href: string;
 }
 
 export interface ContactFormData {

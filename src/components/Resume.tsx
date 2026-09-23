@@ -123,14 +123,16 @@ export function Resume(): React.JSX.Element {
               Technical Skills
             </h4>
             <p>
-              <strong>Languages:</strong> Python, Java, C, C++, C#, SQL, R, JavaScript
+              <strong>Languages:</strong> C, C++, C#, Java, JavaScript, TypeScript, Go, Rust
               <br />
-              <strong>Web:</strong> HTML, CSS, Google Apps Script, responsive design
+              <strong>Web:</strong> HTML, CSS, React
               <br />
-              <strong>Embedded:</strong> Arduino, sensors, hardware programming basics
+              <strong>Backend &amp; Data:</strong> .NET, Node.js, npm, MongoDB, MySQL, Neon,
+              JSON
               <br />
-              <strong>Other:</strong> Git, GitHub, Google Cloud fundamentals, cybersecurity
-              fundamentals
+              <strong>Platforms:</strong> Android, Electron, Godot, Git
+              <br />
+              <strong>Currently learning:</strong> AWS, Azure, Google Cloud, Docker, Terraform
             </p>
           </section>
           <section aria-label="Certifications" className="mb-5">
