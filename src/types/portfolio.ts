@@ -21,10 +21,22 @@ export interface Project {
 
 export interface SkillItem {
   name: string;
-  note: string;
+  /** Short evidence tag (e.g. "Certified"). Omit when there is nothing factual to claim. */
+  note?: string;
+  /** Local public-dir logo path (e.g. "images/tech/c.svg"). Omit for text-only items. */
+  logo?: string;
 }
 
-export type SkillIcon = 'code' | 'globe' | 'chip' | 'database' | 'shield' | 'tools';
+export type SkillIcon =
+  | 'code'
+  | 'globe'
+  | 'chip'
+  | 'database'
+  | 'shield'
+  | 'tools'
+  | 'server'
+  | 'mobile'
+  | 'game';
 
 export interface SkillGroup {
   title: string;

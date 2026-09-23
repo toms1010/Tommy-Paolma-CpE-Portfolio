@@ -157,74 +157,65 @@ export const PROJECTS: Project[] = [
 
 export const SKILL_GROUPS: SkillGroup[] = [
   {
-    title: 'Programming Languages',
+    title: 'Languages',
     icon: 'code',
     items: [
-      { name: 'Python', note: 'Certified' },
-      { name: 'Java', note: 'Certified' },
-      { name: 'C', note: 'ICPEP competition' },
-      { name: 'C++', note: 'Arduino / embedded' },
-      { name: 'C#', note: 'Certified' },
-      { name: 'SQL', note: 'Certified' },
-      { name: 'R', note: 'Certified' },
-      { name: 'JavaScript', note: 'Shipped web apps' },
+      { name: 'C', note: 'ICPEP competition', logo: 'images/tech/c.svg' },
+      { name: 'C++', note: 'Arduino / embedded', logo: 'images/tech/cpp.svg' },
+      { name: 'C#', note: 'Certified', logo: 'images/tech/csharp.svg' },
+      { name: 'Java', note: 'Certified', logo: 'images/tech/java.svg' },
+      { name: 'JavaScript', note: 'Shipped web apps', logo: 'images/tech/javascript.svg' },
+      { name: 'TypeScript', logo: 'images/tech/typescript.svg' },
+      { name: 'Go', logo: 'images/tech/go.svg' },
+      { name: 'Rust', logo: 'images/tech/rust.svg' },
     ],
   },
   {
     title: 'Web Development',
     icon: 'globe',
     items: [
-      { name: 'HTML', note: 'Certified + shipped' },
-      { name: 'CSS', note: 'Certified + shipped' },
-      { name: 'Google Apps Script', note: '7 live apps' },
-      { name: 'Responsive design', note: 'Applied' },
+      { name: 'HTML', note: 'Certified + shipped', logo: 'images/tech/html.svg' },
+      { name: 'CSS', note: 'Certified + shipped', logo: 'images/tech/css.svg' },
+      { name: 'React', logo: 'images/tech/react.svg' },
     ],
   },
   {
-    title: 'Engineering & Embedded',
-    icon: 'chip',
-    blurb:
-      'Arduino workshops, mentoring peers, hardware fundamentals, computer setup and configuration.',
+    title: 'Backend & Frameworks',
+    icon: 'server',
     items: [
-      { name: 'Arduino', note: 'Workshops' },
-      { name: 'Sensors', note: 'Basics' },
-      { name: 'Hardware setup', note: 'Certified' },
-    ],
-    images: [
-      {
-        src: 'https://i.ibb.co/fd6M0jS7/teaching-arduino1.jpg',
-        alt: 'Tommy leading an Arduino workshop',
-      },
-      {
-        src: 'https://i.ibb.co/1f6fFvXd/teaching-arduino2.jpg',
-        alt: 'Students learning Arduino with Tommy',
-      },
+      { name: '.NET', logo: 'images/tech/dotnet.svg' },
+      { name: 'Node.js', logo: 'images/tech/nodejs.svg' },
+      { name: 'npm', logo: 'images/tech/npm.svg' },
     ],
   },
   {
-    title: 'Data, Backend & Cloud',
+    title: 'Databases',
     icon: 'database',
     items: [
-      { name: 'Data Science basics', note: 'Certified' },
-      { name: 'Data Visualization', note: 'Workshop' },
-      { name: 'Google Cloud fundamentals', note: 'Certified' },
+      { name: 'MongoDB', logo: 'images/tech/mongodb.svg' },
+      { name: 'MySQL', logo: 'images/tech/mysql.svg' },
+      { name: 'Neon', logo: 'images/tech/neon.svg' },
     ],
   },
   {
-    title: 'Security Fundamentals',
-    icon: 'shield',
+    title: 'Mobile & Desktop',
+    icon: 'mobile',
     items: [
-      { name: 'Cybersecurity fundamentals', note: 'Certified' },
-      { name: 'Ethical hacking concepts', note: 'Certified' },
-      { name: 'Cyber hygiene', note: 'Certified' },
+      { name: 'Android', logo: 'images/tech/android.svg' },
+      { name: 'Electron', logo: 'images/tech/electron.svg' },
     ],
   },
   {
-    title: 'Tools',
+    title: 'Game Development',
+    icon: 'game',
+    items: [{ name: 'Godot', logo: 'images/tech/godot.svg' }],
+  },
+  {
+    title: 'Tools & Data',
     icon: 'tools',
     items: [
-      { name: 'Git', note: 'Used' },
-      { name: 'GitHub', note: 'Used' },
+      { name: 'Git', note: 'Used', logo: 'images/tech/git.svg' },
+      { name: 'JSON', logo: 'images/tech/json.svg' },
     ],
   },
 ];

@@ -6,17 +6,18 @@ import { Reveal } from './Reveal';
 import { UiIcon } from './icons';
 
 const TECH_BADGES = [
-  'HTML',
-  'CSS',
-  'JavaScript',
-  'Python',
   'C',
   'C++',
   'C#',
   'Java',
-  'SQL',
-  'Arduino',
-  'Git & GitHub',
+  'JavaScript',
+  'TypeScript',
+  'Go',
+  'Rust',
+  'HTML',
+  'CSS',
+  'React',
+  'Node.js',
 ];
 
 export function Hero(): React.JSX.Element {

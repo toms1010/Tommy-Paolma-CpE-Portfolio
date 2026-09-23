@@ -19,6 +19,9 @@ import {
   Database,
   ShieldCheck,
   Terminal,
+  Server,
+  Smartphone,
+  Gamepad2,
   Moon,
   Sun,
 } from 'lucide-react';
@@ -69,6 +72,9 @@ const SKILL_ICONS: Record<SkillIcon, LucideIcon> = {
   database: Database,
   shield: ShieldCheck,
   tools: Terminal,
+  server: Server,
+  mobile: Smartphone,
+  game: Gamepad2,
 };
 
 const BRAND_PATHS: Record<'github' | 'linkedin' | 'facebook' | 'x', string> = {
