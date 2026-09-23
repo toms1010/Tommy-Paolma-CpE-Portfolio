@@ -365,7 +365,11 @@ export function Navbar(): React.JSX.Element {
     };
   }, [open ]);
 
+  // NOTE: MobileNav must be a sibling of <header>, not a child. The header uses
+  // backdrop-blur (a filter), which would become the containing block for the
+  // dialog's `fixed inset-0` and shrink it to header height on mobile.
   return (
+    <>
     <header className="sticky top-0 z-50 border-b border-line bg-page/80 backdrop-blur-md print:hidden">
       <nav
         aria-label="Primary"
@@ -378,7 +382,7 @@ export function Navbar(): React.JSX.Element {
             className="flex items-baseline gap-2"
           >
             <span className="gradient-text text-2xl font-extrabold">TP</span>
-            <span className="hidden text-sm font-semibold text-muted min-[400px]:inline lg:hidden xl:inline">
+            <span className="hidden text-sm font-semibold text-muted min-[320px]:inline lg:hidden xl:inline">
               Tommy Paolma
             </span>
           </a>
@@ -420,12 +424,14 @@ export function Navbar(): React.JSX.Element {
         </div>
       </nav>
 
+    </header>
+
       <MobileNav
         open={open}
         onClose={() => {
           setOpen(false);
         }}
       />
-    </header>
+    </>
   );
 }
