@@ -18,3 +18,5 @@ screenshots
 Thumbs.db
 .vscode/*
 !.vscode/extensions.json
+.vercel
+.env*
