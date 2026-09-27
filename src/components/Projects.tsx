@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ExternalLink, Star } from 'lucide-react';
+import { ArrowRight, ExternalLink, Star } from 'lucide-react';
 import { GITHUB_PROFILE, PROJECTS } from '../data/portfolio';
 import type { Project, ProjectCategory } from '../types/portfolio';
 import { asset } from '../lib/asset';
@@ -20,8 +20,15 @@ function projectImage(project: Project): string {
   return project.imageLocal ? asset(project.image) : project.image;
 }
 
+function projectSlug(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
 function ProjectLinks({ project }: { project: Project }): React.JSX.Element | null {
-  if (!project.demo && !project.github) return null;
+  if (!project.demo && !project.github && !project.detailsHref) return null;
   return (
     <div className="mt-4 flex flex-wrap gap-3">
       {project.demo ? (
@@ -33,6 +40,15 @@ function ProjectLinks({ project }: { project: Project }): React.JSX.Element | nu
           className="btn-primary min-h-11 px-5 py-2.5 text-sm"
         >
           Live Demo <ExternalLink className="h-4 w-4" aria-hidden="true" focusable="false" />
+        </a>
+      ) : null}
+      {project.detailsHref ? (
+        <a
+          href={project.detailsHref}
+          aria-label={`View the ${project.title} case study`}
+          className="btn-outline min-h-11 px-5 py-2.5 text-sm"
+        >
+          View Project <ArrowRight className="h-4 w-4" aria-hidden="true" focusable="false" />
         </a>
       ) : null}
       {project.github ? (
@@ -77,8 +93,9 @@ function FeaturedCard({
 }): React.JSX.Element {
   return (
     <article
+      id={`project-${projectSlug(project.title)}`}
       aria-label={`Featured project: ${project.title}`}
-      className="grid overflow-hidden rounded-3xl border border-accent/30 bg-card transition-all duration-300 hover:border-accent hover:shadow-xl md:grid-cols-2"
+      className="grid scroll-mt-24 overflow-hidden rounded-3xl border border-accent/30 bg-card transition-all duration-300 hover:border-accent hover:shadow-xl md:grid-cols-2"
     >
       <img
         src={projectImage(project)}
@@ -86,7 +103,7 @@ function FeaturedCard({
         loading="lazy"
         width={640}
         height={400}
-        className={`h-56 w-full object-cover sm:h-72 md:h-full md:min-h-80 ${flip ? 'md:order-2' : ''}`}
+        className={`h-56 w-full object-cover object-top sm:h-72 md:h-full md:min-h-80 ${flip ? 'md:order-2' : ''}`}
       />
       <div className="flex flex-col justify-center p-6 sm:p-8">
         <p className="mb-2 inline-flex items-center gap-1.5 text-xs font-bold tracking-wider text-accent uppercase">
@@ -94,6 +111,18 @@ function FeaturedCard({
           {project.kicker}
         </p>
         <h3 className="text-2xl font-extrabold">{project.title}</h3>
+        {project.badges && project.badges.length > 0 ? (
+          <ul aria-label={`${project.title} highlights`} className="mt-3 flex flex-wrap gap-1.5">
+            {project.badges.map((badge) => (
+              <li
+                key={badge}
+                className="rounded-full border border-accent/40 bg-accent/10 px-2.5 py-0.5 text-xs font-semibold text-accent"
+              >
+                {badge}
+              </li>
+            ))}
+          </ul>
+        ) : null}
         {project.role ? (
           <p className="mt-1 text-sm font-semibold text-muted">My role: {project.role}</p>
         ) : null}

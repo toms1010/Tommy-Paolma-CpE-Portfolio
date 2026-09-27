@@ -24,10 +24,15 @@ async function settleSection(page: Page, selector: string): Promise<void> {
   await page.locator(selector).scrollIntoViewIfNeeded();
   await expect(page.locator(`${selector} .reveal.is-visible`)).toBeVisible();
   // Some external images may never load; give them a short grace period.
+  // Scoped to the section under test: below-fold lazy images elsewhere on
+  // the page intentionally haven't loaded yet and must not block the suite.
   await page.waitForFunction(
-    () => Array.from(document.images).every((img) => img.complete || img.naturalWidth === 0),
-    undefined,
-    { timeout: 15000 },
+    (sel: string) =>
+      Array.from(document.querySelectorAll(`${sel} img`)).every(
+        (img) => (img as HTMLImageElement).complete || (img as HTMLImageElement).naturalWidth === 0
+      ),
+    selector,
+    { timeout: 15000 }
   );
   await page.waitForTimeout(700);
 }
@@ -117,11 +122,11 @@ test('project filtering works', async ({ page }) => {
     await settleSection(page, '#projects');
     const status = page.locator('#projects [role="status"]');
     await page.getByRole('button', { name: 'Orders', exact: true }).click();
-    await expect(status).toContainText('Showing 2 of 9 projects.');
+    await expect(status).toContainText('Showing 2 of 10 projects.');
     await expect(page.locator('#projects article')).toHaveCount(2);
     await page.getByRole('button', { name: 'All', exact: true }).click();
-    await expect(status).toContainText('Showing 9 of 9 projects.');
-    await expect(page.locator('#projects article')).toHaveCount(9);
+    await expect(status).toContainText('Showing 10 of 10 projects.');
+    await expect(page.locator('#projects article')).toHaveCount(10);
   });
 
   test('CV download points to the real PDF', async ({ page }) => {
@@ -144,6 +149,17 @@ test('project filtering works', async ({ page }) => {
     await gotoApp(page);
     await settleSection(page, '#projects');
     const featured = page.locator('#projects [aria-label="Featured projects"]');
+    await expect(featured.getByRole('heading', { name: 'Windows vs Linux Academy' })).toBeVisible();
+    await expect(
+      featured.getByRole('link', { name: /Windows vs Linux Academy live demo/i })
+    ).toHaveAttribute('href', 'https://windows-linux-academy.vercel.app/');
+    await expect(
+      featured.getByRole('link', { name: /Windows vs Linux Academy case study/i })
+    ).toHaveAttribute('href', '#project-windows-linux-academy');
+    // No verified GitHub repo exists for the Academy, so no GitHub button is rendered.
+    await expect(
+      featured.getByRole('link', { name: /Windows vs Linux Academy source code/i })
+    ).toHaveCount(0);
     await expect(featured.getByRole('heading', { name: 'JDAJNSH' })).toBeVisible();
     await expect(featured.getByRole('heading', { name: 'MARPOL Ocean Adventure' })).toBeVisible();
     await expect(
@@ -159,6 +175,30 @@ test('project filtering works', async ({ page }) => {
     await expect(
       featured.getByRole('link', { name: /MARPOL Ocean Adventure source code/i })
     ).toHaveCount(0);
+  });
+
+  test('academy case study renders with live demo and navigation', async ({ page }) => {
+    await gotoApp(page);
+    await settleSection(page, '#project-windows-linux-academy');
+    const study = page.locator('#project-windows-linux-academy');
+    await expect(
+      study.getByRole('heading', { name: 'Windows vs Linux Academy', exact: true })
+    ).toBeVisible();
+    await expect(
+      study.getByRole('link', { name: /live demo/i }).first()
+    ).toHaveAttribute('href', 'https://windows-linux-academy.vercel.app');
+    await expect(
+      study.getByRole('link', { name: /Back to Projects/i }).first()
+    ).toHaveAttribute('href', '#projects');
+    await expect(
+      study.getByRole('link', { name: /Previous project/i })
+    ).toHaveAttribute('href', '#project-jdajnsh');
+    await expect(study.getByRole('link', { name: /Next project/i })).toHaveAttribute(
+      'href',
+      '#project-marpol-ocean-adventure'
+    );
+    // Real screenshots ship with the case study.
+    await expect(study.locator('img[alt*="Windows vs Linux Academy"]')).not.toHaveCount(0);
   });
 
   test('contact form validates input', async ({ page }) => {

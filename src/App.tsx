@@ -13,6 +13,7 @@ import { Projects } from './components/Projects';
 import { Resume } from './components/Resume';
 import { Skills } from './components/Skills';
 import { ThemeProvider } from './theme/ThemeContext';
+import { WindowsLinuxAcademy } from './components/WindowsLinuxAcademy';
 
 export function App(): React.JSX.Element {
   return (
@@ -30,6 +31,7 @@ export function App(): React.JSX.Element {
         <About />
         <ComputerEngineering />
         <Projects />
+        <WindowsLinuxAcademy />
         <Skills />
         <Education />
         <Experience />

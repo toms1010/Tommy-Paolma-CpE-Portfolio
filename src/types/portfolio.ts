@@ -17,6 +17,14 @@ export interface Project {
   github?: string;
   categories: ProjectCategory[];
   featured?: boolean;
+  /**
+   * Anchor (or route) of the in-portfolio case-study section for this
+   * project, e.g. "#project-windows-linux-academy". When present, project
+   * cards render a "View Project" button linking to it.
+   */
+  detailsHref?: string;
+  /** Extra display badges for the card (e.g. "Interactive Web App"). */
+  badges?: string[];
 }
 
 export interface SkillItem {

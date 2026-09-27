@@ -25,6 +25,23 @@ const STATIC_STACK = ['HTML', 'CSS', 'JavaScript'];
 
 export const PROJECTS: Project[] = [
   {
+    title: 'Windows vs Linux Academy',
+    kicker: 'Featured · Interactive learning platform',
+    description:
+      'An interactive operating-systems learning platform focused on Windows, macOS, Linux, kernels, system architecture, backend engineering, commands, quizzes, and hands-on interactive labs.',
+    role: 'Sole developer (design, build, deploy)',
+    technologies: ['Next.js', 'React', 'JavaScript', 'CSS'],
+    image: 'images/wla-home.jpg',
+    imageAlt:
+      'Screenshot of the Windows vs Linux Academy home page with OS topics, comparison cards, history timeline, and learning roadmap',
+    imageLocal: true,
+    demo: 'https://windows-linux-academy.vercel.app/',
+    categories: ['web'],
+    featured: true,
+    detailsHref: '#project-windows-linux-academy',
+    badges: ['Interactive Web App', 'Education Platform', 'Computer Engineering'],
+  },
+  {
     title: 'JDAJNSH',
     kicker: 'Featured · School website',
     description:
