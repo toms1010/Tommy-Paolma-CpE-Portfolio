@@ -1,5 +1,7 @@
 # Tommy Paolma | Computer Engineering Portfolio
 
+**Live:** https://tommy-paolma-cpe-portfolio.vercel.app/
+
 Personal portfolio website of **Tommy Paolma**, a Computer Engineering student and
 aspiring software engineer. Showcases 7 deployed event-management web apps,
 18 certifications, mentoring/competition experience, and contact details.
