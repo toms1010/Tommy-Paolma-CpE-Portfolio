@@ -153,7 +153,9 @@ export function ProjectDetails({
                           </pre>
                         )}
                         {project.runNote && (
-                          <p className="mt-2 text-sm text-muted leading-relaxed">{project.runNote}</p>
+                          <p className="mt-2 text-sm text-muted leading-relaxed">
+                            {project.runNote}
+                          </p>
                         )}
                       </div>
                     )}
@@ -251,6 +253,39 @@ export function ProjectDetails({
                   <li key={item}>{item}</li>
                 ))}
               </ul>
+            </section>
+          )}
+
+          {/* Architecture / Workflow */}
+          {(project.workflow?.length ?? 0) > 0 && (
+            <section>
+              <h3 className="flex items-center gap-2 text-lg font-bold text-ink">
+                <Layers className="h-5 w-5 text-accent" aria-hidden="true" focusable="false" />
+                Architecture & Workflow
+              </h3>
+              <ul className="mt-4 space-y-1.5 text-sm text-muted list-disc pl-5">
+                {project.workflow?.map((step) => (
+                  <li key={step}>{step}</li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {/* Engineering Challenges */}
+          {(project.challenges?.length ?? 0) > 0 && (
+            <section>
+              <h3 className="flex items-center gap-2 text-lg font-bold text-ink">
+                <Target className="h-5 w-5 text-accent" aria-hidden="true" focusable="false" />
+                Engineering Challenges
+              </h3>
+              <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {project.challenges?.map((challenge) => (
+                  <div key={challenge.title} className="rounded-xl border border-line bg-card p-4">
+                    <p className="text-sm font-bold text-ink">{challenge.title}</p>
+                    <p className="mt-1.5 text-sm text-muted leading-relaxed">{challenge.body}</p>
+                  </div>
+                ))}
+              </div>
             </section>
           )}
 

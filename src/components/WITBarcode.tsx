@@ -35,28 +35,116 @@ const OVERVIEW_FEATURES = [
 ];
 
 const GALLERY: { src: string; alt: string; caption: string }[] = [
-  { src: 'images/wit-barcode/01_dashboard.png', alt: 'WIT Barcode Student Information System main dashboard', caption: 'Dashboard' },
-  { src: 'images/wit-barcode/02_dashboard_student_selected.png', alt: 'WIT Barcode dashboard with a student selected', caption: 'Dashboard — student selected' },
-  { src: 'images/wit-barcode/03_students_directory.png', alt: 'WIT Barcode student records directory', caption: 'Student Management — directory' },
-  { src: 'images/wit-barcode/04_students_record_selected.png', alt: 'WIT Barcode student record detail', caption: 'Student Management — record' },
-  { src: 'images/wit-barcode/05_student_dialog_add.png', alt: 'WIT Barcode add student dialog', caption: 'Student Management — add dialog' },
-  { src: 'images/wit-barcode/06_student_dialog_edit.png', alt: 'WIT Barcode edit student dialog', caption: 'Student Management — edit dialog' },
-  { src: 'images/wit-barcode/07_enrollment_select_student.png', alt: 'WIT Barcode enrollment student selection', caption: 'Enrollment — select student' },
-  { src: 'images/wit-barcode/08_enrollment_subjects.png', alt: 'WIT Barcode enrollment subjects', caption: 'Enrollment — subjects' },
-  { src: 'images/wit-barcode/09_add_subject_dialog.png', alt: 'WIT Barcode add subject dialog', caption: 'Enrollment — add subject' },
-  { src: 'images/wit-barcode/10_courses_subjects.png', alt: 'WIT Barcode courses and subjects', caption: 'Enrollment — courses and subjects' },
-  { src: 'images/wit-barcode/11_certificate_of_matriculation.png', alt: 'WIT Barcode certificate of matriculation', caption: 'Enrollment — certificate of matriculation' },
-  { src: 'images/wit-barcode/12_assessment_fees.png', alt: 'WIT Barcode assessment fees', caption: 'Assessment & Payments — fees' },
-  { src: 'images/wit-barcode/13_record_payment_dialog.png', alt: 'WIT Barcode record payment dialog', caption: 'Assessment & Payments — record payment' },
-  { src: 'images/wit-barcode/14_reports_analytics.png', alt: 'WIT Barcode reports and analytics', caption: 'Reports & Analytics' },
-  { src: 'images/wit-barcode/16_scanner_idle.png', alt: 'WIT Barcode scanner idle', caption: 'Barcode Scanner — idle' },
-  { src: 'images/wit-barcode/17_scanner_verified.png', alt: 'WIT Barcode scanner verified', caption: 'Barcode Scanner — verified' },
-  { src: 'images/wit-barcode/18_scan_result_dialog.png', alt: 'WIT Barcode scan result dialog', caption: 'Barcode Scanner — result' },
-  { src: 'images/wit-barcode/19_scanner_camera_running.png', alt: 'WIT Barcode scanner camera running', caption: 'Barcode Scanner — camera' },
-  { src: 'images/wit-barcode/20_training_center_dataset.png', alt: 'WIT Barcode AI training center dataset', caption: 'AI Training Center — dataset' },
-  { src: 'images/wit-barcode/21_training_center_training.png', alt: 'WIT Barcode AI model training', caption: 'AI Training Center — training' },
-  { src: 'images/wit-barcode/22_training_center_models.png', alt: 'WIT Barcode AI training models', caption: 'AI Training Center — models' },
-  { src: 'images/wit-barcode/23_settings.png', alt: 'WIT Barcode application settings', caption: 'Settings' },
+  {
+    src: 'images/wit-barcode/01_dashboard.png',
+    alt: 'WIT Barcode Student Information System main dashboard',
+    caption: 'Dashboard',
+  },
+  {
+    src: 'images/wit-barcode/02_dashboard_student_selected.png',
+    alt: 'WIT Barcode dashboard with a student selected',
+    caption: 'Dashboard — student selected',
+  },
+  {
+    src: 'images/wit-barcode/03_students_directory.png',
+    alt: 'WIT Barcode student records directory',
+    caption: 'Student Management — directory',
+  },
+  {
+    src: 'images/wit-barcode/04_students_record_selected.png',
+    alt: 'WIT Barcode student record detail',
+    caption: 'Student Management — record',
+  },
+  {
+    src: 'images/wit-barcode/05_student_dialog_add.png',
+    alt: 'WIT Barcode add student dialog',
+    caption: 'Student Management — add dialog',
+  },
+  {
+    src: 'images/wit-barcode/06_student_dialog_edit.png',
+    alt: 'WIT Barcode edit student dialog',
+    caption: 'Student Management — edit dialog',
+  },
+  {
+    src: 'images/wit-barcode/07_enrollment_select_student.png',
+    alt: 'WIT Barcode enrollment student selection',
+    caption: 'Enrollment — select student',
+  },
+  {
+    src: 'images/wit-barcode/08_enrollment_subjects.png',
+    alt: 'WIT Barcode enrollment subjects',
+    caption: 'Enrollment — subjects',
+  },
+  {
+    src: 'images/wit-barcode/09_add_subject_dialog.png',
+    alt: 'WIT Barcode add subject dialog',
+    caption: 'Enrollment — add subject',
+  },
+  {
+    src: 'images/wit-barcode/10_courses_subjects.png',
+    alt: 'WIT Barcode courses and subjects',
+    caption: 'Enrollment — courses and subjects',
+  },
+  {
+    src: 'images/wit-barcode/11_certificate_of_matriculation.png',
+    alt: 'WIT Barcode certificate of matriculation',
+    caption: 'Enrollment — certificate of matriculation',
+  },
+  {
+    src: 'images/wit-barcode/12_assessment_fees.png',
+    alt: 'WIT Barcode assessment fees',
+    caption: 'Assessment & Payments — fees',
+  },
+  {
+    src: 'images/wit-barcode/13_record_payment_dialog.png',
+    alt: 'WIT Barcode record payment dialog',
+    caption: 'Assessment & Payments — record payment',
+  },
+  {
+    src: 'images/wit-barcode/14_reports_analytics.png',
+    alt: 'WIT Barcode reports and analytics',
+    caption: 'Reports & Analytics',
+  },
+  {
+    src: 'images/wit-barcode/16_scanner_idle.png',
+    alt: 'WIT Barcode scanner idle',
+    caption: 'Barcode Scanner — idle',
+  },
+  {
+    src: 'images/wit-barcode/17_scanner_verified.png',
+    alt: 'WIT Barcode scanner verified',
+    caption: 'Barcode Scanner — verified',
+  },
+  {
+    src: 'images/wit-barcode/18_scan_result_dialog.png',
+    alt: 'WIT Barcode scan result dialog',
+    caption: 'Barcode Scanner — result',
+  },
+  {
+    src: 'images/wit-barcode/19_scanner_camera_running.png',
+    alt: 'WIT Barcode scanner camera running',
+    caption: 'Barcode Scanner — camera',
+  },
+  {
+    src: 'images/wit-barcode/20_training_center_dataset.png',
+    alt: 'WIT Barcode AI training center dataset',
+    caption: 'AI Training Center — dataset',
+  },
+  {
+    src: 'images/wit-barcode/21_training_center_training.png',
+    alt: 'WIT Barcode AI model training',
+    caption: 'AI Training Center — training',
+  },
+  {
+    src: 'images/wit-barcode/22_training_center_models.png',
+    alt: 'WIT Barcode AI training models',
+    caption: 'AI Training Center — models',
+  },
+  {
+    src: 'images/wit-barcode/23_settings.png',
+    alt: 'WIT Barcode application settings',
+    caption: 'Settings',
+  },
 ];
 
 type GalleryCategoryId =
@@ -144,24 +232,17 @@ export function WITBarcode(): React.JSX.Element {
   ];
 
   const technologies = [
-    'Python 3.14.4',
+    'Python',
     'PySide6',
     'Qt 6',
-    'MySQL Server 8.4',
-    'InnoDB',
-    'mysql-connector-python',
-    'Ultralytics YOLOv8n',
-    'PyTorch',
+    'MySQL',
+    'YOLOv8n',
     'OpenCV',
     'python-barcode',
     'pyzbar',
     'CODE39',
     'ReportLab',
-    'Matplotlib',
-    'python-dotenv',
     'pytest',
-    'pytest-qt',
-    'pytest-mock',
   ];
 
   return (
@@ -231,8 +312,8 @@ export function WITBarcode(): React.JSX.Element {
             </p>
             <p className="mx-auto mt-4 max-w-3xl text-center text-sm text-muted">
               Built with Python and PySide6, the application integrates a MySQL database with
-              YOLOv8n-based barcode detection, CODE39 barcode generation and decoding, and PDF report
-              generation.
+              YOLOv8n-based barcode detection, CODE39 barcode generation and decoding, and PDF
+              report generation.
             </p>
             <p className="mx-auto mt-4 max-w-3xl text-center text-sm text-muted">
               The system provides an integrated workflow for student records, enrollment, financial
@@ -611,7 +692,8 @@ export function WITBarcode(): React.JSX.Element {
             aria-label="Open GitHub repository (opens in a new tab)"
             className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-full bg-white px-6 py-2.5 text-sm font-bold text-slate-900 transition-transform hover:-translate-y-0.5"
           >
-            View Code on GitHub <ExternalLink className="h-4 w-4" aria-hidden="true" focusable="false" />
+            View Code on GitHub{' '}
+            <ExternalLink className="h-4 w-4" aria-hidden="true" focusable="false" />
           </a>
         </div>
 

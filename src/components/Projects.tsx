@@ -1,72 +1,44 @@
 import { useState } from 'react';
-import { ArrowRight, ExternalLink } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { GITHUB_PROFILE, PROJECTS } from '../data/portfolio';
 import type { Project, ProjectCategory } from '../types/portfolio';
 import { asset } from '../lib/asset';
 import { Reveal } from './Reveal';
 import { SectionHeading } from './SectionHeading';
-import { SocialGlyph } from './icons';
 import { Button } from './common/Button';
 import { ProjectDetails } from './projects/ProjectDetails';
 
-const FILTERS: { value: ProjectCategory | 'all'; label: string }[] = [
-  { value: 'all', label: 'All' },
-  { value: 'web', label: 'Web' },
-  { value: 'game', label: 'Game' },
-  { value: 'registration', label: 'Registration' },
-  { value: 'orders', label: 'Orders' },
-  { value: 'events', label: 'Events & Scoring' },
-  { value: 'desktop', label: 'Desktop' },
+const CATEGORY_LABELS: Record<ProjectCategory, string> = {
+  desktop: 'Desktop Applications',
+  web: 'Web Applications',
+  mobile: 'Mobile Applications',
+  game: 'Game Development',
+  electronics: 'Electronics & Embedded Systems',
+  registration: 'Registration Systems',
+  orders: 'Order Systems',
+  events: 'Events & Scoring',
+  other: 'Other Projects',
+};
+
+const FILTER_ORDER: ProjectCategory[] = [
+  'desktop',
+  'web',
+  'mobile',
+  'game',
+  'electronics',
+  'registration',
+  'orders',
+  'events',
+  'other',
 ];
 
-function projectImage(project: Project): string {
-  return project.imageLocal ? asset(project.image) : project.image;
-}
+const FILTERS: { value: ProjectCategory | 'all'; label: string }[] = [
+  { value: 'all', label: 'All Projects' },
+  ...FILTER_ORDER.map((cat) => ({ value: cat, label: CATEGORY_LABELS[cat] })),
+];
 
-function projectSlug(title: string): string {
-  return title
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-}
-
-function ProjectLinks({ project }: { project: Project }): React.JSX.Element | null {
-  if (!project.demo && !project.github && !project.detailsHref) return null;
-  return (
-    <div className="mt-4 flex flex-wrap gap-3">
-      {project.demo ? (
-        <a
-          href={project.demo}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={`${project.title} live demo (opens in a new tab)`}
-          className="btn-primary min-h-11 px-5 py-2.5 text-sm"
-        >
-          Live Demo <ExternalLink className="h-4 w-4" aria-hidden="true" focusable="false" />
-        </a>
-      ) : null}
-      {project.detailsHref ? (
-        <a
-          href={project.detailsHref}
-          aria-label={`View the ${project.title} case study`}
-          className="btn-outline min-h-11 px-5 py-2.5 text-sm"
-        >
-          View Project <ArrowRight className="h-4 w-4" aria-hidden="true" focusable="false" />
-        </a>
-      ) : null}
-      {project.github ? (
-        <a
-          href={project.github}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={`${project.title} source code on GitHub (opens in a new tab)`}
-          className="btn-outline min-h-11 px-5 py-2.5 text-sm"
-        >
-          <SocialGlyph icon="github" className="h-4 w-4" /> GitHub
-        </a>
-      ) : null}
-    </div>
-  );
+function categoryLabel(category: ProjectCategory): string {
+  return CATEGORY_LABELS[category];
 }
 
 function TechBadges({ project }: { project: Project }): React.JSX.Element {
@@ -78,7 +50,7 @@ function TechBadges({ project }: { project: Project }): React.JSX.Element {
       {project.technologies.map((tech) => (
         <li
           key={tech}
-          className="rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-semibold text-accent"
+          className="rounded-full border border-accent/40 bg-accent/10 px-3 py-1 text-xs font-bold text-accent"
         >
           {tech}
         </li>
@@ -87,47 +59,8 @@ function TechBadges({ project }: { project: Project }): React.JSX.Element {
   );
 }
 
-function FeaturedCard({ project, flip }: { project: Project; flip: boolean }): React.JSX.Element {
-  return (
-    <article
-      id={`project-${projectSlug(project.title)}`}
-      aria-label={`Featured project: ${project.title}`}
-      className="grid scroll-mt-24 overflow-hidden rounded-3xl border border-accent/30 bg-card transition-all duration-300 hover:border-accent hover:shadow-xl md:grid-cols-2"
-    >
-      <img
-        src={projectImage(project)}
-        alt={project.imageAlt}
-        loading="lazy"
-        width={640}
-        height={360}
-        className={`aspect-video w-full object-cover object-center sm:aspect-[16/9] md:aspect-auto md:h-full md:min-h-[320px] ${flip ? 'md:order-2' : ''}`}
-      />
-      <div className="flex flex-col justify-center p-6 sm:p-8">
-        <p className="mb-2 inline-flex items-center gap-1.5 text-xs font-bold tracking-wider text-accent uppercase">
-          {project.kicker}
-        </p>
-        <h3 role="heading" className="text-2xl font-extrabold">{project.title}</h3>
-        {project.badges && project.badges.length > 0 ? (
-          <ul aria-label={`${project.title} highlights`} className="mt-3 flex flex-wrap gap-1.5">
-            {project.badges.map((badge) => (
-              <li
-                key={badge}
-                className="rounded-full border border-accent/40 bg-accent/10 px-2.5 py-0.5 text-xs font-semibold text-accent"
-              >
-                {badge}
-              </li>
-            ))}
-          </ul>
-        ) : null}
-        {project.role ? (
-          <p className="mt-1 text-sm font-semibold text-muted">My role: {project.role}</p>
-        ) : null}
-        <p className="mt-3 text-muted">{project.description}</p>
-        <TechBadges project={project} />
-        <ProjectLinks project={project} />
-      </div>
-    </article>
-  );
+function projectImage(project: Project): string {
+  return project.imageLocal ? asset(project.image) : project.image;
 }
 
 function ProjectCard({
@@ -139,38 +72,72 @@ function ProjectCard({
 }): React.JSX.Element {
   return (
     <article className="flex flex-col overflow-hidden rounded-3xl border border-line bg-card transition-all duration-300 hover:-translate-y-1.5 hover:border-accent hover:shadow-xl">
-      <img
-        src={projectImage(project)}
-        alt={project.imageAlt}
-        loading="lazy"
-        width={640}
-        height={360}
-        className="aspect-video w-full bg-black object-cover object-top"
-      />
-      <div className="flex flex-1 flex-col p-5">
-        <p className="mb-1 text-xs font-bold tracking-wider text-accent uppercase">
-          {project.kicker}
-        </p>
-        <h3 className="text-lg font-bold">{project.title}</h3>
-        <p className="mt-2 text-sm text-muted">{project.description}</p>
-        {project.problem && project.solution ? (
-          <p className="mt-2 text-sm text-muted">
-            <strong className="text-ink">Problem:</strong> {project.problem}{' '}
-            <strong className="text-ink">Solution:</strong> {project.solution}
-          </p>
-        ) : null}
+      <figure className="relative h-48 w-full overflow-hidden bg-black">
+        <img
+          src={projectImage(project)}
+          alt={project.imageAlt}
+          loading="lazy"
+          width={640}
+          height={360}
+          className="aspect-video w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-[1.02]"
+        />
+        <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-accent px-3 py-1 text-[10px] font-bold text-white shadow-sm">
+          {project.categories.map(categoryLabel).join(' · ')}
+        </span>
+      </figure>
+      <div className="flex-1 flex-col p-5">
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-lg font-bold text-ink">{project.title}</h3>
+          <span className="text-[10px] font-bold tracking-wider text-accent uppercase">
+            {project.categories.map(categoryLabel).join(' · ')}
+          </span>
+        </div>
+        <p className="mt-2 text-sm text-muted line-clamp-2">{project.description}</p>
         <TechBadges project={project} />
-        <ProjectLinks project={project} />
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => {
-            onReadMore(project);
-          }}
-          className="mt-3 w-full"
-        >
-          Read More <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" focusable="false" />
-        </Button>
+        <div className="mt-auto pt-4">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              onReadMore(project);
+            }}
+            className="w-full"
+          >
+            Read More <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" focusable="false" />
+          </Button>
+          {project.demo && (
+            <a
+              key="demo"
+              href={project.demo}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${project.title} live demo (opens in a new tab)`}
+              className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-accent bg-accent px-4 py-2 text-xs font-bold text-white transition-colors hover:bg-accent/90 mt-3"
+            >
+              Live Demo <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" focusable="false" />
+            </a>
+          )}
+          {project.github && (
+            <a
+              key="github"
+              href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${project.title} source code on GitHub (opens in a new tab)`}
+              className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-line bg-card px-4 py-2 text-xs font-bold text-ink transition-colors hover:border-accent hover:text-accent mt-3"
+            >
+              <svg
+                className="h-3.5 w-3.5"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+              </svg>
+              Source
+            </a>
+          )}
+        </div>
       </div>
     </article>
   );
@@ -180,84 +147,83 @@ export function Projects(): React.JSX.Element {
   const [filter, setFilter] = useState<ProjectCategory | 'all'>('all');
   const [details, setDetails] = useState<Project | null>(null);
   const matches = (p: Project): boolean => filter === 'all' || p.categories.includes(filter);
-  const featured = PROJECTS.filter((p) => p.featured && matches(p));
-  const more = PROJECTS.filter((p) => !p.featured && matches(p));
-  const visibleCount = featured.length + more.length;
+  const filtered = PROJECTS.filter(matches);
+  const featured = filtered.filter((p) => p.featured);
+  const more = filtered.filter((p) => !p.featured);
 
   return (
     <section id="projects" aria-labelledby="projects-heading" className="scroll-mt-24 py-16">
       <Reveal>
-        {featured.length > 0 ? (
-          <>
-            <SectionHeading id="projects-heading" accent="Projects">
-              Featured
-            </SectionHeading>
-            <p className="mx-auto mt-4 max-w-2xl text-center text-muted">
-              Things I&apos;ve built — current featured work plus event-management web apps deployed
-              for real registrations, orders, and scoreboards.
-            </p>
-
-            <div className="mt-10 flex flex-col gap-6" aria-label="Featured projects">
-              {featured.map((project, i) => (
-                <FeaturedCard key={project.title} project={project} flip={i % 2 === 1} />
-              ))}
-            </div>
-          </>
-        ) : null}
-
-        <h3 className="mt-12 text-center text-xl font-bold">More Projects</h3>
-        <p className="mx-auto mt-2 max-w-2xl text-center text-muted">
-          Explore my other applications, games, and web systems developed for real-world activities
-          and practical use.
-        </p>
-        <div
-          role="group"
-          aria-label="Filter projects by category"
-          className="mt-6 flex flex-wrap justify-center gap-2"
-        >
-          {FILTERS.map((f) => (
-            <button
-              key={f.value}
-              type="button"
-              onClick={() => {
-                setFilter(f.value);
-              }}
-              aria-pressed={filter === f.value}
-              className={`min-h-11 rounded-full border px-5 py-2 text-sm font-semibold transition-colors ${
-                filter === f.value
-                  ? 'border-accent bg-accent/15 text-accent'
-                  : 'border-line bg-card text-ink hover:border-accent'
-              }`}
-            >
-              {f.label}
-            </button>
-          ))}
-        </div>
-        <p role="status" aria-live="polite" className="mt-3 min-h-6 text-center text-sm text-muted">
-          Showing {visibleCount} of {PROJECTS.length} projects.
-        </p>
-        {more.length > 0 ? (
-          <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {more.map((project) => (
+        {/* Featured Projects */}
+        <div className="mt-10" aria-label="Featured projects">
+          <SectionHeading id="projects-heading" accent="Projects">
+            Featured Projects
+          </SectionHeading>
+          <p className="mx-auto mt-4 max-w-2xl text-center text-muted">
+            My strongest and most important projects — desktop applications, web applications, and
+            educational tools I&apos;ve designed and built from the ground up.
+          </p>
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {featured.map((project) => (
               <ProjectCard key={project.title} project={project} onReadMore={setDetails} />
             ))}
           </div>
-        ) : (
-          <p className="mt-6 text-center text-muted">
-            No projects in this category yet — try another filter.
-          </p>
-        )}
-        <p className="mt-8 text-center text-muted">
-          More code and experiments:{' '}
-          <a
-            href={GITHUB_PROFILE}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-semibold text-accent hover:underline"
+        </div>
+
+        {/* More Projects with category filtering */}
+        <div className="mt-16">
+          <div className="flex flex-wrap justify-center gap-2 mb-8">
+            {FILTERS.map((f) => (
+              <button
+                key={f.value}
+                type="button"
+                onClick={() => {
+                  setFilter(f.value);
+                }}
+                aria-pressed={filter === f.value}
+                className={`min-h-10 rounded-full border px-4 py-2 text-sm font-semibold transition-colors ${
+                  filter === f.value
+                    ? 'border-accent bg-accent/15 text-accent'
+                    : 'border-line bg-card text-ink hover:border-accent'
+                }`}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
+
+          <p
+            role="status"
+            aria-live="polite"
+            className="mb-6 min-h-6 text-center text-sm text-muted"
           >
-            github.com/toms1010
-          </a>
-        </p>
+            Showing {filtered.length} of {PROJECTS.length} projects.
+          </p>
+
+          {more.length > 0 ? (
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {more.map((project) => (
+                <ProjectCard key={project.title} project={project} onReadMore={setDetails} />
+              ))}
+            </div>
+          ) : (
+            <p className="mt-6 text-center text-muted">
+              No projects in this category yet — try another filter.
+            </p>
+          )}
+
+          <p className="mt-8 text-center text-muted">
+            More code and experiments:{' '}
+            <a
+              href={GITHUB_PROFILE}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-accent hover:underline"
+            >
+              github.com/toms1010
+            </a>
+          </p>
+        </div>
 
         {details !== null && (
           <ProjectDetails

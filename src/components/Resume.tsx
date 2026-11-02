@@ -58,7 +58,7 @@ export function Resume(): React.JSX.Element {
           <header className="mb-5 border-b-[3px] border-b-[#13adc7] pb-4">
             <h3 className="text-3xl font-extrabold">Tommy Paolma</h3>
             <p className="font-semibold text-slate-700">
-              Computer Engineering Student · Aspiring Software Engineer
+              Computer Engineering Student · Software Engineer · Technical Writer
             </p>
             <p className="text-sm text-slate-600">
               <a href={`mailto:${EMAIL}`} className="text-[#0e7490] hover:underline">
@@ -89,10 +89,11 @@ export function Resume(): React.JSX.Element {
               Summary
             </h4>
             <p>
-              Computer Engineering student building practical web applications, event management
-              systems, and embedded projects. Experienced in shipping live tools used at real
-              events, competing in C Programming at ICPEP, and mentoring peers in Arduino and
-              programming fundamentals.
+              Computer Engineering student, software engineer, and technical writer building
+              practical web applications, event management systems, and embedded projects. I
+              document complex engineering topics into clear, accessible guides and technical
+              documentation. Experienced in shipping live tools used at real events, competing in C
+              Programming at ICPEP, and mentoring peers in Arduino and programming fundamentals.
             </p>
           </section>
           <section aria-label="Education" className="mb-5">

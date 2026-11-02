@@ -215,8 +215,8 @@ export function ShadowHunter(): React.JSX.Element {
               <strong className="text-ink">Shadow Hunter</strong> is a complete 2D action game: pick
               a hunter, fight through <strong className="text-ink">10 themed levels</strong> full of
               waves, traps, poison, locked doors, destructibles and ambushes, beat each unique boss,
-              loot and upgrade <strong className="text-ink">8 weapons</strong> across 4 rarities, and
-              take down the <strong className="text-ink">Shadow King</strong>.
+              loot and upgrade <strong className="text-ink">8 weapons</strong> across 4 rarities,
+              and take down the <strong className="text-ink">Shadow King</strong>.
             </p>
             <div className="mx-auto mt-6 grid max-w-4xl gap-4 text-left sm:grid-cols-3">
               <div className="rounded-2xl border border-line bg-black/5 p-4 dark:bg-black/25">

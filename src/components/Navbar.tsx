@@ -263,7 +263,7 @@ function DownloadCvButton({ className }: { className?: string }): React.JSX.Elem
       className={`inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-xl border border-accent bg-accent px-4 font-semibold text-white transition-colors hover:bg-accent/90 ${className ?? ''}`}
     >
       <Download className="h-5 w-5" aria-hidden="true" />
-      <span className="hidden sm:inline">DOWNLOAD CV</span>
+      <span>DOWNLOAD CV</span>
     </button>
   );
 }

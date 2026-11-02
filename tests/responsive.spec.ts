@@ -129,11 +129,11 @@ test.describe('Portfolio responsive suite', () => {
     const projects = page.locator('#projects');
     const status = projects.locator('[role="status"]');
     await projects.getByRole('button', { name: 'Orders', exact: true }).click();
-    await expect(status).toContainText('Showing 2 of 12 projects.');
+    await expect(status).toContainText('Showing 2 of 16 projects.');
     await expect(projects.locator('article')).toHaveCount(2);
     await projects.getByRole('button', { name: 'All', exact: true }).click();
-    await expect(status).toContainText('Showing 12 of 12 projects.');
-    await expect(projects.locator('article')).toHaveCount(12);
+    await expect(status).toContainText('Showing 16 of 16 projects.');
+    await expect(projects.locator('article')).toHaveCount(16);
   });
 
   test('CV download points to the real PDF', async ({ page }) => {

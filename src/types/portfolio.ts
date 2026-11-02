@@ -1,4 +1,13 @@
-export type ProjectCategory = 'web' | 'game' | 'registration' | 'orders' | 'events' | 'desktop';
+export type ProjectCategory =
+  | 'web'
+  | 'game'
+  | 'registration'
+  | 'orders'
+  | 'events'
+  | 'desktop'
+  | 'mobile'
+  | 'electronics'
+  | 'other';
 
 export interface Project {
   title: string;
@@ -43,6 +52,10 @@ export interface Project {
   runCommand?: string;
   /** Optional note about how to run / play the project. */
   runNote?: string;
+  /** Optional ordered architecture / workflow steps for desktop applications. */
+  workflow?: string[];
+  /** Optional engineering challenges and how they were solved. */
+  challenges?: { title: string; body: string }[];
   /** Optional call-to-action for the details modal. */
   cta?: { title: string; body: string };
 }

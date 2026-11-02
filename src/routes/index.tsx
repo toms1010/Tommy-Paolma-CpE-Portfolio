@@ -18,6 +18,7 @@ export const PROJECT_IDS = [
   'campus-navigation',
   'participant-rating',
   'sports-event-manager',
+  'periodic-table',
 ] as const;
 
 export type ProjectId = (typeof PROJECT_IDS)[number];

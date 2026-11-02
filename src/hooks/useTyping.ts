@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 
 /** Typing effect cycling through role titles. Static text when reduced motion is requested. */
 export function useTyping(roles: readonly string[]): string {
-  const prefersReducedMotion = typeof window !== 'undefined' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const prefersReducedMotion =
+    typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const [text, setText] = useState<string>(() => {
     if (prefersReducedMotion) {

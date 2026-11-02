@@ -7,6 +7,7 @@ import { Projects } from '../components/Projects';
 import { WITBarcode } from '../components/WITBarcode';
 import { ShadowHunter } from '../components/ShadowHunter';
 import { TransportSystem } from '../components/TransportSystem';
+import { PeriodicTable } from '../components/PeriodicTable';
 import { Skills } from '../components/Skills';
 import { Education } from '../components/Education';
 import { Experience } from '../components/Experience';
@@ -40,6 +41,7 @@ export function AppRoutes(): React.JSX.Element {
               <WITBarcode />
               <ShadowHunter />
               <TransportSystem />
+              <PeriodicTable />
               <Skills />
               <Education />
               <Experience />

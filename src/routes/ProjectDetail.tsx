@@ -28,12 +28,15 @@ function getAdjacentProjects(currentId: ProjectId): {
 
 function categoryLabel(category: ProjectCategory): string {
   const labels: Record<ProjectCategory, string> = {
-    web: 'Web Application',
-    game: 'Game',
-    registration: 'Registration System',
-    orders: 'Order / Management System',
-    events: 'Events & Scoring System',
-    desktop: 'Desktop Application',
+    desktop: 'Desktop Applications',
+    web: 'Web Applications',
+    mobile: 'Mobile Applications',
+    game: 'Game Development',
+    electronics: 'Electronics & Embedded Systems',
+    registration: 'Registration Systems',
+    orders: 'Order Systems',
+    events: 'Events & Scoring',
+    other: 'Other Projects',
   };
   return labels[category];
 }

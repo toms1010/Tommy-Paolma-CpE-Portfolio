@@ -367,7 +367,7 @@ export function TransportSystem(): React.JSX.Element {
             loading="lazy"
             width={1280}
             height={800}
-            className="h-auto w-full"
+            className="h-auto w-full max-w-[560px] sm:max-w-[720px] mx-auto"
           />
           <figcaption className="border-t border-line px-4 py-3 text-center text-xs text-muted">
             Real screenshot of the running application — captured from the login screen
@@ -429,7 +429,8 @@ export function TransportSystem(): React.JSX.Element {
                   aria-label={`${shot.linkLabel} (opens in a new tab)`}
                   className="inline-flex items-center gap-1 text-xs font-bold text-accent hover:underline"
                 >
-                  Open live page <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" focusable="false" />
+                  Open live page{' '}
+                  <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" focusable="false" />
                 </a>
               </figcaption>
             </figure>

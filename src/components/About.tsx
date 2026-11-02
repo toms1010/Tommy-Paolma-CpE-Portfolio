@@ -20,18 +20,19 @@ export function About(): React.JSX.Element {
           <div className="min-w-[min(100%,19rem)] flex-[2] rounded-3xl border border-line bg-card p-8">
             <p>
               I&apos;m <strong>Tommy Paolma</strong>, a{' '}
-              <strong>Computer Engineering student</strong> and aspiring{' '}
-              <strong>software engineer</strong>. I work across web development (HTML, CSS,
+              <strong>Computer Engineering student</strong>, <strong>software engineer</strong>, and{' '}
+              <strong>technical writer</strong>. I work across web development (HTML, CSS,
               JavaScript, Google Apps Script), programming fundamentals (Python, Java, C, C#, SQL),
               and hardware-software basics (Arduino, C++, IoT concepts) — with an engineering
-              mindset: understand the problem, build simply, test, and iterate.
+              mindset: understand the problem, build simply, test, and iterate. I also document
+              complex engineering topics into clear, accessible technical guides.
             </p>
             <p className="mt-4 text-muted">
               What I&apos;ve actually done: featured work includes a school rules website (team
               consultant/developer) and an educational ocean-themed game site, plus live
               event-management web apps used for real registrations, orders, and scoreboards;
-              competed in C Programming at ICPEP; and mentored peers through Arduino workshops
-              and programming fundamentals.
+              competed in C Programming at ICPEP; and mentored peers through Arduino workshops and
+              programming fundamentals.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               {ACHIEVEMENTS.map((a) => (

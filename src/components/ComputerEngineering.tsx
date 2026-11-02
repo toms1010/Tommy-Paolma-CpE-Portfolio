@@ -45,7 +45,8 @@ export function ComputerEngineering(): React.JSX.Element {
           world. As a student, I build on the software side while learning how the hardware
           underneath works.
         </p>
-
+        GCash Account Number: 09814960255 Account Name: DE****E B. GoTyme Account Number: 0131 2981
+        5175 Account Name: DEZERIE ALVIOR BALADJAY
         <div className="mt-10 rounded-3xl border border-line bg-card p-6 sm:p-8">
           <div className="grid items-stretch gap-4 md:grid-cols-[1fr_auto_1fr] md:items-center">
             <div className="rounded-2xl border border-line bg-black/5 p-5 dark:bg-black/25">
@@ -102,7 +103,6 @@ export function ComputerEngineering(): React.JSX.Element {
             Systems Integration — hardware + software working together
           </div>
         </div>
-
         <h3 className="mt-10 text-center font-bold">How my skills connect</h3>
         <ol className="mt-4 flex flex-col items-stretch gap-2 md:flex-row md:flex-wrap md:items-center md:justify-center">
           {FLOW.map((step, i) => (

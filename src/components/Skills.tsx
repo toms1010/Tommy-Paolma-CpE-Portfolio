@@ -5,7 +5,13 @@ import { Reveal } from './Reveal';
 import { SectionHeading } from './SectionHeading';
 import { SkillGlyph } from './icons';
 
-function SkillCards({ items, learning = false }: { items: SkillItem[]; learning?: boolean }): React.JSX.Element {
+function SkillCards({
+  items,
+  learning = false,
+}: {
+  items: SkillItem[];
+  learning?: boolean;
+}): React.JSX.Element {
   return (
     <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
       {items.map((item) => (
@@ -53,8 +59,8 @@ export function Skills(): React.JSX.Element {
           Technical
         </SectionHeading>
         <p className="mx-auto mt-4 max-w-2xl text-center text-muted">
-          Technologies &amp; tools I use across languages, web, backend, databases, mobile,
-          desktop, and game development — plus the cloud platforms I&apos;m actively learning.
+          Technologies &amp; tools I use across languages, web, backend, databases, mobile, desktop,
+          and game development — plus the cloud platforms I&apos;m actively learning.
         </p>
         <div className="mt-10 flex flex-col gap-6">
           {SKILL_GROUPS.map((group) => (

@@ -23,8 +23,8 @@ const TECH_BADGES = [
 
 export function Hero(): React.JSX.Element {
   const typed = useTyping(TYPING_ROLES);
-  const prefersReducedMotion = typeof window !== 'undefined' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const prefersReducedMotion =
+    typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   return (
     <section
@@ -54,9 +54,10 @@ export function Hero(): React.JSX.Element {
             </span>
           </p>
           <p className="mt-5 max-w-xl text-lg text-muted">
-            I build practical software solutions across web, mobile, desktop, and embedded systems. I
-            enjoy transforming ideas into functional applications through programming, system design,
-            and hardware-software integration.
+            I build practical software solutions across web, mobile, desktop, and embedded systems,
+            and I document them as a technical writer — turning complex engineering into clear,
+            accessible guides and documentation. I enjoy transforming ideas into functional
+            applications through programming, system design, and hardware-software integration.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <a href="#projects" className="btn-primary">
