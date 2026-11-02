@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { ArrowRight, ExternalLink, Star } from 'lucide-react';
+import { ArrowRight, ExternalLink } from 'lucide-react';
 import { GITHUB_PROFILE, PROJECTS } from '../data/portfolio';
 import type { Project, ProjectCategory } from '../types/portfolio';
 import { asset } from '../lib/asset';
 import { Reveal } from './Reveal';
 import { SectionHeading } from './SectionHeading';
 import { SocialGlyph } from './icons';
+import { Button } from './common/Button';
+import { ProjectDetails } from './projects/ProjectDetails';
 
 const FILTERS: { value: ProjectCategory | 'all'; label: string }[] = [
   { value: 'all', label: 'All' },
@@ -14,6 +16,7 @@ const FILTERS: { value: ProjectCategory | 'all'; label: string }[] = [
   { value: 'registration', label: 'Registration' },
   { value: 'orders', label: 'Orders' },
   { value: 'events', label: 'Events & Scoring' },
+  { value: 'desktop', label: 'Desktop' },
 ];
 
 function projectImage(project: Project): string {
@@ -84,13 +87,7 @@ function TechBadges({ project }: { project: Project }): React.JSX.Element {
   );
 }
 
-function FeaturedCard({
-  project,
-  flip,
-}: {
-  project: Project;
-  flip: boolean;
-}): React.JSX.Element {
+function FeaturedCard({ project, flip }: { project: Project; flip: boolean }): React.JSX.Element {
   return (
     <article
       id={`project-${projectSlug(project.title)}`}
@@ -102,15 +99,14 @@ function FeaturedCard({
         alt={project.imageAlt}
         loading="lazy"
         width={640}
-        height={400}
-        className={`h-56 w-full object-cover object-top sm:h-72 md:h-full md:min-h-80 ${flip ? 'md:order-2' : ''}`}
+        height={360}
+        className={`aspect-video w-full object-cover object-center sm:aspect-[16/9] md:aspect-auto md:h-full md:min-h-[320px] ${flip ? 'md:order-2' : ''}`}
       />
       <div className="flex flex-col justify-center p-6 sm:p-8">
         <p className="mb-2 inline-flex items-center gap-1.5 text-xs font-bold tracking-wider text-accent uppercase">
-          <Star className="h-3.5 w-3.5" aria-hidden="true" focusable="false" />
           {project.kicker}
         </p>
-        <h3 className="text-2xl font-extrabold">{project.title}</h3>
+        <h3 role="heading" className="text-2xl font-extrabold">{project.title}</h3>
         {project.badges && project.badges.length > 0 ? (
           <ul aria-label={`${project.title} highlights`} className="mt-3 flex flex-wrap gap-1.5">
             {project.badges.map((badge) => (
@@ -134,16 +130,22 @@ function FeaturedCard({
   );
 }
 
-function ProjectCard({ project }: { project: Project }): React.JSX.Element {
+function ProjectCard({
+  project,
+  onReadMore,
+}: {
+  project: Project;
+  onReadMore: (project: Project) => void;
+}): React.JSX.Element {
   return (
     <article className="flex flex-col overflow-hidden rounded-3xl border border-line bg-card transition-all duration-300 hover:-translate-y-1.5 hover:border-accent hover:shadow-xl">
       <img
         src={projectImage(project)}
         alt={project.imageAlt}
         loading="lazy"
-        width={400}
-        height={160}
-        className="h-40 w-full bg-white object-contain"
+        width={640}
+        height={360}
+        className="aspect-video w-full bg-black object-cover object-top"
       />
       <div className="flex flex-1 flex-col p-5">
         <p className="mb-1 text-xs font-bold tracking-wider text-accent uppercase">
@@ -159,6 +161,16 @@ function ProjectCard({ project }: { project: Project }): React.JSX.Element {
         ) : null}
         <TechBadges project={project} />
         <ProjectLinks project={project} />
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => {
+            onReadMore(project);
+          }}
+          className="mt-3 w-full"
+        >
+          Read More <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" focusable="false" />
+        </Button>
       </div>
     </article>
   );
@@ -166,6 +178,7 @@ function ProjectCard({ project }: { project: Project }): React.JSX.Element {
 
 export function Projects(): React.JSX.Element {
   const [filter, setFilter] = useState<ProjectCategory | 'all'>('all');
+  const [details, setDetails] = useState<Project | null>(null);
   const matches = (p: Project): boolean => filter === 'all' || p.categories.includes(filter);
   const featured = PROJECTS.filter((p) => p.featured && matches(p));
   const more = PROJECTS.filter((p) => !p.featured && matches(p));
@@ -174,23 +187,29 @@ export function Projects(): React.JSX.Element {
   return (
     <section id="projects" aria-labelledby="projects-heading" className="scroll-mt-24 py-16">
       <Reveal>
-        <SectionHeading id="projects-heading" accent="Projects">
-          Featured
-        </SectionHeading>
-        <p className="mx-auto mt-4 max-w-2xl text-center text-muted">
-          Things I&apos;ve built — current featured work plus event-management web apps deployed
-          for real registrations, orders, and scoreboards.
-        </p>
-
         {featured.length > 0 ? (
-          <div className="mt-10 flex flex-col gap-6" aria-label="Featured projects">
-            {featured.map((project, i) => (
-              <FeaturedCard key={project.title} project={project} flip={i % 2 === 1} />
-            ))}
-          </div>
+          <>
+            <SectionHeading id="projects-heading" accent="Projects">
+              Featured
+            </SectionHeading>
+            <p className="mx-auto mt-4 max-w-2xl text-center text-muted">
+              Things I&apos;ve built — current featured work plus event-management web apps deployed
+              for real registrations, orders, and scoreboards.
+            </p>
+
+            <div className="mt-10 flex flex-col gap-6" aria-label="Featured projects">
+              {featured.map((project, i) => (
+                <FeaturedCard key={project.title} project={project} flip={i % 2 === 1} />
+              ))}
+            </div>
+          </>
         ) : null}
 
         <h3 className="mt-12 text-center text-xl font-bold">More Projects</h3>
+        <p className="mx-auto mt-2 max-w-2xl text-center text-muted">
+          Explore my other applications, games, and web systems developed for real-world activities
+          and practical use.
+        </p>
         <div
           role="group"
           aria-label="Filter projects by category"
@@ -220,7 +239,7 @@ export function Projects(): React.JSX.Element {
         {more.length > 0 ? (
           <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {more.map((project) => (
-              <ProjectCard key={project.title} project={project} />
+              <ProjectCard key={project.title} project={project} onReadMore={setDetails} />
             ))}
           </div>
         ) : (
@@ -239,6 +258,16 @@ export function Projects(): React.JSX.Element {
             github.com/toms1010
           </a>
         </p>
+
+        {details !== null && (
+          <ProjectDetails
+            project={details}
+            open
+            onClose={() => {
+              setDetails(null);
+            }}
+          />
+        )}
       </Reveal>
     </section>
   );

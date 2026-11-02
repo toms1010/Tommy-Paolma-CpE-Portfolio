@@ -1,4 +1,5 @@
-import { TYPING_ROLES } from '../data/portfolio';
+import { SOCIAL_LINKS, TYPING_ROLES } from '../data/portfolio';
+import { asset } from '../lib/asset';
 import { useTyping } from '../hooks/useTyping';
 import { CircuitBackdrop } from './CircuitBackdrop';
 import { CpuVisual } from './CpuVisual';
@@ -35,7 +36,7 @@ export function Hero(): React.JSX.Element {
       <Reveal className="grid w-full items-center gap-10 md:grid-cols-[1.2fr_0.8fr]">
         <div>
           <p className="mb-6 inline-block rounded-full border border-accent/30 bg-accent/10 px-4 py-1.5 text-sm font-medium text-accent">
-            Software Engineer · Computer Engineering Student
+            Computer Engineering Student
           </p>
           <h1
             id="hero-heading"
@@ -53,8 +54,9 @@ export function Hero(): React.JSX.Element {
             </span>
           </p>
           <p className="mt-5 max-w-xl text-lg text-muted">
-            I build software, applications, and computer-based systems —
-            spanning web, mobile, desktop, and embedded domains.
+            I build practical software solutions across web, mobile, desktop, and embedded systems. I
+            enjoy transforming ideas into functional applications through programming, system design,
+            and hardware-software integration.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <a href="#projects" className="btn-primary">
@@ -62,6 +64,9 @@ export function Hero(): React.JSX.Element {
             </a>
             <a href="#resume" className="btn-outline">
               Resume
+            </a>
+            <a href={asset('Tommy-Paolma-CV.pdf')} download className="btn-outline">
+              Download Resume
             </a>
             <a href="#contact" className="btn-outline">
               Contact Me
@@ -73,6 +78,14 @@ export function Hero(): React.JSX.Element {
               className="btn-outline"
             >
               GitHub
+            </a>
+            <a
+              href={SOCIAL_LINKS.find((s) => s.icon === 'linkedin')?.href ?? '#'}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-outline"
+            >
+              LinkedIn
             </a>
           </div>
           <ul aria-label="Technologies I work with" className="mt-8 flex flex-wrap gap-2">

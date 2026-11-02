@@ -1,4 +1,4 @@
-export type ProjectCategory = 'web' | 'game' | 'registration' | 'orders' | 'events';
+export type ProjectCategory = 'web' | 'game' | 'registration' | 'orders' | 'events' | 'desktop';
 
 export interface Project {
   title: string;
@@ -16,15 +16,35 @@ export interface Project {
   demo?: string;
   github?: string;
   categories: ProjectCategory[];
+  /** Canonical URL slug for the dedicated project page (e.g. 'wit-barcode'). */
+  projectId?: string;
   featured?: boolean;
   /**
-   * Anchor (or route) of the in-portfolio case-study section for this
-   * project, e.g. "#project-windows-linux-academy". When present, project
+   * anchor (or route) of the in-portfolio case-study section for this
+   * project, e.g. "#project-transport-system". When present, project
    * cards render a "View Project" button linking to it.
    */
   detailsHref?: string;
   /** Extra display badges for the card (e.g. "Interactive Web App"). */
   badges?: string[];
+  /** Bulleted objectives for the project details view. Omit when unknown. */
+  objectives?: string[];
+  /** Bulleted future improvements for the project details view. Omit when unknown. */
+  futureImprovements?: string[];
+  /** Gallery screenshots for the project details view. Omit when none. */
+  screenshots?: { src: string; alt: string; caption: string }[];
+  /** Optional rich case-study content rendered inside the project details modal. */
+  highlights?: { title: string; body: string }[];
+  /** Optional control table for game / interactive projects. */
+  controls?: { input: string; action: string }[];
+  /** Optional ordered game flow steps. */
+  flow?: string[];
+  /** Optional run command (e.g. install + launch steps). */
+  runCommand?: string;
+  /** Optional note about how to run / play the project. */
+  runNote?: string;
+  /** Optional call-to-action for the details modal. */
+  cta?: { title: string; body: string };
 }
 
 export interface SkillItem {

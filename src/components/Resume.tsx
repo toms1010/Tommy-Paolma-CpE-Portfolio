@@ -21,9 +21,7 @@ export function Resume(): React.JSX.Element {
   return (
     <section id="resume" aria-labelledby="resume-heading" className="scroll-mt-24 py-16">
       <Reveal>
-        <SectionHeading id="resume-heading" accent="ume">
-          Res
-        </SectionHeading>
+        <SectionHeading id="resume-heading">Resume</SectionHeading>
         <p className="mx-auto mt-4 max-w-2xl text-center text-muted">
           This section is the resume — use <strong>Print / Save as PDF</strong> to download a copy
           for applications.
@@ -127,8 +125,7 @@ export function Resume(): React.JSX.Element {
               <br />
               <strong>Web:</strong> HTML, CSS, React
               <br />
-              <strong>Backend &amp; Data:</strong> .NET, Node.js, npm, MongoDB, MySQL, Neon,
-              JSON
+              <strong>Backend &amp; Data:</strong> .NET, Node.js, npm, MongoDB, MySQL, Neon, JSON
               <br />
               <strong>Platforms:</strong> Android, Electron, Godot, Git
               <br />

@@ -7,9 +7,7 @@ export function Education(): React.JSX.Element {
   return (
     <section id="education" aria-labelledby="education-heading" className="scroll-mt-24 py-16">
       <Reveal>
-        <SectionHeading id="education-heading" accent="tion">
-          Educa
-        </SectionHeading>
+        <SectionHeading id="education-heading">Education</SectionHeading>
         <div className="mt-10 grid gap-5">
           {EDUCATION.map((item) => (
             <article

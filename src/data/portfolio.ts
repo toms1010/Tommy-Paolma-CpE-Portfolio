@@ -25,24 +25,355 @@ const STATIC_STACK = ['HTML', 'CSS', 'JavaScript'];
 
 export const PROJECTS: Project[] = [
   {
-    title: 'Windows vs Linux Academy',
-    kicker: 'Featured · Interactive learning platform',
+    title: 'WIT Barcode Student Information System',
+    projectId: 'wit-barcode',
+    kicker: 'Featured · Desktop Application · Barcode + Computer Vision',
     description:
-      'An interactive operating-systems learning platform focused on Windows, macOS, Linux, kernels, system architecture, backend engineering, commands, quizzes, and hands-on interactive labs.',
-    role: 'Sole developer (design, build, deploy)',
-    technologies: ['Next.js', 'React', 'JavaScript', 'CSS'],
-    image: 'images/wla-home.jpg',
-    imageAlt:
-      'Screenshot of the Windows vs Linux Academy home page with OS topics, comparison cards, history timeline, and learning roadmap',
+      'A desktop student information and enrollment management system that ties student records, enrollment, assessment, payments, reporting, and barcode scanning together, with an AI training center for the detection pipeline.',
+    role: 'Sole developer (design, build, integration)',
+    technologies: ['C++', 'Python', 'PySide6', 'MySQL', 'YOLOv8', 'OpenCV'],
+    image: 'images/wit-barcode/01_dashboard.png',
+    imageAlt: 'WIT Barcode Student Information System main dashboard',
     imageLocal: true,
-    demo: 'https://windows-linux-academy.vercel.app/',
-    categories: ['web'],
+    github: 'https://github.com/toms1010',
+    categories: ['desktop'],
     featured: true,
-    detailsHref: '#project-windows-linux-academy',
-    badges: ['Interactive Web App', 'Education Platform', 'Computer Engineering'],
+    badges: ['Desktop Application', 'Computer Vision', 'Student Information Management'],
+    screenshots: [
+      { src: 'images/wit-barcode/01_dashboard.png', alt: 'WIT Barcode Student Information System main dashboard', caption: 'Dashboard' },
+      { src: 'images/wit-barcode/02_dashboard_student_selected.png', alt: 'WIT Barcode dashboard with a student selected', caption: 'Dashboard — student selected' },
+      { src: 'images/wit-barcode/03_students_directory.png', alt: 'WIT Barcode student records directory', caption: 'Student Management — directory' },
+      { src: 'images/wit-barcode/04_students_record_selected.png', alt: 'WIT Barcode student record detail', caption: 'Student Management — record' },
+      { src: 'images/wit-barcode/05_student_dialog_add.png', alt: 'WIT Barcode add student dialog', caption: 'Student Management — add dialog' },
+      { src: 'images/wit-barcode/06_student_dialog_edit.png', alt: 'WIT Barcode edit student dialog', caption: 'Student Management — edit dialog' },
+      { src: 'images/wit-barcode/07_enrollment_select_student.png', alt: 'WIT Barcode enrollment student selection', caption: 'Enrollment — select student' },
+      { src: 'images/wit-barcode/08_enrollment_subjects.png', alt: 'WIT Barcode enrollment subjects', caption: 'Enrollment — subjects' },
+      { src: 'images/wit-barcode/09_add_subject_dialog.png', alt: 'WIT Barcode add subject dialog', caption: 'Enrollment — add subject' },
+      { src: 'images/wit-barcode/10_courses_subjects.png', alt: 'WIT Barcode courses and subjects', caption: 'Assessment — courses and subjects' },
+      { src: 'images/wit-barcode/11_certificate_of_matriculation.png', alt: 'WIT Barcode certificate of matriculation', caption: 'Assessment — certificate of matriculation' },
+      { src: 'images/wit-barcode/12_assessment_fees.png', alt: 'WIT Barcode assessment fees', caption: 'Assessment & Payments — fees' },
+      { src: 'images/wit-barcode/13_record_payment_dialog.png', alt: 'WIT Barcode record payment dialog', caption: 'Assessment & Payments — record payment' },
+      { src: 'images/wit-barcode/14_reports_analytics.png', alt: 'WIT Barcode reports and analytics', caption: 'Reports & Analytics' },
+      { src: 'images/wit-barcode/16_scanner_idle.png', alt: 'WIT Barcode scanner idle', caption: 'Barcode Scanner — idle' },
+      { src: 'images/wit-barcode/17_scanner_verified.png', alt: 'WIT Barcode scanner verified', caption: 'Barcode Scanner — verified' },
+      { src: 'images/wit-barcode/18_scan_result_dialog.png', alt: 'WIT Barcode scan result dialog', caption: 'Barcode Scanner — result' },
+      { src: 'images/wit-barcode/19_scanner_camera_running.png', alt: 'WIT Barcode scanner camera running', caption: 'Barcode Scanner — camera' },
+      { src: 'images/wit-barcode/20_training_center_dataset.png', alt: 'WIT Barcode AI training center dataset', caption: 'AI Training Center — dataset' },
+      { src: 'images/wit-barcode/21_training_center_training.png', alt: 'WIT Barcode AI model training', caption: 'AI Training Center — training' },
+      { src: 'images/wit-barcode/22_training_center_models.png', alt: 'WIT Barcode AI training models', caption: 'AI Training Center — models' },
+      { src: 'images/wit-barcode/23_settings.png', alt: 'WIT Barcode application settings', caption: 'Settings' },
+    ],
+    objectives: [
+      'Manage student records, enrollment, assessment, payments, and reporting in one desktop application',
+      'Integrate barcode scanning with computer vision for student identification',
+      'Provide an AI training center for the detection pipeline',
+    ],
+  },
+  {
+    title: 'Shadow Hunter',
+    projectId: 'shadow-hunter',
+    kicker: 'Featured · Python + Pygame 2D action game',
+    description:
+      '“Shadow Hunter” — a 2D action / hack-and-slash survival game built with Python 3 + Pygame (offline, no backend). Pick 1 of 4 hunters, clear 10 themed levels with waves, traps and unique bosses, loot 8 upgradeable weapons with rarity tiers, and defeat the Shadow King. All 13 screenshots below are captured from the actual Pygame runtime at 1280×720 landscape.',
+    role: 'Sole developer (design, code, art pipeline, audio, tests)',
+    technologies: ['Python', 'Pygame', 'JSON', 'pytest'],
+    image: 'images/shadow-hunter/shadow-hunter-combat.png',
+    imageAlt:
+      'Landscape 16:9 screenshot of Shadow Hunter combat gameplay captured from the Pygame runtime at 1280 by 720',
+    imageLocal: true,
+    github: 'https://github.com/toms1010',
+    categories: ['game'],
+    featured: false,
+    badges: ['Desktop Game', '2D Action', 'Computer Engineering'],
+    screenshots: [
+      {
+        src: 'images/shadow-hunter/shadow-hunter-main-menu.png',
+        alt: 'Shadow Hunter main menu screen',
+        caption: 'Main Menu',
+      },
+      {
+        src: 'images/shadow-hunter/shadow-hunter-character-select.png',
+        alt: 'Shadow Hunter character selection screen',
+        caption: 'Character Selection',
+      },
+      {
+        src: 'images/shadow-hunter/shadow-hunter-world-map.png',
+        alt: 'Shadow Hunter world map screen',
+        caption: 'World Map',
+      },
+      {
+        src: 'images/shadow-hunter/shadow-hunter-combat.png',
+        alt: 'Shadow Hunter combat gameplay',
+        caption: 'Combat Gameplay',
+      },
+      {
+        src: 'images/shadow-hunter/shadow-hunter-boss-fight.png',
+        alt: 'Shadow Hunter boss fight',
+        caption: 'Boss Fight',
+      },
+      {
+        src: 'images/shadow-hunter/shadow-hunter-weapon-found.png',
+        alt: 'Shadow Hunter weapon found screen',
+        caption: 'Weapon Found',
+      },
+      {
+        src: 'images/shadow-hunter/shadow-hunter-weapon-upgrade.png',
+        alt: 'Shadow Hunter weapon upgrade screen',
+        caption: 'Weapon Upgrade',
+      },
+      {
+        src: 'images/shadow-hunter/shadow-hunter-inventory.png',
+        alt: 'Shadow Hunter inventory screen',
+        caption: 'Inventory',
+      },
+      {
+        src: 'images/shadow-hunter/shadow-hunter-customization.png',
+        alt: 'Shadow Hunter customization screen',
+        caption: 'Customization',
+      },
+      {
+        src: 'images/shadow-hunter/shadow-hunter-level-1.png',
+        alt: 'Shadow Hunter level 1 gameplay',
+        caption: 'Level 1',
+      },
+      {
+        src: 'images/shadow-hunter/shadow-hunter-level-complete.png',
+        alt: 'Shadow Hunter level complete screen',
+        caption: 'Level Complete',
+      },
+      {
+        src: 'images/shadow-hunter/shadow-hunter-victory.png',
+        alt: 'Shadow Hunter victory screen',
+        caption: 'Victory',
+      },
+      {
+        src: 'images/shadow-hunter/shadow-hunter-settings.png',
+        alt: 'Shadow Hunter settings screen',
+        caption: 'Settings',
+      },
+    ],
+    objectives: [
+      'Build a 2D action / hack-and-slash survival game with Python 3 + Pygame',
+      'Offline gameplay with no backend dependency',
+      '4 playable hunters, 10 themed levels with waves, traps, and unique bosses',
+      '8 upgradeable weapons with rarity tiers',
+    ],
+    highlights: [
+      {
+        title: 'Hunters & abilities',
+        body: '4 hunters, dodge with i-frames, plus Shadow Dash (Q), Burst (E) and Storm (R).',
+      },
+      {
+        title: 'Weapons & loot',
+        body: '8 weapons, levels, Common → Legendary rarities, special effects and upgrades.',
+      },
+      {
+        title: 'World & bosses',
+        body: '10 levels with unique bosses, crossfading explore / combat / boss music.',
+      },
+    ],
+    controls: [
+      { input: 'WASD / Arrows', action: 'Move' },
+      { input: 'Mouse', action: 'Aim' },
+      { input: 'LMB', action: 'Basic attack' },
+      { input: 'RMB', action: 'Heavy attack' },
+      { input: 'SPACE', action: 'Dodge (i-frames)' },
+      { input: 'Q / E / R', action: 'Shadow Dash / Burst / Storm' },
+      { input: 'ESC · TAB · I · M', action: 'Pause · Stats · Inventory · Map' },
+    ],
+    flow: [
+      'MAIN MENU',
+      'CHARACTER SELECT (4 hunters)',
+      'CUSTOMIZE',
+      'WORLD MAP',
+      'LEVEL 1–10 (waves → boss → rewards)',
+      'SHADOW KING',
+      'VICTORY → CREDITS',
+    ],
+    runCommand: 'pip install -r requirements.txt\npython main.py',
+    runNote:
+      'Level 1 (Shadow Forest) is a guided tutorial: move → attack → weapon pickup → dodge → abilities → pickups → Wave 1 → upgrade → Ruined Shrine ambush → Forest Guardian.',
+    cta: {
+      title: 'A Real Playable Pygame Game',
+      body: 'Offline Python + Pygame, JSON-driven hunters / weapons / levels / bosses, synthesized art + audio pipelines, and headless logic tests.',
+    },
+  },
+  {
+    title: 'Student Transport Management System',
+    projectId: 'student-transport',
+    kicker: 'Featured · C++ desktop app + console',
+    description:
+      'A transport management application for a college transport cell, written in C++17 with a layered architecture and CSV persistence. Two front ends share one domain layer — a Qt Widgets desktop app and a console app. Students take a seat on a route, see what they owe, pay against either fee bucket, and track complaints to resolution; staff manage the roster, routes, seats, dues, complaints, and notices.',
+    role: 'Sole developer (design, build, tests)',
+    technologies: ['C++17', 'Qt 6', 'CMake', 'CSV'],
+    image: 'images/transport-system/10-admin-dashboard.png',
+    imageAlt: 'Transport System admin dashboard',
+    imageLocal: true,
+    categories: ['desktop'],
+    featured: false,
+    badges: ['C++ Desktop App', 'Console App', 'Computer Engineering'],
+    screenshots: [
+      {
+        src: 'images/transport-system/01-login.png',
+        alt: 'Transport System login screen',
+        caption: 'Login',
+      },
+      {
+        src: 'images/transport-system/02-registration-wizard.png',
+        alt: 'Transport System registration wizard',
+        caption: 'Registration wizard',
+      },
+      {
+        src: 'images/transport-system/dark-01-login.png',
+        alt: 'Transport System login screen (dark mode)',
+        caption: 'Login — dark mode',
+      },
+      {
+        src: 'images/transport-system/03-route-picker.png',
+        alt: 'Transport System route picker',
+        caption: 'Route picker',
+      },
+      {
+        src: 'images/transport-system/04-seat-picker.png',
+        alt: 'Transport System seat picker',
+        caption: 'Seat picker',
+      },
+      {
+        src: 'images/transport-system/05-public-routes.png',
+        alt: 'Transport System public routes',
+        caption: 'Public routes',
+      },
+      {
+        src: 'images/transport-system/06-public-about.png',
+        alt: 'Transport System public about page',
+        caption: 'About',
+      },
+      {
+        src: 'images/transport-system/10-admin-dashboard.png',
+        alt: 'Transport System admin dashboard',
+        caption: 'Admin dashboard',
+      },
+      {
+        src: 'images/transport-system/11-admin-students.png',
+        alt: 'Transport System admin students',
+        caption: 'Admin — students',
+      },
+      {
+        src: 'images/transport-system/12-admin-routes.png',
+        alt: 'Transport System admin routes',
+        caption: 'Admin — routes',
+      },
+      {
+        src: 'images/transport-system/13-admin-seat-map.png',
+        alt: 'Transport System admin seat map',
+        caption: 'Admin — seat map',
+      },
+      {
+        src: 'images/transport-system/14-admin-payments.png',
+        alt: 'Transport System admin payments',
+        caption: 'Admin — payments',
+      },
+      {
+        src: 'images/transport-system/15-admin-complaints.png',
+        alt: 'Transport System admin complaints',
+        caption: 'Admin — complaints',
+      },
+      {
+        src: 'images/transport-system/16-admin-notices.png',
+        alt: 'Transport System admin notices',
+        caption: 'Admin — notices',
+      },
+      {
+        src: 'images/transport-system/17-admin-reports.png',
+        alt: 'Transport System admin reports',
+        caption: 'Admin — reports',
+      },
+      {
+        src: 'images/transport-system/18-admin-staff-accounts.png',
+        alt: 'Transport System admin staff accounts',
+        caption: 'Admin — staff accounts',
+      },
+      {
+        src: 'images/transport-system/19-admin-profile.png',
+        alt: 'Transport System admin profile',
+        caption: 'Admin — profile',
+      },
+      {
+        src: 'images/transport-system/20-admin-help.png',
+        alt: 'Transport System admin help',
+        caption: 'Admin — help',
+      },
+      {
+        src: 'images/transport-system/21-admin-settings.png',
+        alt: 'Transport System admin settings',
+        caption: 'Admin — settings',
+      },
+      {
+        src: 'images/transport-system/30-student-dashboard.png',
+        alt: 'Transport System student dashboard',
+        caption: 'Student dashboard',
+      },
+      {
+        src: 'images/transport-system/31-student-seat-map.png',
+        alt: 'Transport System student seat map',
+        caption: 'Student — seat map',
+      },
+      {
+        src: 'images/transport-system/32-student-payments.png',
+        alt: 'Transport System student payments',
+        caption: 'Student — payments',
+      },
+      {
+        src: 'images/transport-system/33-student-complaints.png',
+        alt: 'Transport System student complaints',
+        caption: 'Student — complaints',
+      },
+      {
+        src: 'images/transport-system/34-student-notices.png',
+        alt: 'Transport System student notices',
+        caption: 'Student — notices',
+      },
+      {
+        src: 'images/transport-system/35-student-allotment-card.png',
+        alt: 'Transport System student allotment card',
+        caption: 'Student — allotment card',
+      },
+      {
+        src: 'images/transport-system/36-student-profile.png',
+        alt: 'Transport System student profile',
+        caption: 'Student — profile',
+      },
+      {
+        src: 'images/transport-system/40-dark-dashboard.png',
+        alt: 'Transport System dashboard (dark mode)',
+        caption: 'Dashboard — dark mode',
+      },
+      {
+        src: 'images/transport-system/41-dark-seat-map.png',
+        alt: 'Transport System seat map (dark mode)',
+        caption: 'Seat map — dark mode',
+      },
+      {
+        src: 'images/transport-system/42-dark-payments.png',
+        alt: 'Transport System payments (dark mode)',
+        caption: 'Payments — dark mode',
+      },
+      {
+        src: 'images/transport-system/43-dark-settings.png',
+        alt: 'Transport System settings (dark mode)',
+        caption: 'Settings — dark mode',
+      },
+    ],
+    objectives: [
+      'Build a college transport management app with C++17 and a layered architecture',
+      'Ship two front ends (Qt Widgets desktop + console) over one shared domain layer',
+      'Implement seat allocation, route fare/capacity UI, payments against two fee buckets, and complaints tracking',
+      'Use CSV persistence with no external database dependency',
+    ],
   },
   {
     title: 'JDAJNSH',
+    projectId: 'jdajnsh',
     kicker: 'Featured · School website',
     description:
       'Official rules and information website for Jose Diva Avelino Jr. National High School (Hipona, Pontevedra, Capiz, est. 1966) — presenting the school, its “Knowledge Is Power” motto, and the Student Code of Conduct with dress code, classroom, attendance, and disciplinary guidelines.',
@@ -55,9 +386,14 @@ export const PROJECTS: Project[] = [
     github: 'https://github.com/toms1010/JDAJNSH',
     categories: ['web'],
     featured: true,
+    objectives: [
+      'Present the school, its “Knowledge Is Power” motto, and the Student Code of Conduct',
+      'Include dress code, classroom, attendance, and disciplinary guidelines',
+    ],
   },
   {
     title: 'MARPOL Ocean Adventure',
+    projectId: 'marpol-ocean-adventure',
     kicker: 'Featured · Educational games',
     description:
       '“Ocean Guardian: Marpol Mission” — an educational web experience about marine pollution prevention with study resources (PDF documents and video lessons) plus playable browser games: Clean Ocean Quiz, Shark Attack, and 4 Pics 1 Word.',
@@ -68,9 +404,15 @@ export const PROJECTS: Project[] = [
     demo: 'https://marpol-ocean-adventure.vercel.app/',
     categories: ['web', 'game'],
     featured: true,
+    objectives: [
+      'Educational web experience about marine pollution prevention',
+      'Study resources: PDF documents and video lessons',
+      'Playable browser games: Clean Ocean Quiz, Shark Attack, and 4 Pics 1 Word',
+    ],
   },
   {
     title: 'Battle of Bands Registration',
+    projectId: 'battle-of-bands',
     kicker: 'Registration · Web app',
     description: 'Real-time entry management and check-in system for a live event.',
     role: 'Sole developer (design, build, deploy)',
@@ -84,6 +426,7 @@ export const PROJECTS: Project[] = [
   },
   {
     title: 'Pre-Event Registration',
+    projectId: 'pre-event-registration',
     kicker: 'Registration · Web app',
     description: 'Attendee pre-registration with confirmation and QR codes.',
     role: 'Sole developer (design, build, deploy)',
@@ -97,6 +440,7 @@ export const PROJECTS: Project[] = [
   },
   {
     title: 'Cap Order Manager',
+    projectId: 'cap-order-manager',
     kicker: 'Orders · Web app',
     description: 'Structured cap ordering with size, quantity, and payment tracking.',
     role: 'Sole developer (design, build, deploy)',
@@ -110,6 +454,7 @@ export const PROJECTS: Project[] = [
   },
   {
     title: 'T-Shirt Order System',
+    projectId: 't-shirt-order-system',
     kicker: 'Orders · Web app',
     description: 'Merchandise ordering with size, color, and payment tracking.',
     role: 'Sole developer (design, build, deploy)',
@@ -123,6 +468,7 @@ export const PROJECTS: Project[] = [
   },
   {
     title: 'Campus Navigation',
+    projectId: 'campus-navigation',
     kicker: 'Events · Web app',
     description: 'Interactive venue map with directions and hall info.',
     role: 'Sole developer (design, build, deploy)',
@@ -136,6 +482,7 @@ export const PROJECTS: Project[] = [
   },
   {
     title: 'Participant Rating',
+    projectId: 'participant-rating',
     kicker: 'Events & Scoring · Web app',
     description: 'Real-time committee rating with instant score calculation.',
     role: 'Sole developer (design, build, deploy)',
@@ -149,6 +496,7 @@ export const PROJECTS: Project[] = [
   },
   {
     title: 'Sports Event Manager',
+    projectId: 'sports-event-manager',
     kicker: 'Events & Scoring · Web app',
     description: 'Centralized schedules, teams, and live scoreboards.',
     role: 'Sole developer (design, build, deploy)',
@@ -187,7 +535,7 @@ export const SKILL_GROUPS: SkillGroup[] = [
     ],
   },
   {
-    title: 'Backend & Frameworks',
+    title: 'Backend Development',
     icon: 'server',
     items: [
       { name: '.NET', logo: 'images/tech/dotnet.svg' },
@@ -215,7 +563,11 @@ export const SKILL_GROUPS: SkillGroup[] = [
   {
     title: 'Game Development',
     icon: 'game',
-    items: [{ name: 'Godot', logo: 'images/tech/godot.svg' }],
+    items: [
+      { name: 'Python', note: 'Pygame — shipped Shadow Hunter' },
+      { name: 'Pygame', note: '2D action game' },
+      { name: 'Godot', logo: 'images/tech/godot.svg' },
+    ],
   },
   {
     title: 'Tools & Data',
@@ -268,92 +620,92 @@ export const CERTIFICATIONS: Certification[] = [
   {
     name: 'Python Programming',
     description: 'Data analysis & automation',
-    image: 'images/python-1.png',
+    image: 'images/certifecation/python-1.png',
   },
   {
     name: 'Web Development Fundamentals',
     description: 'HTML, CSS, JavaScript',
-    image: 'images/basic-web-development-1.png',
+    image: 'images/certifecation/basic-web-development-1.png',
   },
   {
     name: 'C# Programming',
     description: 'Fundamentals of C# development',
-    image: 'images/csharp.png',
+    image: 'images/certifecation/csharp.png',
   },
   {
     name: 'Java Basic Certificate',
     description: 'Core Java concepts',
-    image: 'images/java-basics.png',
+    image: 'images/certifecation/java-basics.png',
   },
   {
     name: 'R Basic Certificate',
     description: 'Statistical computing with R',
-    image: 'images/r-basics.png',
+    image: 'images/certifecation/r-basics.png',
   },
   {
     name: 'SQL Basic Certificate',
     description: 'Database querying & management',
-    image: 'images/sql.png',
+    image: 'images/certifecation/sql.png',
   },
   {
     name: 'Data Science Certification',
     description: 'Data analysis & mathematical modeling',
-    image: 'images/data-science.png',
+    image: 'images/certifecation/data-science.png',
   },
   {
     name: 'Cybersecurity Fundamentals',
     description: 'Best practices & principles',
-    image: 'images/cybersecurity-fundamentals-1.png',
+    image: 'images/certifecation/cybersecurity-fundamentals-1.png',
   },
   {
     name: 'Ethical Hacking',
     description: 'Penetration testing & assessment concepts',
-    image: 'images/ethical-hacking-1.png',
+    image: 'images/certifecation/ethical-hacking-1.png',
   },
   {
     name: 'Cyber Hygiene',
     description: 'Maintaining secure systems',
-    image: 'images/cyberhygiene-1.png',
+    image: 'images/certifecation/cyberhygiene-1.png',
   },
   {
     name: 'Advanced Technical Training',
     description: 'Comprehensive technical program',
-    image: 'images/certificate-of-completion-1.png',
+    image: 'images/certifecation/certificate-of-completion-1.png',
   },
   {
     name: 'System Configuration',
     description: 'Setup & configuration',
-    image: 'images/installing-and-configuring-1.png',
+    image: 'images/certifecation/installing-and-configuring-1.png',
   },
   {
     name: 'Basic Hardware',
     description: 'Computer hardware fundamentals',
-    image: 'images/basic-hardware-1.png',
+    image: 'images/certifecation/basic-hardware-1.png',
   },
   {
     name: 'Computer Setup',
     description: 'Configuring computer systems',
-    image: 'images/setting-up-computer-1.png',
+    image: 'images/certifecation/setting-up-computer-1.png',
   },
   {
     name: 'Aviation Technology',
     description: 'Aviation-related tech systems',
-    image: 'images/aviations-1.png',
+    image: 'images/certifecation/aviations-1.png',
   },
   {
     name: 'Certificate of Cyber',
     description: 'Cyber security fundamentals',
-    image: 'images/certificate-of-cyber.png',
+    image: 'images/certifecation/certificate-of-cyber.png',
   },
   {
     name: 'Data Visualization Workshop',
     description: 'Visual analytics & dashboards',
-    image: 'images/data-visualization-workshop.png',
+    image: 'images/certifecation/data-visualization-workshop.png',
   },
   {
     name: 'Google Cloud Fundamentals',
     description: 'Core cloud infrastructure',
-    image: 'images/google-cloud-fundamentals.png',
+    image: 'images/certifecation/google-cloud-fundamentals.png',
   },
 ];
 
