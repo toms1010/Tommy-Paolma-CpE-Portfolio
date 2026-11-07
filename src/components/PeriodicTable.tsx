@@ -1,6 +1,8 @@
 import { ExternalLink, Layers, Search, Grid } from 'lucide-react';
 import { Reveal } from './Reveal';
 import { SectionHeading } from './SectionHeading';
+import { asset } from '../lib/asset';
+import { ProjectImage } from './common/ProjectImage';
 
 export function PeriodicTable(): React.JSX.Element {
   return (
@@ -46,7 +48,7 @@ export function PeriodicTable(): React.JSX.Element {
             aria-label="Open Periodic Table Explorer (opens in a new tab)"
             className="btn-primary min-h-11 px-6 py-2.5 text-sm"
           >
-            Live Demo <ExternalLink className="h-4 w-4" aria-hidden="true" focusable="false" />
+            Fullscreen Picture <ExternalLink className="h-4 w-4" aria-hidden="true" focusable="false" />
           </a>
           <a
             href="#projects"
@@ -69,10 +71,9 @@ export function PeriodicTable(): React.JSX.Element {
               periodic-table
             </span>
           </div>
-          <img
-            src="https://peroidic-table.vercel.app/"
-            alt="Periodic Table Explorer live preview"
-            loading="lazy"
+          <ProjectImage
+            src={asset('images/Chem-lab/periodic-table.png')}
+            alt="Periodic Table Explorer live preview screenshot"
             width={1280}
             height={720}
             className="h-auto w-full max-w-[700px] sm:max-w-[900px] mx-auto object-cover object-center"
@@ -144,7 +145,7 @@ export function PeriodicTable(): React.JSX.Element {
             aria-label="Open Periodic Table Explorer (opens in a new tab)"
             className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-full bg-white px-6 py-2.5 text-sm font-bold text-slate-900 transition-transform hover:-translate-y-0.5"
           >
-            Open Live Demo <ExternalLink className="h-4 w-4" aria-hidden="true" focusable="false" />
+            Open Fullscreen Picture <ExternalLink className="h-4 w-4" aria-hidden="true" focusable="false" />
           </a>
         </div>
 

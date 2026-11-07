@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
 import { asset } from '../../lib/asset';
+import { ProjectImage } from './ProjectImage';
 
 interface GalleryImage {
   src: string;
@@ -105,12 +106,10 @@ export function GalleryModal({
           >
             <span className="text-2xl font-bold leading-none">‹</span>
           </button>
-          <img
+          <ProjectImage
             src={asset(current.src)}
             alt={current.alt}
-            loading="lazy"
             className="max-h-full max-w-full object-contain block"
-            decoding="async"
           />
           <button
             type="button"
@@ -153,12 +152,10 @@ export function GalleryModal({
                       : 'border-transparent hover:border-white/30'
                   }`}
                 >
-                  <img
+                  <ProjectImage
                     src={asset(img.src)}
                     alt={img.alt}
-                    loading="lazy"
                     className="h-full w-full object-cover rounded-md opacity-70 hover:opacity-100 transition-opacity"
-                    decoding="async"
                   />
                 </button>
               ))}

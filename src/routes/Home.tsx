@@ -6,6 +6,7 @@ import { CircuitBackdrop } from '../components/CircuitBackdrop';
 import { CpuVisual } from '../components/CpuVisual';
 import { Reveal } from '../components/Reveal';
 import { UiIcon } from '../components/icons';
+import { ProjectImage } from '../components/common/ProjectImage';
 import { PROJECTS } from '../data/portfolio';
 import type { Project } from '../types/portfolio';
 import { ArrowRight } from 'lucide-react';
@@ -22,7 +23,7 @@ const TECH_BADGES = [
   'HTML',
   'CSS',
   'React',
-  'Node.js',
+  'Node.js', // add python 
 ];
 
 function projectSlug(title: string): string {
@@ -41,10 +42,9 @@ function FeaturedCard({ project }: { project: Project }): React.JSX.Element {
       aria-label={`Featured project: ${project.title}`}
       className="grid scroll-mt-24 overflow-hidden rounded-3xl border border-accent/30 bg-card transition-all duration-300 hover:border-accent hover:shadow-xl md:grid-cols-2"
     >
-      <img
+      <ProjectImage
         src={project.imageLocal ? asset(project.image) : project.image}
         alt={project.imageAlt}
-        loading="lazy"
         width={640}
         height={360}
         className="aspect-video w-full object-cover object-center sm:aspect-[16/9] md:aspect-auto md:h-full md:min-h-[320px]"
@@ -91,7 +91,7 @@ function FeaturedCard({ project }: { project: Project }): React.JSX.Element {
               aria-label={`${project.title} live demo (opens in a new tab)`}
               className="btn-primary min-h-11 px-5 py-2.5 text-sm"
             >
-              Live Demo <ArrowRight className="h-4 w-4" />
+              Fullscreen Picture <ArrowRight className="h-4 w-4" />
             </a>
           ) : null}
           {project.github ? (

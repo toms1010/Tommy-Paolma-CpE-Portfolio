@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, ExternalLink, Info, Layers, Target } from 'lucide-react';
 import { PROJECTS } from '../data/portfolio';
@@ -5,6 +6,8 @@ import type { Project, ProjectCategory } from '../types/portfolio';
 import { asset } from '../lib/asset';
 import { resolveProject } from './index';
 import type { ProjectId } from './index';
+import LivePreview from '../components/LivePreview/LivePreview';
+import { ProjectImage } from '../components/common/ProjectImage';
 
 /**
  * Project navigation ordering.
@@ -44,6 +47,15 @@ function categoryLabel(category: ProjectCategory): string {
 function categoryLabelAll(project: Project): string {
   if (project.categories.length === 1) return categoryLabel(project.categories[0]);
   return project.categories.map(categoryLabel).join(' · ');
+}
+
+/** Extract the host from a URL for display (e.g. 'toms1010.github.io'). */
+function urlDomain(url: string): string {
+  try {
+    return new URL(url).hostname;
+  } catch {
+    return url;
+  }
 }
 
 function ProjectLinks({
@@ -130,6 +142,7 @@ export function ProjectDetail(): React.JSX.Element {
   const params = useParams();
   const id = params.projectId ?? '';
   const project = resolveProject(id);
+  const [previewOpen, setPreviewOpen] = useState(false);
 
   if (!project) {
     return (
@@ -160,10 +173,9 @@ export function ProjectDetail(): React.JSX.Element {
       {/* Header: screenshot + links */}
       <div className="mt-8">
         <figure className="overflow-hidden rounded-3xl border border-line bg-card shadow-xl">
-          <img
+          <ProjectImage
             src={asset(project.image)}
             alt={project.imageAlt}
-            loading="lazy"
             width={1280}
             height={720}
             className="aspect-video w-full object-cover object-center"
@@ -171,6 +183,52 @@ export function ProjectDetail(): React.JSX.Element {
         </figure>
         <ProjectLinks project={project} />
       </div>
+
+      {project.demo && (
+        <section className="mt-12">
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="text-2xl font-bold text-ink">
+              Live Website Preview
+            </h2>
+            <p className="text-sm text-muted">
+              Interacting with the real deployed site — {urlDomain(project.demo)}
+            </p>
+          </div>
+          <p className="mt-3 text-sm text-muted max-w-2xl">
+            Open the project's live URL in a device-sized browser preview.
+            Desktop, tablet, and mobile modes are available. If the site blocks
+            embedding, use "Open in New Tab" to visit it directly.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <button
+              type="button"
+              onClick={() => {
+                setPreviewOpen(true);
+              }}
+              className="btn-primary min-h-11 px-5 py-2.5 text-sm"
+            >
+              Open Live Preview <ExternalLink className="h-4 w-4 ml-1" aria-hidden="true" />
+            </button>
+            <a
+              href={project.demo}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Open ${project.title} live demo in a new tab`}
+              className="btn-outline min-h-11 px-5 py-2.5 text-sm"
+            >
+              Visit Live Site <ExternalLink className="h-4 w-4 ml-1" aria-hidden="true" />
+            </a>
+          </div>
+          <LivePreview
+            url={project.demo}
+            title={project.title}
+            open={previewOpen}
+            onClose={() => {
+              setPreviewOpen(false);
+            }}
+          />
+        </section>
+      )}
 
       <div className="mt-10 grid gap-8 lg:grid-cols-2">
         {/* Overview */}

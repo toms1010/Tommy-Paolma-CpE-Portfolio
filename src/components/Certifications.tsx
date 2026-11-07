@@ -4,6 +4,7 @@ import { Reveal } from './Reveal';
 import { SectionHeading } from './SectionHeading';
 import { useState } from 'react';
 import { GalleryModal } from './common/GalleryModal';
+import { ProjectImage } from './common/ProjectImage';
 
 export function Certifications(): React.JSX.Element {
   const [previewOpen, setPreviewOpen] = useState(false);
@@ -36,14 +37,12 @@ export function Certifications(): React.JSX.Element {
                   setPreviewOpen(true);
                 }}
               >
-                <img
+                <ProjectImage
                   src={src}
                   alt={`${cert.name} certificate`}
-                  loading="lazy"
                   width={400}
                   height={160}
                   className="h-40 w-full bg-white object-contain group-hover:scale-105 transition-transform duration-300"
-                  decoding="async"
                 />
                 <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-opacity opacity-0 group-hover:opacity-100 flex items-center justify-center">
                   <span className="text-white font-semibold text-sm">View</span>

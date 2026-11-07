@@ -158,20 +158,14 @@ test.describe('Portfolio responsive suite', () => {
     const featured = page.locator('#projects [aria-label="Featured projects"]');
     await expect(featured.getByRole('heading', { name: 'JDAJNSH' })).toBeVisible();
     await expect(featured.getByRole('heading', { name: 'MARPOL Ocean Adventure' })).toBeVisible();
-    await expect(featured.getByRole('link', { name: /JDAJNSH live demo/i })).toHaveAttribute(
-      'href',
-      'https://toms1010.github.io/JDAJNSH/'
-    );
     await expect(
-      featured.getByRole('link', { name: /JDAJNSH source code on GitHub/i })
-    ).toHaveAttribute('href', 'https://github.com/toms1010/JDAJNSH');
+      featured.getByRole('button', { name: /JDAJNSH fullscreen picture/i })
+    ).toBeVisible();
     await expect(
-      featured.getByRole('link', { name: /MARPOL Ocean Adventure live demo/i })
-    ).toHaveAttribute('href', 'https://marpol-ocean-adventure.vercel.app/');
-    // No verified GitHub repo exists for MARPOL, so no GitHub button is rendered.
-    await expect(
-      featured.getByRole('link', { name: /MARPOL Ocean Adventure source code/i })
-    ).toHaveCount(0);
+      featured.getByRole('button', { name: /MARPOL Ocean Adventure fullscreen picture/i })
+    ).toBeVisible();
+    // Source code links are not rendered on project cards (removed per design).
+    await expect(featured.getByRole('link', { name: /source code on GitHub/i })).toHaveCount(0);
   });
 
   test('transport system case study renders with live demo and navigation', async ({ page }) => {

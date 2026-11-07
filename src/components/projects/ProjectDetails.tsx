@@ -1,7 +1,10 @@
+import { useState } from 'react';
 import { ArrowRight, Code, ExternalLink, Info, Layers, Target, X } from 'lucide-react';
 import { asset } from '../../lib/asset';
 import type { Project } from '../../types/portfolio';
 import { Button } from '../common/Button';
+import { ProjectImage } from '../common/ProjectImage';
+import LivePreview from '../LivePreview/LivePreview';
 
 interface ProjectDetailsProps {
   project: Project;
@@ -21,10 +24,9 @@ function ScreenshotGrid({ project }: { project: Project }): React.JSX.Element | 
       <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {screenshots.map((shot) => (
           <figure key={shot.src} className="overflow-hidden rounded-xl border border-line bg-card">
-            <img
+            <ProjectImage
               src={asset(shot.src)}
               alt={shot.alt}
-              loading="lazy"
               width={640}
               height={400}
               className="h-40 w-full object-cover object-top"
@@ -44,6 +46,8 @@ export function ProjectDetails({
   open,
   onClose,
 }: ProjectDetailsProps): React.JSX.Element | null {
+  const [previewOpen, setPreviewOpen] = useState(false);
+
   if (!open) return null;
 
   const hasLinks = Boolean(project.demo || project.github);
@@ -59,12 +63,13 @@ export function ProjectDetails({
   const hasCta = Boolean(project.cta);
 
   return (
-    <div
-      className="fixed inset-0 z-[60] flex items-center justify-center"
-      role="dialog"
-      aria-modal="true"
-      aria-label={`Project details: ${project.title}`}
-    >
+    <>
+      <div
+        className="fixed inset-0 z-[60] flex items-center justify-center"
+        role="dialog"
+        aria-modal="true"
+        aria-label={`Project details: ${project.title}`}
+      >
       {/* Backdrop — tap to close. */}
       <div
         aria-hidden="true"
@@ -301,16 +306,29 @@ export function ProjectDetails({
               </h3>
               <div className="mt-4 flex flex-wrap gap-3">
                 {project.demo && (
-                  <a
-                    href={project.demo}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`${project.title} live demo (opens in a new tab)`}
-                    className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-accent bg-accent px-4 py-2 text-xs font-bold text-white transition-colors hover:bg-accent/90"
-                  >
-                    Live Demo{' '}
-                    <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" focusable="false" />
-                  </a>
+                  <>
+                    <a
+                      href={project.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${project.title} live demo (opens in a new tab)`}
+                      className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-accent bg-accent px-4 py-2 text-xs font-bold text-white transition-colors hover:bg-accent/90"
+                    >
+                      Live Demo{' '}
+                      <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" focusable="false" />
+                    </a>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setPreviewOpen(true);
+                      }}
+                      className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-line bg-card px-4 py-2 text-xs font-bold text-ink transition-colors hover:border-accent hover:text-accent"
+                      aria-label={`Preview ${project.title} live`}
+                    >
+                      Live Preview{' '}
+                      <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" focusable="false" />
+                    </button>
+                  </>
                 )}
                 {project.github && (
                   <a
@@ -330,5 +348,17 @@ export function ProjectDetails({
         </div>
       </div>
     </div>
+
+      {project.demo && (
+        <LivePreview
+          url={project.demo}
+          title={project.title}
+          open={previewOpen}
+          onClose={() => {
+            setPreviewOpen(false);
+          }}
+        />
+      )}
+    </>
   );
 }

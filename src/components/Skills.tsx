@@ -4,6 +4,7 @@ import { asset } from '../lib/asset';
 import { Reveal } from './Reveal';
 import { SectionHeading } from './SectionHeading';
 import { SkillGlyph } from './icons';
+import { ProjectImage } from './common/ProjectImage';
 
 function SkillCards({
   items,
@@ -24,10 +25,9 @@ function SkillCards({
           }`}
         >
           {item.logo ? (
-            <img
+            <ProjectImage
               src={asset(item.logo)}
               alt={`${item.name} logo`}
-              loading="lazy"
               width={48}
               height={48}
               className="h-12 w-12 shrink-0 object-contain"

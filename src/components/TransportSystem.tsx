@@ -429,7 +429,7 @@ export function TransportSystem(): React.JSX.Element {
                   aria-label={`${shot.linkLabel} (opens in a new tab)`}
                   className="inline-flex items-center gap-1 text-xs font-bold text-accent hover:underline"
                 >
-                  Open live page{' '}
+                  Fullscreen Picture{' '}
                   <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" focusable="false" />
                 </a>
               </figcaption>
