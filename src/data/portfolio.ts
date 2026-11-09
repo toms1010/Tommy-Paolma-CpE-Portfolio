@@ -645,108 +645,192 @@ export const PROJECTS: Project[] = [
   },
 ];
 
-export const SKILL_GROUPS: SkillGroup[] = [
+/**
+ * Technical skills organized by experience tier, grounded in actual project
+ * work and certifications. No arbitrary percentages or progress bars — only
+ * honest self-classification.
+ *
+ * Tiers:
+ *   'used'        — shipped in a completed project (experienced).
+ *   'familiar'    — practiced, but not yet a core project technology.
+ *   'learning'    — actively studying; not claimed as expertise.
+ */
+
+/** Technologies shipped in completed projects. */
+export const SKILLS_USED_IN_PROJECTS: SkillGroup[] = [
   {
-    title: 'Languages',
+    title: 'Programming Languages',
     icon: 'code',
     items: [
-      { name: 'C', note: 'ICPEP competition', logo: 'images/tech/c.svg' },
-      { name: 'C++', note: 'Arduino / embedded', logo: 'images/tech/cpp.svg' },
-      { name: 'C#', note: 'Certified', logo: 'images/tech/csharp.svg' },
-      { name: 'Java', note: 'Certified', logo: 'images/tech/java.svg' },
-      { name: 'JavaScript', note: 'Shipped web apps', logo: 'images/tech/javascript.svg' },
-      { name: 'TypeScript', logo: 'images/tech/typescript.svg' },
-      { name: 'Go', logo: 'images/tech/go.svg' },
-      { name: 'Rust', logo: 'images/tech/rust.svg' },
+      { name: 'C', note: 'ICPEP competition', tier: 'used', logo: 'images/tech/c.svg' },
+      { name: 'C++', note: 'Transport System (Qt), WIT Barcode', tier: 'used', logo: 'images/tech/cpp.svg' },
+      { name: 'Java', note: 'Certified', tier: 'used', logo: 'images/tech/java.svg' },
+      { name: 'JavaScript', note: 'Shipped web apps', tier: 'used', logo: 'images/tech/javascript.svg' },
+      { name: 'Python', note: 'WIT Barcode + Shadow Hunter', tier: 'used' },
     ],
   },
   {
     title: 'Web Development',
     icon: 'globe',
     items: [
-      { name: 'HTML', note: 'Certified + shipped', logo: 'images/tech/html.svg' },
-      { name: 'CSS', note: 'Certified + shipped', logo: 'images/tech/css.svg' },
-      { name: 'React', logo: 'images/tech/react.svg' },
-    ],
-  },
-  {
-    title: 'Backend Development',
-    icon: 'server',
-    items: [
-      { name: '.NET', logo: 'images/tech/dotnet.svg' },
-      { name: 'Node.js', logo: 'images/tech/nodejs.svg' },
-      { name: 'npm', logo: 'images/tech/npm.svg' },
+      { name: 'HTML', note: 'Certified + shipped', tier: 'used', logo: 'images/tech/html.svg' },
+      { name: 'CSS', note: 'Certified + shipped', tier: 'used', logo: 'images/tech/css.svg' },
+      { name: 'JavaScript', note: 'Event-management web apps', tier: 'used', logo: 'images/tech/javascript.svg' },
     ],
   },
   {
     title: 'Databases',
     icon: 'database',
     items: [
-      { name: 'MongoDB', logo: 'images/tech/mongodb.svg' },
-      { name: 'MySQL', logo: 'images/tech/mysql.svg' },
-      { name: 'Neon', logo: 'images/tech/neon.svg' },
+      { name: 'MySQL', note: 'WIT Barcode', tier: 'used', logo: 'images/tech/mysql.svg' },
     ],
   },
   {
-    title: 'Mobile & Desktop',
+    title: 'Desktop Development',
     icon: 'mobile',
     items: [
-      { name: 'Android', logo: 'images/tech/android.svg' },
-      { name: 'Electron', logo: 'images/tech/electron.svg' },
+      { name: 'Qt', note: 'Transport System desktop front end', tier: 'used' },
+      { name: 'PySide6', note: 'WIT Barcode desktop front end', tier: 'used' },
     ],
   },
   {
     title: 'Game Development',
     icon: 'game',
     items: [
-      { name: 'Python', note: 'Pygame — shipped Shadow Hunter' },
-      { name: 'Pygame', note: '2D action game' },
-      { name: 'Godot', logo: 'images/tech/godot.svg' },
+      { name: 'Python', note: 'Shadow Hunter game', tier: 'used' },
+      { name: 'Pygame', note: '2D action game (Shadow Hunter)', tier: 'used' },
     ],
   },
   {
-    title: 'Tools & Data',
+    title: 'Hardware & Embedded',
+    icon: 'chip',
+    items: [
+      { name: 'Arduino', note: 'Workshops & mentoring', tier: 'used' },
+      { name: 'Microcontrollers', note: 'Embedded systems coursework', tier: 'used' },
+    ],
+  },
+  {
+    title: 'Developer Tools',
     icon: 'tools',
     items: [
-      { name: 'Git', note: 'Used', logo: 'images/tech/git.svg' },
-      { name: 'JSON', logo: 'images/tech/json.svg' },
+      { name: 'Git', note: 'Version control', tier: 'used', logo: 'images/tech/git.svg' },
+      { name: 'GitHub', note: 'Project hosting', tier: 'used', logo: 'images/tech/github-mark.svg' },
+      { name: 'CMake', note: 'Transport System build system', tier: 'used' },
     ],
   },
 ];
 
-/**
- * Cloud & DevOps technologies currently being learned/explored.
- * Kept separate from the core stack — every item carries a learning note,
- * never a proficiency claim.
- */
-export const LEARNING_GROUPS: SkillGroup[] = [
+/** Technologies practiced but not yet core to a shipped project. */
+export const SKILLS_FAMILIAR_WITH: SkillGroup[] = [
+  {
+    title: 'Programming Languages',
+    icon: 'code',
+    items: [
+      { name: 'C#', note: 'Certified', tier: 'familiar', logo: 'images/tech/csharp.svg' },
+      { name: 'TypeScript', note: 'This portfolio', tier: 'familiar', logo: 'images/tech/typescript.svg' },
+    ],
+  },
+  {
+    title: 'Web Development',
+    icon: 'globe',
+    items: [
+      { name: 'TypeScript', note: 'This portfolio codebase', tier: 'familiar', logo: 'images/tech/typescript.svg' },
+      { name: 'React', note: 'This portfolio', tier: 'familiar', logo: 'images/tech/react.svg' },
+    ],
+  },
+  {
+    title: 'Backend Development',
+    icon: 'server',
+    items: [
+      { name: 'Node.js', note: 'Tooling practice', tier: 'familiar', logo: 'images/tech/nodejs.svg' },
+    ],
+  },
+  {
+    title: 'Databases',
+    icon: 'database',
+    items: [
+      { name: 'MongoDB', note: 'Exploration', tier: 'familiar', logo: 'images/tech/mongodb.svg' },
+      { name: 'PostgreSQL', note: 'Coursework', tier: 'familiar' },
+    ],
+  },
+  {
+    title: 'Desktop Development',
+    icon: 'mobile',
+    items: [
+      { name: 'Electron', note: 'Prototyping', tier: 'familiar', logo: 'images/tech/electron.svg' },
+    ],
+  },
+  {
+    title: 'Mobile Development',
+    icon: 'mobile',
+    items: [
+      { name: 'Android', note: 'Coursework', tier: 'familiar', logo: 'images/tech/android.svg' },
+    ],
+  },
+  {
+    title: 'Game Development',
+    icon: 'game',
+    items: [
+      { name: 'Godot', note: 'Exploration', tier: 'familiar', logo: 'images/tech/godot.svg' },
+    ],
+  },
+  {
+    title: 'Hardware & Embedded',
+    icon: 'chip',
+    items: [
+      { name: 'IoT Concepts', note: 'Coursework', tier: 'familiar' },
+    ],
+  },
+  {
+    title: 'Developer Tools',
+    icon: 'tools',
+    items: [
+      { name: 'Docker', note: 'Container basics', tier: 'familiar', logo: 'images/tech/docker.svg' },
+    ],
+  },
+];
+
+/** Technologies actively being studied — shown as a learning path, not expertise. */
+export const SKILLS_CURRENTLY_LEARNING: SkillGroup[] = [
+  {
+    title: 'Programming Languages',
+    icon: 'code',
+    items: [
+      { name: 'Go', tier: 'learning', logo: 'images/tech/go.svg' },
+      { name: 'Rust', tier: 'learning', logo: 'images/tech/rust.svg' },
+    ],
+  },
+  {
+    title: 'Backend Development',
+    icon: 'server',
+    items: [
+      { name: 'ASP.NET Core', tier: 'learning', logo: 'images/tech/dotnet.svg' },
+    ],
+  },
+  {
+    title: 'Databases',
+    icon: 'database',
+    items: [
+      { name: 'Neon', tier: 'learning', logo: 'images/tech/neon.svg' },
+    ],
+  },
   {
     title: 'Cloud Platforms',
     icon: 'cloud',
     items: [
-      { name: 'AWS', note: 'Currently learning', logo: 'images/tech/aws.svg' },
-      { name: 'Microsoft Azure', note: 'Currently learning', logo: 'images/tech/azure.svg' },
-      { name: 'Google Cloud', note: 'Currently learning', logo: 'images/tech/gcloud.svg' },
-      { name: 'Firebase', note: 'Currently learning', logo: 'images/tech/firebase.svg' },
-      { name: 'Heroku', note: 'Currently learning', logo: 'images/tech/heroku.svg' },
+      { name: 'AWS', tier: 'learning', logo: 'images/tech/aws.svg' },
+      { name: 'Microsoft Azure', tier: 'learning', logo: 'images/tech/azure.svg' },
+      { name: 'Google Cloud', tier: 'learning', logo: 'images/tech/gcloud.svg' },
+      { name: 'Firebase', tier: 'learning', logo: 'images/tech/firebase.svg' },
     ],
   },
   {
     title: 'DevOps / Infrastructure',
     icon: 'chip',
     items: [
-      { name: 'Docker', note: 'Currently learning', logo: 'images/tech/docker.svg' },
-      { name: 'Terraform', note: 'Currently learning', logo: 'images/tech/terraform.png' },
-      { name: 'Ansible', note: 'Currently learning', logo: 'images/tech/ansible.svg' },
-    ],
-  },
-  {
-    title: 'Developer Platforms',
-    icon: 'tools',
-    items: [
-      { name: 'GitHub', note: 'Currently learning', logo: 'images/tech/github-mark.svg' },
-      { name: 'GitLab', note: 'Currently learning', logo: 'images/tech/gitlab.svg' },
-      { name: 'Bitbucket', note: 'Currently learning', logo: 'images/tech/bitbucket.svg' },
+      { name: 'Docker', tier: 'learning', logo: 'images/tech/docker.svg' },
+      { name: 'Terraform', tier: 'learning', logo: 'images/tech/terraform.png' },
+      { name: 'Ansible', tier: 'learning', logo: 'images/tech/ansible.svg' },
     ],
   },
 ];
@@ -756,127 +840,243 @@ export const CERTIFICATIONS: Certification[] = [
     name: 'Python Programming',
     description: 'Data analysis & automation',
     image: 'images/certifecation/python-1.png',
+    category: 'Programming & Software Development',
   },
   {
     name: 'Web Development Fundamentals',
     description: 'HTML, CSS, JavaScript',
     image: 'images/certifecation/basic-web-development-1.png',
+    category: 'Web Development',
   },
   {
     name: 'C# Programming',
     description: 'Fundamentals of C# development',
     image: 'images/certifecation/csharp.png',
+    category: 'Programming & Software Development',
   },
   {
     name: 'Java Basic Certificate',
     description: 'Core Java concepts',
     image: 'images/certifecation/java-basics.png',
+    category: 'Programming & Software Development',
   },
   {
     name: 'R Basic Certificate',
     description: 'Statistical computing with R',
     image: 'images/certifecation/r-basics.png',
+    category: 'Databases & Data Science',
   },
   {
     name: 'SQL Basic Certificate',
     description: 'Database querying & management',
     image: 'images/certifecation/sql.png',
+    category: 'Databases & Data Science',
   },
   {
     name: 'Data Science Certification',
     description: 'Data analysis & mathematical modeling',
     image: 'images/certifecation/data-science.png',
+    category: 'Databases & Data Science',
   },
   {
     name: 'Cybersecurity Fundamentals',
     description: 'Best practices & principles',
     image: 'images/certifecation/cybersecurity-fundamentals-1.png',
+    category: 'Cybersecurity',
   },
   {
     name: 'Ethical Hacking',
     description: 'Penetration testing & assessment concepts',
     image: 'images/certifecation/ethical-hacking-1.png',
+    category: 'Cybersecurity',
   },
   {
     name: 'Cyber Hygiene',
     description: 'Maintaining secure systems',
     image: 'images/certifecation/cyberhygiene-1.png',
+    category: 'Cybersecurity',
   },
   {
     name: 'Advanced Technical Training',
     description: 'Comprehensive technical program',
     image: 'images/certifecation/certificate-of-completion-1.png',
+    category: 'Workshops & Technical Training',
   },
   {
     name: 'System Configuration',
     description: 'Setup & configuration',
     image: 'images/certifecation/installing-and-configuring-1.png',
+    category: 'Hardware & System Configuration',
   },
   {
     name: 'Basic Hardware',
     description: 'Computer hardware fundamentals',
     image: 'images/certifecation/basic-hardware-1.png',
+    category: 'Hardware & System Configuration',
   },
   {
     name: 'Computer Setup',
     description: 'Configuring computer systems',
     image: 'images/certifecation/setting-up-computer-1.png',
+    category: 'Hardware & System Configuration',
   },
   {
     name: 'Aviation Technology',
     description: 'Aviation-related tech systems',
     image: 'images/certifecation/aviations-1.png',
+    category: 'Workshops & Technical Training',
   },
   {
     name: 'Certificate of Cyber',
     description: 'Cyber security fundamentals',
     image: 'images/certifecation/certificate-of-cyber.png',
+    category: 'Cybersecurity',
   },
   {
     name: 'Data Visualization Workshop',
     description: 'Visual analytics & dashboards',
     image: 'images/certifecation/data-visualization-workshop.png',
+    category: 'Databases & Data Science',
   },
   {
     name: 'Google Cloud Fundamentals',
     description: 'Core cloud infrastructure',
     image: 'images/certifecation/google-cloud-fundamentals.png',
+    category: 'Cloud Computing',
   },
 ];
 
 export const EDUCATION: TimelineItem[] = [
   {
-    kicker: 'In progress',
+    kicker: 'Currently Studying',
     title: 'Bachelor of Science in Computer Engineering',
+    organization: 'Western Institute of Technology',
+    date: 'Iloilo City, Philippines',
     description:
-      'Focus: software development, hardware-software integration, and engineering problem-solving. Coursework and self-study span programming (C, Python, Java, C#), web technologies, databases, and cybersecurity fundamentals — reinforced by ICPEP competition experience and Arduino mentoring.',
+      'Focus: software development, computer systems, programming, hardware-software integration, embedded systems, and engineering problem-solving. Coursework and self-study span programming (C, Python, Java, C#), web technologies, databases, and cybersecurity fundamentals — reinforced by ICPEP competition experience and Arduino mentoring.',
+    responsibilities: [
+      'Software Development',
+      'Computer Systems',
+      'Programming',
+      'Hardware-Software Integration',
+      'Embedded Systems',
+      'Engineering Problem-Solving',
+    ],
   },
 ];
 
 export const EXPERIENCE: TimelineItem[] = [
   {
-    kicker: 'Competition',
-    title: 'ICPEP — C Programming',
+    kicker: 'Technical Experience',
+    title: 'ICPEP — C Programming Competition',
+    organization: 'ICPEP (Institute of Computer Engineers of the Philippines)',
+    date: '2024',
     description:
-      'Competed in C Programming, including live problem-solving and technical Q&A in front of judges.',
+      'Competed in C Programming, solving live problems and answering technical questions in front of judges.',
+    responsibilities: [
+      'Solved timed C programming problems under competition conditions.',
+      'Defended technical solutions during live Q&A with judges.',
+      'Applied memory management, pointers, and algorithmic thinking in C.',
+    ],
   },
   {
-    kicker: 'Consultant · Team',
-    title: 'JDAJNSH School Website',
+    kicker: 'Technical Experience',
+    title: 'JDAJNSH School Website Consultant / Developer',
+    organization: 'Jose Diva Avelino Jr. National High School',
+    date: '2024',
     description:
-      'Served as consultant and software developer on a team-built rules and information website for Jose Diva Avelino Jr. National High School.',
+      'Consultant and software developer on a team-built rules and information website presenting the school, its motto, and the Student Code of Conduct.',
+    responsibilities: [
+      'Consulted on site structure and student-code-of-conduct content.',
+      'Developed frontend pages using HTML, CSS, and JavaScript.',
+      'Collaborated with a team to deploy a live information site for students and parents.',
+    ],
   },
   {
-    kicker: 'Developer · Real events',
-    title: 'Event Management Web Apps',
+    kicker: 'Technical Experience',
+    title: 'Event Management Web Application Developer',
+    organization: 'Self-initiated / deployed at real events',
+    date: '2024–2025',
     description:
       'Designed, built, and deployed 7 live web apps for registrations, merchandise orders, venue navigation, scoring, and sports scheduling — used during actual events.',
+    responsibilities: [
+      'Built registration, pre-registration (QR), cap and T-shirt order, venue navigation, participant rating, and sports event manager apps.',
+      'Used Google Apps Script, HTML, CSS, and JavaScript for each deployment.',
+      'Deployed live tools used by real attendees during events.',
+    ],
   },
   {
-    kicker: 'Mentor',
-    title: 'Arduino & Programming Workshops',
+    kicker: 'Technical Experience',
+    title: 'Arduino Workshop Facilitator',
+    organization: 'Student workshops',
+    date: '2024–2025',
     description:
       'Mentored fellow students in Arduino basics and programming fundamentals through hands-on workshops.',
+    responsibilities: [
+      'Facilitated hands-on Arduino workshops for beginner students.',
+      'Taught programming fundamentals and embedded-systems concepts.',
+      'Guided students through wiring, coding, and debugging microcontroller projects.',
+    ],
+  },
+  {
+    kicker: 'Technical Experience',
+    title: 'Programming Fundamentals Mentor',
+    organization: 'Peer mentoring',
+    date: '2024–2025',
+    description:
+      'Mentored fellow students in programming fundamentals, reinforcing C, Python, and Java concepts.',
+    responsibilities: [
+      'Explained programming fundamentals to peers in one-on-one and small-group sessions.',
+      'Reviewed code and helped debug assignments in C, Python, and Java.',
+      'Reinforced problem-solving techniques and structured thinking.',
+    ],
+  },
+];
+
+/**
+ * Student leadership and organizational experience.
+ * Presented separately from technical work to highlight communication,
+ * teamwork, accountability, and organizational leadership.
+ */
+export const LEADERSHIP: TimelineItem[] = [
+  {
+    kicker: 'ICpEP.SE Region VI',
+    title: 'Regional Auditor',
+    organization: 'ICpEP.SE (Student Chapter of the Institute of Computer Engineers of the Philippines) — Region VI',
+    date: '2024–2025 Academic Year',
+    description:
+      'Regional Auditor for the ICpEP.SE student organization, overseeing financial transparency and records for the region.',
+    responsibilities: [
+      'Audited organizational financial records and transactions.',
+      'Maintained transparent financial documentation for the regional chapter.',
+      'Reported audit findings to officers and members.',
+    ],
+  },
+  {
+    kicker: 'ACES',
+    title: 'First Year Representative',
+    organization: 'ACES (Association of Computer Engineering Students)',
+    date: '2024–2025 Academic Year',
+    description:
+      'First Year Representative representing incoming computer engineering students in the student organization.',
+    responsibilities: [
+      'Voiced first-year student concerns in organization meetings.',
+      'Helped onboard new members and organize orientation activities.',
+      'Served as liaison between first-year students and organization officers.',
+    ],
+  },
+  {
+    kicker: 'NSTP',
+    title: 'President',
+    organization: 'NSTP (National Service Training Program) class',
+    date: '2024–2025 Academic Year',
+    description:
+      'Class President for the NSTP cohort, leading classmates through civic-welfare and community-service activities.',
+    responsibilities: [
+      'Led the NSTP class in planning and executing community-service activities.',
+      'Coordinated with instructors and class officers on civic-welfare projects.',
+      'Represented the class in program-wide meetings and events.',
+    ],
   },
 ];
 

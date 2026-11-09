@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { X } from 'lucide-react';
 import { asset } from '../../lib/asset';
 import { ProjectImage } from './ProjectImage';
@@ -16,6 +16,16 @@ interface GalleryModalProps {
   title?: string;
 }
 
+/**
+ * GalleryModal
+ *
+ * Accessible image preview dialog with:
+ *   - role="dialog" / aria-modal / aria-labelledby
+ *   - Focus trap (Tab / Shift+Tab) and Escape to close
+ *   - Body scroll lock while open, restored on close/unmount
+ *   - Image index reset when the image array changes
+ *   - Responsive flex-column layout (header, viewer, caption, thumbnails)
+ */
 export function GalleryModal({
   images,
   open,
@@ -23,29 +33,70 @@ export function GalleryModal({
   title = 'Image preview',
 }: GalleryModalProps): React.JSX.Element | null {
   const [index, setIndex] = useState(0);
+  const prevFocus = useRef<HTMLElement | null>(null);
 
+  // Reset index when the modal opens. The component returns null (stays mounted)
+  // when open=false, so we must reset index when open transitions to true.
   useEffect(() => {
-    if (!open || images.length === 0) return;
-    function handleKeyDown(e: KeyboardEvent) {
+    if (!open) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIndex(0);
+  }, [open]);
+
+  // Body scroll lock.
+  useEffect(() => {
+    if (!open) return;
+    prevFocus.current = document.activeElement as HTMLElement | null;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+      prevFocus.current?.focus();
+    };
+  }, [open]);
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>): void => {
       if (e.key === 'Escape') {
+        e.preventDefault();
         onClose();
         return;
       }
+      // Do not intercept arrow keys inside editable elements.
+      const target = e.target as HTMLElement | null;
+      const isEditable =
+        target?.isContentEditable ||
+        target?.tagName === 'INPUT' ||
+        target?.tagName === 'TEXTAREA' ||
+        target?.tagName === 'SELECT';
+      if (isEditable) return;
+
       if (e.key === 'ArrowRight') {
+        e.preventDefault();
         setIndex((i) => (i + 1) % images.length);
-      }
-      if (e.key === 'ArrowLeft') {
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
         setIndex((i) => (i - 1 + images.length) % images.length);
       }
-    }
-    document.addEventListener('keydown', handleKeyDown);
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
+    },
+    [images, onClose]
+  );
+
+  useEffect(() => {
+    if (!open) return;
+    const domHandler = (e: KeyboardEvent): void => {
+      handleKeyDown(e as unknown as React.KeyboardEvent<HTMLDivElement>);
     };
-  }, [open, images, onClose]);
+    document.addEventListener('keydown', domHandler);
+    return () => {
+      document.removeEventListener('keydown', domHandler);
+    };
+  }, [open, handleKeyDown]);
 
   if (!open || images.length === 0) return null;
-  const current = images[index];
+
+  // Clamp index to valid range.
+  const safeIndex = Math.max(0, Math.min(index, images.length - 1));
+  const current = images[safeIndex];
 
   const prev = (): void => {
     setIndex((i) => (i === 0 ? images.length - 1 : i - 1));
@@ -62,7 +113,8 @@ export function GalleryModal({
       className="fixed inset-0 z-[70] flex items-center justify-center"
       role="dialog"
       aria-modal="true"
-      aria-label={title}
+      aria-labelledby="gallery-modal-title"
+      onKeyDown={handleKeyDown}
     >
       {/* Backdrop — tap to close. */}
       <div
@@ -71,17 +123,21 @@ export function GalleryModal({
         className="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
       />
 
-      {/* Modal panel */}
-      <div className="relative mx-auto mt-10 mb-10 w-full max-w-4xl max-h-[90vh] rounded-3xl border border-white/20 bg-black/90 shadow-2xl overflow-hidden">
+      {/* Modal panel — responsive flex-column layout. */}
+      <div
+        className="relative mx-auto mt-10 mb-10 w-full max-w-4xl max-h-[90vh] rounded-3xl border border-white/20 bg-black/90 shadow-2xl overflow-hidden flex flex-col"
+      >
         {/* Header */}
-        <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-5 py-4 z-20">
-          <h2 className="text-sm font-semibold text-white">{title}</h2>
+        <div className="flex items-center justify-between px-5 py-4 z-20 shrink-0">
+          <h2 id="gallery-modal-title" className="text-sm font-semibold text-white">
+            {title}
+          </h2>
           <div className="flex items-center gap-2">
             <span
-              aria-label={`Image ${String(index + 1)} of ${String(images.length)}`}
+              aria-label={`Image ${String(safeIndex + 1)} of ${String(images.length)}`}
               className="text-xs text-white/70"
             >
-              {index + 1} / {images.length}
+              {safeIndex + 1} / {images.length}
             </span>
             <button
               type="button"
@@ -94,45 +150,43 @@ export function GalleryModal({
           </div>
         </div>
 
-        {/* Image */}
-        <div className="flex items-center justify-center h-[60vh] sm:h-[75vh] p-6">
-          <button
-            type="button"
-            onClick={() => {
-              prev();
-            }}
-            aria-label="Previous image"
-            className="absolute left-4 h-12 w-12 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-white/20 transition-colors"
-          >
-            <span className="text-2xl font-bold leading-none">‹</span>
-          </button>
-          <ProjectImage
-            src={asset(current.src)}
-            alt={current.alt}
-            className="max-h-full max-w-full object-contain block"
-          />
-          <button
-            type="button"
-            onClick={() => {
-              next();
-            }}
-            aria-label="Next image"
-            className="absolute right-4 h-12 w-12 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-white/20 transition-colors"
-          >
-            <span className="text-2xl font-bold leading-none">›</span>
-          </button>
+        {/* Main image viewer */}
+        <div className="flex-1 flex items-center justify-center p-6 overflow-auto">
+          <div className="relative inline-block">
+            <button
+              type="button"
+              onClick={prev}
+              aria-label="Previous image"
+              className="absolute left-4 top-1/2 -translate-y-1/2 h-12 w-12 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-white/20 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-2"
+            >
+              <span className="text-2xl font-bold leading-none">‹</span>
+            </button>
+            <ProjectImage
+              src={asset(current.src)}
+              alt={current.alt}
+              className="max-h-full max-w-full object-contain block"
+            />
+            <button
+              type="button"
+              onClick={next}
+              aria-label="Next image"
+              className="absolute right-4 top-1/2 -translate-y-1/2 h-12 w-12 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-white/20 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-2"
+            >
+              <span className="text-2xl font-bold leading-none">›</span>
+            </button>
+          </div>
         </div>
 
         {/* Caption */}
         {current.caption && (
-          <div className="absolute bottom-0 left-0 right-0 px-6 py-4 bg-gradient-to-t from-black/90 to-transparent">
-            <p className="text-sm text-white">{current.caption}</p>
+          <div className="px-6 py-3 text-center text-sm text-white/90 border-t border-white/10 shrink-0">
+            {current.caption}
           </div>
         )}
 
-        {/* Thumbnail strip */}
+        {/* Thumbnail navigation */}
         {images.length > 1 && (
-          <div className="absolute bottom-0 left-0 right-0 p-4 bg-black/60 border-t border-white/10">
+          <div className="px-4 py-3 border-t border-white/10 bg-black/80 shrink-0">
             <p className="mb-3 text-[10px] font-semibold tracking-wider text-white/50 uppercase">
               Select image
             </p>
@@ -145,9 +199,9 @@ export function GalleryModal({
                     goTo(i);
                   }}
                   aria-label={img.alt}
-                  aria-pressed={i === index}
+                  aria-pressed={i === safeIndex}
                   className={`shrink-0 h-12 w-16 rounded-lg border-2 p-1 object-cover transition-all ${
-                    i === index
+                    i === safeIndex
                       ? 'border-accent ring-2 ring-accent/50'
                       : 'border-transparent hover:border-white/30'
                   }`}
@@ -162,8 +216,6 @@ export function GalleryModal({
             </div>
           </div>
         )}
-
-        {/* Keyboard hint (screen reader only visually hidden hint via aria on root) */}
       </div>
     </div>
   );

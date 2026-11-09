@@ -10,20 +10,25 @@ import {
   Map,
   Volume2,
 } from 'lucide-react';
+import { useState } from 'react';
 import { asset } from '../lib/asset';
 import { Reveal } from './Reveal';
 import { SectionHeading } from './SectionHeading';
 import { SocialGlyph } from './icons';
+import { FullscreenImage } from './common/FullscreenImage';
 
+// NOTE: Verify the actual Shadow Hunter repository URL before publishing.
+// The current link points to the GitHub profile; replace with the
+// repository URL when it is available.
 const GITHUB = 'https://github.com/toms1010';
 
 const BADGES = ['Featured Project', 'Desktop Game', '2D Action'];
 
 const STATS: { value: string; label: string }[] = [
-  { value: '10', label: 'Themed levels + Shadow King finale' },
+  { value: '10', label: 'Campaign levels' },
   { value: '4', label: 'Playable hunters' },
-  { value: '8', label: 'Upgradeable weapons · 4 rarities' },
-  { value: '13', label: 'Runtime screenshots · 1280×720' },
+  { value: '8', label: 'Upgradeable weapons' },
+  { value: '4', label: 'Weapon rarity tiers' },
 ];
 
 const GALLERY: { src: string; alt: string; caption: string; body: string }[] = [
@@ -137,7 +142,7 @@ function Card({
   return (
     <div
       aria-label={label}
-      className="rounded-3xl border border-line bg-card p-6 transition-all duration-300 hover:border-accent hover:shadow-xl sm:p-8"
+      className="rounded-3xl border border-line bg-card p-6 transition-all duration-200 hover:border-accent/50 sm:p-8"
     >
       {children}
     </div>
@@ -145,6 +150,12 @@ function Card({
 }
 
 export function ShadowHunter(): React.JSX.Element {
+  const [fullscreenImage, setFullscreenImage] = useState<{
+    src: string;
+    alt: string;
+    open: boolean;
+  } | null>(null);
+
   return (
     <section
       id="project-shadow-hunter"
@@ -156,7 +167,7 @@ export function ShadowHunter(): React.JSX.Element {
           CASE STUDY / FEATURED PROJECT
         </p>
         <SectionHeading id="shadow-hunter-heading" accent="Hunter">
-          Shadow
+          Shadow Hunter
         </SectionHeading>
         <p className="mx-auto mt-4 max-w-2xl text-center text-muted">
           2D action / hack-and-slash survival game built with Python 3 + Pygame — offline, no
@@ -192,7 +203,7 @@ export function ShadowHunter(): React.JSX.Element {
             aria-label="Shadow Hunter source code on GitHub (opens in a new tab)"
             className="btn-primary min-h-11 px-6 py-2.5 text-sm"
           >
-            <SocialGlyph icon="github" className="h-4 w-4" /> GitHub{' '}
+            <SocialGlyph icon="github" className="h-4 w-4" /> View Source Code{' '}
             <ExternalLink className="h-4 w-4" aria-hidden="true" focusable="false" />
           </a>
           <a
@@ -245,10 +256,12 @@ export function ShadowHunter(): React.JSX.Element {
               </div>
             </div>
             <p className="mx-auto mt-4 max-w-3xl text-center text-sm text-muted">
-              All art is generated offline by <code>tools/gen_assets.py</code> (133 PNGs with
-              Pygame-primitive fallback) and all sound by <code>tools/gen_audio.py</code> (17 SFX +
-              3 music loops with fallback synthesis) — so the game never crashes over a missing
-              file. Verified with <code>python -m pytest tests/ -q</code>.
+              All art is generated offline by{' '}
+              <code className="bg-black/10 px-1 py-0.5 rounded">tools/gen_assets.py</code> (133 PNGs
+              with Pygame-primitive fallback) and all sound by{' '}
+              <code className="bg-black/10 px-1 py-0.5 rounded">tools/gen_audio.py</code> (17 SFX +
+              3 music loops with fallback synthesis). Verified with{' '}
+              <code className="bg-black/10 px-1 py-0.5 rounded">python -m pytest tests/ -q</code>.
             </p>
           </Card>
         </div>
@@ -286,7 +299,7 @@ export function ShadowHunter(): React.JSX.Element {
           {STATS.map((stat) => (
             <div
               key={stat.label}
-              className="rounded-2xl border border-line bg-card p-5 text-center transition-colors hover:border-accent"
+              className="rounded-2xl border border-line bg-card p-5 text-center transition-colors duration-200 hover:border-accent/50"
             >
               <dt className="order-2 mt-1 text-xs font-semibold text-muted">{stat.label}</dt>
               <dd className="gradient-text order-1 text-3xl font-extrabold">{stat.value}</dd>
@@ -294,17 +307,29 @@ export function ShadowHunter(): React.JSX.Element {
           ))}
         </dl>
 
-        {/* Screenshot gallery — all landscape */}
+        {/* Screenshot gallery — all landscape, click-to-enlarge */}
         <h3 className="mt-14 text-center text-2xl font-extrabold">Project Screenshots</h3>
         <p className="mx-auto mt-2 max-w-2xl text-center text-sm text-muted">
-          All 13 screenshots are captured from the actual Pygame runtime via{' '}
-          <code>tools/capture_screenshots.py</code> — fixed landscape 1280×720 (16:9).
+          All 13 screenshots are captured from the actual Pygame runtime — fixed landscape
+          1280×720 (16:9). Click any screenshot to enlarge.
         </p>
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {GALLERY.map((shot) => (
             <figure
               key={shot.src}
-              className="group flex flex-col overflow-hidden rounded-3xl border border-line bg-card transition-all duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-xl"
+              className="group flex flex-col overflow-hidden rounded-3xl border border-line bg-card transition-all duration-200 hover:-translate-y-1 hover:border-accent hover:shadow-xl cursor-pointer"
+              onClick={() => {
+                setFullscreenImage({ src: asset(shot.src), alt: shot.alt, open: true });
+              }}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  setFullscreenImage({ src: asset(shot.src), alt: shot.alt, open: true });
+                }
+              }}
+              aria-label={`Enlarge ${shot.caption}`}
             >
               <div className="block overflow-hidden bg-black">
                 <img
@@ -313,7 +338,7 @@ export function ShadowHunter(): React.JSX.Element {
                   loading="lazy"
                   width={640}
                   height={360}
-                  className="aspect-video w-full object-cover object-center transition-transform duration-300 group-hover:scale-[1.02]"
+                  className="aspect-video w-full object-cover object-center transition-transform duration-200 group-hover:scale-[1.02]"
                 />
               </div>
               <figcaption className="flex flex-1 flex-col gap-1.5 p-4 text-sm">
@@ -323,6 +348,17 @@ export function ShadowHunter(): React.JSX.Element {
             </figure>
           ))}
         </div>
+
+        {fullscreenImage && (
+          <FullscreenImage
+            src={fullscreenImage.src}
+            alt={fullscreenImage.alt}
+            open={fullscreenImage.open}
+            onClose={() => {
+              setFullscreenImage(null);
+            }}
+          />
+        )}
 
         {/* Controls + flow + run */}
         <div className="mt-10 grid gap-6 md:grid-cols-2">
@@ -336,7 +372,11 @@ export function ShadowHunter(): React.JSX.Element {
                   key={c.input}
                   className="flex items-center justify-between gap-3 rounded-xl border border-line bg-black/5 px-3 py-2 dark:bg-black/25"
                 >
-                  <span className="font-bold">{c.input}</span>
+                  <span className="font-bold">
+                    <kbd className="rounded border border-line bg-card px-1.5 py-0.5 text-xs font-mono">
+                      {c.input}
+                    </kbd>
+                  </span>
                   <span className="text-right text-muted">{c.action}</span>
                 </li>
               ))}
@@ -373,9 +413,9 @@ export function ShadowHunter(): React.JSX.Element {
         </div>
 
         {/* CTA + navigation */}
-        <div className="mt-10 rounded-3xl bg-gradient-to-br from-accent to-highlight p-6 text-center text-white sm:p-10">
+        <div className="mt-10 rounded-3xl border border-line bg-card p-6 text-center text-ink sm:p-10">
           <h3 className="text-2xl font-extrabold">A Real Playable Pygame Game</h3>
-          <p className="mx-auto mt-2 max-w-xl text-sm text-white/85">
+          <p className="mx-auto mt-2 max-w-xl text-sm text-muted">
             Offline Python + Pygame, JSON-driven hunters / weapons / levels / bosses, synthesized
             art + audio pipelines, and headless logic tests.
           </p>
@@ -383,10 +423,10 @@ export function ShadowHunter(): React.JSX.Element {
             href={GITHUB}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Open GitHub profile (opens in a new tab)"
-            className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-full bg-white px-6 py-2.5 text-sm font-bold text-slate-900 transition-transform hover:-translate-y-0.5"
+            aria-label="Open Shadow Hunter source code on GitHub (opens in a new tab)"
+            className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-full border border-accent bg-accent px-6 py-2.5 text-sm font-bold text-white transition-colors hover:bg-accent/90"
           >
-            View Code on GitHub{' '}
+            View Source Code{' '}
             <ExternalLink className="h-4 w-4" aria-hidden="true" focusable="false" />
           </a>
         </div>

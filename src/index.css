@@ -2,9 +2,13 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Google Fonts: Space Grotesk (headings) + Inter (body) loaded in index.html */
 @theme {
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-heading: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
 
+  /* Light mode */
   --color-page: #f4f6f9;
   --color-ink: #10151c;
   --color-muted: #5b6470;
@@ -16,19 +20,42 @@
 }
 
 .dark {
-  --color-page: #0a0c10;
-  --color-ink: #ededee;
-  --color-muted: #a0a5b0;
-  --color-card: rgba(20, 25, 35, 0.6);
-  --color-line: rgba(19, 173, 199, 0.2);
+  /* Engineering-inspired dark palette */
+  --color-page: #0b0f14;
+  --color-secondary-bg: #111820;
+  --color-card: #151e29;
+  --color-ink: #f5f7fa;
+  --color-muted: #a6b0be;
+  --color-line: #263241;
 
-  --color-accent: #13adc7;
-  --color-highlight: #945dd6;
+  --color-accent: #38bdf8;
+  --color-highlight: #6366f1;
 }
 
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 5.5rem;
+  overflow-x: clip;
+}
+
+/* Technical background grid — subtle engineering-inspired pattern. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(var(--color-accent) 1px, transparent 1px),
+    linear-gradient(var(--color-accent) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: 0 0, 0 0;
+  opacity: 0.06;
+  transition: opacity 0.25s ease, background-color 0.25s ease;
+}
+
+.dark body::before {
+  background-color: rgba(0, 0, 0, 0.15);
 }
 
 body {
@@ -36,14 +63,54 @@ body {
   color: var(--color-ink);
   font-family: var(--font-sans);
   line-height: 1.6;
-  overflow-x: clip;
   transition:
     background-color 0.25s ease,
     color 0.25s ease;
 }
 
+/* Subtle depth gradient behind content areas. */
+.bg-depth {
+  position: relative;
+  z-index: 0;
+}
+.bg-depth::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(56, 189, 248, 0.08) 0%, transparent 45%),
+    radial-gradient(circle at 80% 70%, rgba(99, 102, 241, 0.06) 0%, transparent 45%);
+  opacity: 0.5;
+  transition: opacity 0.25s ease;
+}
+
+.dark .bg-depth::after {
+  background:
+    radial-gradient(circle at 20% 30%, rgba(56, 189, 248, 0.12) 0%, transparent 45%),
+    radial-gradient(circle at 80% 70%, rgba(99, 102, 241, 0.08) 0%, transparent 45%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001s !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 img {
   max-width: 100%;
+  display: block;
 }
 
 a:focus-visible,
@@ -53,6 +120,17 @@ textarea:focus-visible {
   outline: 3px solid var(--color-accent);
   outline-offset: 3px;
   border-radius: 6px;
+}
+
+/* Headings use Space Grotesk */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
+/* Technical labels use monospace */
+.tech-label {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
 }
 
 /* Gradient headline + logo */
@@ -101,6 +179,7 @@ textarea:focus-visible {
   padding: 0.8rem 1.8rem;
   border-radius: 9999px;
   font-weight: 600;
+  font-family: var(--font-heading);
   transition:
     transform 0.25s ease,
     box-shadow 0.25s ease,
@@ -110,11 +189,11 @@ textarea:focus-visible {
   background: linear-gradient(135deg, var(--color-accent), var(--color-highlight));
   color: #fff;
   border: none;
-  box-shadow: 0 4px 12px rgba(19, 173, 199, 0.3);
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
 }
 .btn-primary:hover:not(:disabled) {
   transform: translateY(-3px);
-  box-shadow: 0 12px 24px rgba(19, 173, 199, 0.4);
+  box-shadow: 0 12px 24px rgba(56, 189, 248, 0.4);
 }
 .btn-primary:disabled {
   opacity: 0.7;
@@ -126,7 +205,7 @@ textarea:focus-visible {
   color: var(--color-accent);
 }
 .btn-outline:hover {
-  background: rgba(19, 173, 199, 0.1);
+  background: rgba(56, 189, 248, 0.1);
   transform: translateY(-2px);
 }
 
@@ -153,30 +232,9 @@ textarea:focus-visible {
 
 /* Terminal-style status line */
 .terminal-line {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-family: var(--font-mono);
   font-size: 0.9rem;
   color: var(--color-muted);
-}
-
-/* Signal dot travelling along hero traces */
-.trace-dot {
-  animation: trace-travel 2.4s ease-in-out infinite;
-}
-@keyframes trace-travel {
-  0% {
-    top: 0;
-    opacity: 0;
-  }
-  20% {
-    opacity: 1;
-  }
-  80% {
-    opacity: 1;
-  }
-  100% {
-    top: calc(100% - 6px);
-    opacity: 0;
-  }
 }
 
 /* Scroll reveal */
@@ -222,5 +280,32 @@ textarea:focus-visible {
   .resume-sheet {
     box-shadow: none;
     max-width: none;
+  }
+  /* A4 page format for resume */
+  @page {
+    size: A4;
+    margin: 15mm;
+  }
+  .resume-sheet {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 15mm;
+    border-radius: 0;
+    border: none;
+  }
+  .print\:no-underline {
+    text-decoration: none;
+  }
+  .print\:break-inside-avoid {
+    break-inside: avoid;
+  }
+  .btn-primary,
+  .btn-outline {
+    display: none;
+  }
+  header a,
+  section a {
+    color: #000 !important;
+    text-decoration: none;
   }
 }

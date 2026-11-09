@@ -1,8 +1,9 @@
-import { useState, useRef, useEffect } from 'react';
-import { ChevronDown, Download, Sun, Moon, X, House, FolderKanban, User, Mail } from 'lucide-react';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { ChevronDown, Download, Sun, Moon, X, House, FolderKanban, User } from 'lucide-react';
 import { EMAIL, GITHUB_PROFILE } from '../data/portfolio';
 import { asset } from '../lib/asset';
 import { useTheme } from '../theme/useTheme';
+import { GitHubIcon, MailIcon } from './icons';
 
 const CV_FILE = 'Tommy-Paolma-CV.pdf';
 const CV_DOWNLOAD_NAME = 'Tommy_Paolma_Resume.pdf';
@@ -10,10 +11,10 @@ const CV_DOWNLOAD_NAME = 'Tommy_Paolma_Resume.pdf';
 /**
  * Desktop header: exactly one horizontal row.
  *
- *   TOMMY PAOLMA | HOME | PROJECTS | ABOUT ▼ | GITHUB | DOWNLOAD CV
+ *   TOMMY PAOLMA | HOME | PROJECTS | EXPLORE ▼ | GITHUB | DOWNLOAD CV | THEME
  *
- * Brand on the left, navigation on the right. The About dropdown carries every
- * section link so the header never grows past the required six items.
+ * Brand on the left, navigation on the right. The Explore dropdown carries every
+ * section link beyond the primary nav so the header never grows past the required items.
  */
 const NAV_SECTIONS: {
   label: string;
@@ -24,7 +25,7 @@ const NAV_SECTIONS: {
   { label: 'HOME', href: '#home', icon: <House className="h-4 w-4" /> },
   { label: 'PROJECTS', href: '#projects', icon: <FolderKanban className="h-4 w-4" /> },
   {
-    label: 'ABOUT',
+    label: 'EXPLORE',
     href: '#about',
     icon: <User className="h-4 w-4" />,
     dropdown: [
@@ -57,22 +58,31 @@ const OBSERVED_IDS = [
 function useActiveHref(): string {
   const [active, setActive] = useState('#home');
 
+  const handleIntersection = useCallback((entries: IntersectionObserverEntry[]): void => {
+    // Only consider entries that are meaningfully intersecting (avoid flicker
+    // when multiple sections barely cross the threshold at the same time).
+    const intersecting = entries
+      .filter((entry) => entry.isIntersecting)
+      .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+    if (intersecting.length > 0) {
+      const id = intersecting[0].target.id;
+      const next = `#${id}`;
+      setActive((current) => (current === next ? current : next));
+    }
+  }, []);
+
   useEffect(() => {
-    const elements = OBSERVED_IDS.map((id) => document.getElementById(id)).filter(
-      (el): el is HTMLElement => el !== null
-    );
+    const elements = OBSERVED_IDS
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
+
     if (elements.length === 0) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setActive(`#${entry.target.id}`);
-          }
-        }
-      },
-      { rootMargin: '-40% 0px -55% 0px', threshold: 0 }
-    );
+    const observer = new IntersectionObserver(handleIntersection, {
+      rootMargin: '-40% 0px -55% 0px',
+      threshold: 0,
+    });
 
     elements.forEach((el) => {
       observer.observe(el);
@@ -80,7 +90,7 @@ function useActiveHref(): string {
     return () => {
       observer.disconnect();
     };
-  }, []);
+  }, [handleIntersection]);
 
   return active;
 }
@@ -93,8 +103,6 @@ function triggerDownload(): void {
   const link = document.createElement('a');
   link.href = asset(CV_FILE);
   link.download = CV_DOWNLOAD_NAME;
-  link.target = '_blank';
-  link.rel = 'noopener noreferrer';
   document.body.appendChild(link);
   link.click();
   link.remove();
@@ -144,8 +152,8 @@ function DesktopNavLink({
   );
 }
 
-/** The About dropdown: clicking ABOUT toggles the functional section menu. */
-function AboutDropdown({ isActive }: { isActive: boolean }): React.JSX.Element {
+/** The Explore dropdown: clicking EXPLORE toggles the functional section menu. */
+function ExploreDropdown({ isActive }: { isActive: boolean }): React.JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -185,6 +193,7 @@ function AboutDropdown({ isActive }: { isActive: boolean }): React.JSX.Element {
   };
 
   const section = NAV_SECTIONS[2];
+  const dropdownId = 'explore-dropdown';
 
   return (
     <div ref={wrapRef} className="relative">
@@ -195,6 +204,9 @@ function AboutDropdown({ isActive }: { isActive: boolean }): React.JSX.Element {
             setIsOpen(true);
           }}
           aria-current={isActive ? 'page' : undefined}
+          aria-haspopup="true"
+          aria-expanded={isOpen}
+          aria-controls={isOpen ? dropdownId : undefined}
           className={`nav-link ${linkClass} rounded-r-none pr-1.5`}
         >
           {section.icon}
@@ -209,6 +221,7 @@ function AboutDropdown({ isActive }: { isActive: boolean }): React.JSX.Element {
           aria-expanded={isOpen}
           aria-haspopup="true"
           aria-label={`${section.label} submenu`}
+          aria-controls={dropdownId}
           className={`${triggerClass} rounded-l-none pl-1.5`}
         >
           <ChevronDown
@@ -219,36 +232,41 @@ function AboutDropdown({ isActive }: { isActive: boolean }): React.JSX.Element {
       </span>
 
       {isOpen && (
-        <div
-          role="menu"
+        <nav
+          aria-label={`${section.label} submenu`}
           className="absolute top-full left-1/2 z-50 mt-2 min-w-[420px] -translate-x-1/2 rounded-xl border border-line bg-card p-2 shadow-xl"
+          id={dropdownId}
         >
-          {section.dropdown?.map((item) =>
-            item.isDownload ? (
-              <button
-                key={item.label}
-                role="menuitem"
-                type="button"
-                onClick={handleDownload}
-                className="block w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-ink transition-colors hover:bg-accent/10 hover:text-accent"
-              >
-                {item.label}
-              </button>
-            ) : (
-              <a
-                key={item.label}
-                role="menuitem"
-                href={item.href}
-                onClick={() => {
-                  setIsOpen(false);
-                }}
-                className="block rounded-lg px-3 py-2 text-sm font-medium text-ink transition-colors hover:bg-accent/10 hover:text-accent"
-              >
-                {item.label}
-              </a>
-            )
-          )}
-        </div>
+          <ul className="flex flex-col gap-0.5">
+            {section.dropdown?.map((item) =>
+              item.isDownload ? (
+                <li key={item.label}>
+                  <button
+                    key={item.label}
+                    type="button"
+                    onClick={handleDownload}
+                    className="block w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-ink transition-colors hover:bg-accent/10 hover:text-accent"
+                  >
+                    {item.label}
+                  </button>
+                </li>
+              ) : (
+                <li key={item.label}>
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    onClick={() => {
+                      setIsOpen(false);
+                    }}
+                    className="block rounded-lg px-3 py-2 text-sm font-medium text-ink transition-colors hover:bg-accent/10 hover:text-accent"
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              )
+            )}
+          </ul>
+        </nav>
       )}
     </div>
   );
@@ -287,6 +305,52 @@ function MobileNav({
     return initial;
   });
 
+  const drawerRef = useRef<HTMLDivElement>(null);
+
+  // Focus management: trap focus inside drawer, restore focus on close.
+  useEffect(() => {
+    if (!open) return;
+    const drawer = drawerRef.current;
+    const focusable = drawer?.querySelectorAll<HTMLElement>(
+      'a[href], button, [tabindex]:not([tabindex="-1"])'
+    );
+    const first = focusable?.[0];
+    const last = focusable?.[focusable.length - 1];
+
+    // Prevent body scroll while drawer is open.
+    document.body.style.overflow = 'hidden';
+
+    first?.focus();
+
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        onClose();
+        return;
+      }
+      // Cycle focus within drawer.
+      if (e.key === 'Tab') {
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last?.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first?.focus();
+        }
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', handleKeyDown);
+      // Restore focus to the hamburger button.
+      const trigger = document.querySelector<HTMLElement>(
+        '[aria-label="Open navigation menu"], [aria-label="Close navigation menu"]'
+      );
+      trigger?.focus();
+    };
+  }, [open, onClose]);
+
   if (!open) return null;
 
   const toggle = (label: string): void => {
@@ -298,8 +362,13 @@ function MobileNav({
     onClose();
   };
 
+  const handleNavClick = (): void => {
+    onClose();
+  };
+
   return (
     <div
+      ref={drawerRef}
       className="fixed inset-0 z-50 lg:hidden"
       role="dialog"
       aria-modal="true"
@@ -308,7 +377,7 @@ function MobileNav({
       {/* Backdrop — tap empty dark space to close. */}
       <div
         aria-hidden="true"
-        onClick={onClose}
+        onClick={handleNavClick}
         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
       />
 
@@ -318,7 +387,7 @@ function MobileNav({
         <div className="flex items-center justify-between border-b border-line p-4">
           <a
             href="#home"
-            onClick={onClose}
+            onClick={handleNavClick}
             aria-label="Tommy Paolma — home"
             className="gradient-text text-2xl font-extrabold"
           >
@@ -328,7 +397,7 @@ function MobileNav({
             <ThemeToggle />
             <button
               type="button"
-              onClick={onClose}
+              onClick={handleNavClick}
               aria-label="Close"
               className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl border border-line bg-card text-ink transition-colors hover:border-accent hover:text-accent"
             >
@@ -356,7 +425,7 @@ function MobileNav({
                   <li key={section.label}>
                     <a
                       href={section.href}
-                      onClick={onClose}
+                      onClick={handleNavClick}
                       aria-current={parentActive ? 'page' : undefined}
                       className={parentLinkClass}
                     >
@@ -379,7 +448,7 @@ function MobileNav({
                     <div className="flex items-center gap-1">
                       <a
                         href={section.href}
-                        onClick={onClose}
+                        onClick={handleNavClick}
                         aria-current={parentActive ? 'page' : undefined}
                         className={parentLinkClass}
                       >
@@ -413,6 +482,7 @@ function MobileNav({
                       className={`grid transition-all duration-300 ease-in-out ${
                         isExpanded ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
                       }`}
+                      hidden={!isExpanded}
                     >
                       <div className="min-h-0 overflow-hidden">
                         <ul className="mt-1 ml-11 flex flex-col gap-1 border-l border-line pl-3">
@@ -430,7 +500,7 @@ function MobileNav({
                               ) : (
                                 <a
                                   href={item.href}
-                                  onClick={onClose}
+                                  onClick={handleNavClick}
                                   aria-current={
                                     isSectionActive(item.href, activeHref) ? 'page' : undefined
                                   }
@@ -460,14 +530,7 @@ function MobileNav({
                   text-ink hover:bg-accent/5 hover:text-accent
                 `}
               >
-                <svg
-                  className="h-5 w-5 shrink-0"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
-                </svg>
+                <GitHubIcon className="h-5 w-5 shrink-0" />
                 GITHUB
               </a>
             </li>
@@ -488,7 +551,7 @@ function MobileNav({
                 aria-label={`Email Tommy Paolma at ${EMAIL}`}
                 className="inline-flex min-h-11 min-w-11 flex-1 items-center justify-center gap-2 rounded-xl border border-line bg-card px-3 text-ink transition-colors hover:border-accent hover:text-accent"
               >
-                <Mail className="h-5 w-5" aria-hidden="true" />
+                <MailIcon className="h-5 w-5" />
                 <span className="text-sm font-medium">Email</span>
               </a>
             </div>
@@ -542,7 +605,7 @@ export function Navbar(): React.JSX.Element {
                 />
               </li>
               <li>
-                <AboutDropdown isActive={isSectionActive(NAV_SECTIONS[2].href, activeHref)} />
+                <ExploreDropdown isActive={isSectionActive(NAV_SECTIONS[2].href, activeHref)} />
               </li>
               <li>
                 <a
@@ -552,14 +615,7 @@ export function Navbar(): React.JSX.Element {
                   aria-label="Tommy Paolma on GitHub (opens in a new tab)"
                   className="nav-link inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl border border-line bg-card px-3 text-ink transition-colors hover:border-accent hover:text-accent"
                 >
-                  <svg
-                    className="h-5 w-5"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
-                  </svg>
+                  <GitHubIcon className="h-5 w-5" />
                   <span className="hidden sm:inline">GITHUB</span>
                 </a>
               </li>

@@ -66,6 +66,13 @@ export interface SkillItem {
   note?: string;
   /** Local public-dir logo path (e.g. "images/tech/c.svg"). Omit for text-only items. */
   logo?: string;
+  /**
+   * Experience tier grounded in actual project work.
+   * 'used'   — shipped in a completed project (experienced).
+   * 'familiar' — practiced, but not yet a core project technology.
+   * 'learning' — actively studying; not claimed as expertise.
+   */
+  tier: 'used' | 'familiar' | 'learning';
 }
 
 export type SkillIcon =
@@ -92,12 +99,31 @@ export interface Certification {
   name: string;
   description: string;
   image: string;
+  /** Category grouping (not fabricated — derived from the certificate subject). */
+  category:
+    | 'Programming & Software Development'
+    | 'Web Development'
+    | 'Databases & Data Science'
+    | 'Cybersecurity'
+    | 'Cloud Computing'
+    | 'Hardware & System Configuration'
+    | 'Workshops & Technical Training';
+  /** Issuing organization. Omitted when not verified — never fabricated. */
+  issuer?: string;
+  /** Completion date. Omitted when not verified — never fabricated. */
+  date?: string;
 }
 
 export interface TimelineItem {
   kicker: string;
   title: string;
   description: string;
+  /** Organization or event name, when applicable. */
+  organization?: string;
+  /** Date or academic year range. Omit when not verified. */
+  date?: string;
+  /** Bulleted responsibilities / contributions. */
+  responsibilities?: string[];
 }
 
 export type SocialIcon = 'x' | 'github' | 'linkedin' | 'facebook' | 'mail';

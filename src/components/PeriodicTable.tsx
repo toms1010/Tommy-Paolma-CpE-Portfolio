@@ -1,8 +1,36 @@
-import { ExternalLink, Layers, Search, Grid } from 'lucide-react';
+import { ExternalLink, Layers, Search, Grid, ArrowLeft } from 'lucide-react';
 import { Reveal } from './Reveal';
 import { SectionHeading } from './SectionHeading';
 import { asset } from '../lib/asset';
 import { ProjectImage } from './common/ProjectImage';
+
+const LIVE_URL = 'https://peroidic-table.vercel.app/';
+
+const FEATURES = [
+  {
+    title: 'Search & Filter',
+    icon: Search,
+    body: 'Search elements by name or symbol; filter by group (alkali metals, halogens, noble gases, and more).',
+  },
+  {
+    title: 'Element Details',
+    icon: Layers,
+    body: 'View atomic number, atomic mass, electron configuration, and category for each element.',
+  },
+  {
+    title: 'Responsive Design',
+    icon: Grid,
+    body: 'Mobile-friendly layout that works on phones, tablets, and desktops.',
+  },
+] as const;
+
+const PROJECT_INFO = [
+  { label: 'Category', value: 'Web Application' },
+  { label: 'Type', value: 'Educational Reference' },
+  { label: 'Technologies', value: 'HTML5 · CSS3 · JavaScript' },
+  { label: 'Deployment', value: 'Vercel' },
+  { label: 'Status', value: 'Published' },
+] as const;
 
 export function PeriodicTable(): React.JSX.Element {
   return (
@@ -19,9 +47,9 @@ export function PeriodicTable(): React.JSX.Element {
           Periodic Table Explorer
         </SectionHeading>
         <p className="mx-auto mt-4 max-w-2xl text-center text-muted">
-          An interactive, searchable periodic table of the elements with group color-coding, element
-          property details, and a mobile-friendly layout — built as a clean educational reference
-          for students and chemistry enthusiasts.
+          An interactive, searchable periodic table of the elements with group color-coding and
+          element property details — built as a clean educational reference for students and
+          chemistry enthusiasts.
         </p>
 
         <ul
@@ -40,26 +68,27 @@ export function PeriodicTable(): React.JSX.Element {
           </li>
         </ul>
 
+        {/* Project actions */}
         <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
           <a
-            href="https://peroidic-table.vercel.app/"
+            href={LIVE_URL}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Open Periodic Table Explorer (opens in a new tab)"
+            aria-label="Explore Periodic Table Explorer live website (opens in a new tab)"
             className="btn-primary min-h-11 px-6 py-2.5 text-sm"
           >
-            Fullscreen Picture <ExternalLink className="h-4 w-4" aria-hidden="true" focusable="false" />
+            Explore Live Website <ExternalLink className="h-4 w-4" aria-hidden="true" focusable="false" />
           </a>
           <a
             href="#projects"
             aria-label="Back to projects section"
             className="btn-outline min-h-11 px-6 py-2.5 text-sm"
           >
-            <Grid className="h-4 w-4" aria-hidden="true" focusable="false" /> Back to Projects
+            <ArrowLeft className="h-4 w-4" aria-hidden="true" focusable="false" /> Back to Projects
           </a>
         </div>
 
-        {/* Live preview */}
+        {/* Screenshot preview */}
         <figure className="mx-auto mt-8 sm:mt-10 max-w-4xl overflow-hidden rounded-3xl border border-line bg-card shadow-xl">
           <div className="flex items-center gap-2 border-b border-line bg-black/5 px-4 py-3 dark:bg-black/25">
             <span aria-hidden="true" className="flex gap-1.5">
@@ -73,39 +102,41 @@ export function PeriodicTable(): React.JSX.Element {
           </div>
           <ProjectImage
             src={asset('images/Chem-lab/periodic-table.png')}
-            alt="Periodic Table Explorer live preview screenshot"
+            alt="Periodic Table Explorer screenshot"
             width={1280}
             height={720}
             className="h-auto w-full max-w-[700px] sm:max-w-[900px] mx-auto object-cover object-center"
           />
           <figcaption className="border-t border-line px-4 py-3 text-center text-xs text-muted">
-            Live preview of the Periodic Table Explorer web app
+            Screenshot of the Periodic Table Explorer web app
           </figcaption>
         </figure>
+
+        {/* Project information */}
+        <div className="mt-10 sm:mt-12 grid gap-2 sm:grid-cols-2 lg:grid-cols-4 max-w-4xl mx-auto">
+          {PROJECT_INFO.map((info) => (
+            <div
+              key={info.label}
+              className="rounded-2xl border border-line bg-card p-4 text-center"
+            >
+              <p className="text-xs font-bold tracking-wider text-muted uppercase">
+                {info.label}
+              </p>
+              <p className="mt-1 text-sm text-ink">{info.value}</p>
+            </div>
+          ))}
+        </div>
 
         {/* Features */}
         <h3 className="mt-10 sm:mt-12 text-center text-2xl font-extrabold">Project Features</h3>
         <div className="mt-6 sm:mt-8 grid gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {[
-            {
-              title: 'Search & Filter',
-              body: 'Search elements by name or symbol; filter by group (alkali metals, halogens, noble gases, and more).',
-            },
-            {
-              title: 'Element Details',
-              body: 'View atomic number, atomic mass, electron configuration, and category for each element.',
-            },
-            {
-              title: 'Responsive Design',
-              body: 'Mobile-friendly layout that works on phones, tablets, and desktops.',
-            },
-          ].map((feature) => (
+          {FEATURES.map((feature) => (
             <article
               key={feature.title}
-              className="rounded-3xl border border-line bg-card p-5 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-xl"
+              className="rounded-3xl border border-line bg-card p-5 sm:p-6 transition-all duration-200 hover:border-accent/50"
             >
               <div className="flex items-center gap-2 mb-3">
-                <Search className="h-5 w-5 text-accent" aria-hidden="true" />
+                <feature.icon className="h-5 w-5 text-accent" aria-hidden="true" />
                 <h4 className="text-xl font-bold">{feature.title}</h4>
               </div>
               <p className="text-sm text-muted">{feature.body}</p>
@@ -132,20 +163,20 @@ export function PeriodicTable(): React.JSX.Element {
         </div>
 
         {/* CTA + nav */}
-        <div className="mt-10 sm:mt-12 rounded-3xl bg-gradient-to-br from-accent to-highlight p-6 text-center text-white sm:p-10">
-          <h3 className="text-2xl font-extrabold">Explore the Elements</h3>
-          <p className="mx-auto mt-2 max-w-xl text-sm text-white/85">
+        <div className="mt-10 sm:mt-12 rounded-3xl border border-line bg-card p-6 text-center sm:p-10">
+          <h3 className="text-2xl font-extrabold text-ink">Explore the Elements</h3>
+          <p className="mx-auto mt-2 max-w-xl text-sm text-muted">
             Browse the full periodic table, search for elements, and explore group properties in one
             interactive web app.
           </p>
           <a
-            href="https://peroidic-table.vercel.app/"
+            href={LIVE_URL}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Open Periodic Table Explorer (opens in a new tab)"
-            className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-full bg-white px-6 py-2.5 text-sm font-bold text-slate-900 transition-transform hover:-translate-y-0.5"
+            aria-label="Explore Periodic Table Explorer live website (opens in a new tab)"
+            className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-full border border-accent bg-accent px-6 py-2.5 text-sm font-bold text-white transition-colors hover:bg-accent/90"
           >
-            Open Fullscreen Picture <ExternalLink className="h-4 w-4" aria-hidden="true" focusable="false" />
+            Explore Live Website <ExternalLink className="h-4 w-4" aria-hidden="true" focusable="false" />
           </a>
         </div>
 

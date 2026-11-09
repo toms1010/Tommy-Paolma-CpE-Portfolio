@@ -15,7 +15,10 @@ export function ParticleField(): React.JSX.Element | null {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    // Respect reduced motion immediately and listen for changes.
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (media.matches) return;
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
@@ -26,6 +29,17 @@ export function ParticleField(): React.JSX.Element | null {
     let height = 0;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const COUNT = 70;
+
+    // Read theme colors from CSS custom properties so the field matches light/dark.
+    const getStyles = (): { particle: string; line: string } => {
+      const c = getComputedStyle(document.documentElement);
+      const page = c.getPropertyValue('--color-page').trim() || '#f4f6f9';
+      const isDark = page === '#0b0f14';
+      return {
+        particle: isDark ? 'rgba(56, 189, 248, 0.55)' : 'rgba(19, 173, 199, 0.45)',
+        line: isDark ? 'rgba(56, 189, 248, 0.12)' : 'rgba(19, 173, 199, 0.10)',
+      };
+    };
 
     const seed = (): void => {
       particles = Array.from({ length: COUNT }, () => ({
@@ -48,15 +62,18 @@ export function ParticleField(): React.JSX.Element | null {
       seed();
     };
 
+    let styles = getStyles();
+
     const frame = (): void => {
       ctx.clearRect(0, 0, width, height);
+      styles = getStyles();
       for (const p of particles) {
         p.x += p.vx;
         p.y += p.vy;
         if (p.x < 0 || p.x > width) p.vx *= -1;
         if (p.y < 0 || p.y > height) p.vy *= -1;
       }
-      ctx.strokeStyle = 'rgba(19, 173, 199, 0.18)';
+      ctx.strokeStyle = styles.line;
       ctx.lineWidth = 1;
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
@@ -72,7 +89,7 @@ export function ParticleField(): React.JSX.Element | null {
           }
         }
       }
-      ctx.fillStyle = 'rgba(19, 173, 199, 0.55)';
+      ctx.fillStyle = styles.particle;
       for (const p of particles) {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
@@ -81,12 +98,36 @@ export function ParticleField(): React.JSX.Element | null {
       raf = window.requestAnimationFrame(frame);
     };
 
+    let visible = true;
+
+    const onVisibilityChange = (): void => {
+      if (document.hidden) {
+        visible = false;
+        window.cancelAnimationFrame(raf);
+      } else if (!visible) {
+        visible = true;
+        raf = window.requestAnimationFrame(frame);
+      }
+    };
+
     resize();
     raf = window.requestAnimationFrame(frame);
     window.addEventListener('resize', resize);
+    window.addEventListener('visibilitychange', onVisibilityChange);
+    media.addEventListener('change', () => {
+      if (media.matches) {
+        window.cancelAnimationFrame(raf);
+      } else if (!visible) {
+        visible = true;
+        raf = window.requestAnimationFrame(frame);
+      }
+    });
+
     return () => {
       window.cancelAnimationFrame(raf);
       window.removeEventListener('resize', resize);
+      window.removeEventListener('visibilitychange', onVisibilityChange);
+      media.removeEventListener('change', () => {});
     };
   }, []);
 

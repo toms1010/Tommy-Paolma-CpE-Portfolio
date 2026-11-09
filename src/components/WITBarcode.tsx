@@ -3,18 +3,20 @@ import {
   ArrowLeft,
   ArrowRight,
   ExternalLink,
-  Gamepad2,
   Layers,
-  Map,
-  Star,
-  Trophy,
-  Users,
+  Layout,
+  Monitor,
+  ScanBarcode,
+  Wallet,
+  GraduationCap,
+  ChartNoAxesCombined,
 } from 'lucide-react';
 import { asset } from '../lib/asset';
 import { Reveal } from './Reveal';
 import { SectionHeading } from './SectionHeading';
 import { SocialGlyph } from './icons';
 import { GalleryModal } from './common/GalleryModal';
+import { ProjectImage } from './common/ProjectImage';
 
 const GITHUB = 'https://github.com/toms1010/Wit-Barcode-Sutdent-information-System';
 
@@ -170,6 +172,75 @@ const GALLERY_CATEGORIES: { id: GalleryCategoryId; label: string }[] = [
   { id: 'settings', label: 'Settings' },
 ];
 
+/** Filter gallery items by category id using caption prefixes. */
+function filterGallery(category: GalleryCategoryId): typeof GALLERY {
+  const prefixes: Partial<Record<GalleryCategoryId, string>> = {
+    dashboard: 'Dashboard',
+    'student-management': 'Student Management',
+    enrollment: 'Enrollment',
+    'assessment-payments': 'Assessment',
+    reports: 'Reports',
+    scanner: 'Barcode Scanner',
+    'ai-training': 'AI Training',
+    settings: 'Settings',
+  };
+
+  if (category === 'all') {
+    return GALLERY;
+  }
+
+  const prefix = prefixes[category];
+
+  return GALLERY.filter((shot) =>
+    category === 'settings'
+      ? shot.caption === 'Settings'
+      : shot.caption.startsWith(prefix ?? ''),
+  );
+}
+
+/** Reusable screenshot grid used by category sections and the full gallery. */
+function ScreenshotGrid({
+  images,
+  onSelect,
+  columns = 'sm:grid-cols-2 lg:grid-cols-3',
+}: {
+  images: typeof GALLERY;
+  onSelect: (src: string) => void;
+  columns?: string;
+}): React.JSX.Element {
+  return (
+    <div className={`mt-6 grid gap-5 ${columns}`}>
+      {images.map((shot) => (
+        <figure
+          key={shot.src}
+          className="group overflow-hidden rounded-2xl border border-line bg-card transition-all duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-xl"
+        >
+          <button
+            type="button"
+            onClick={() => {
+              onSelect(shot.src);
+            }}
+            aria-label={`View screenshot: ${shot.caption}`}
+            className="block w-full overflow-hidden bg-black text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          >
+            <img
+              src={asset(shot.src)}
+              alt={shot.alt}
+              loading="lazy"
+              width={640}
+              height={360}
+              className="aspect-video w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+            />
+          </button>
+          <figcaption className="p-4 text-sm font-bold">
+            {shot.caption}
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  );
+}
+
 function Card({
   children,
   label,
@@ -189,36 +260,20 @@ function Card({
 
 export function WITBarcode(): React.JSX.Element {
   const [galleryOpen, setGalleryOpen] = useState(false);
-  const [galleryCategory, setGalleryCategory] = useState<GalleryCategoryId>('all');
+  const [galleryCategory, setGalleryCategory] =
+    useState<GalleryCategoryId>('all');
+  const [selectedGallerySrc, setSelectedGallerySrc] = useState<string | null>(
+    null,
+  );
 
-  const visibleGallery =
-    galleryCategory === 'all'
-      ? GALLERY
-      : GALLERY.filter((shot) => {
-          switch (galleryCategory) {
-            case 'dashboard':
-              return shot.caption.startsWith('Dashboard');
-            case 'student-management':
-              return shot.caption.startsWith('Student Management');
-            case 'enrollment':
-              return shot.caption.startsWith('Enrollment');
-            case 'assessment-payments':
-              return shot.caption.startsWith('Assessment');
-            case 'reports':
-              return shot.caption.startsWith('Reports');
-            case 'scanner':
-              return shot.caption.startsWith('Barcode Scanner');
-            case 'ai-training':
-              return shot.caption.startsWith('AI Training');
-            case 'settings':
-              return shot.caption === 'Settings';
-            default:
-              return true;
-          }
-        }).map((shot) => ({ src: shot.src, alt: shot.alt, caption: shot.caption }));
+  const visibleGallery = filterGallery(galleryCategory);
 
-  const screenshotsFor = (prefix: string): typeof GALLERY =>
-    GALLERY.filter((shot) => shot.caption.startsWith(prefix));
+  const modalImages = selectedGallerySrc
+    ? [
+        ...visibleGallery.filter((image) => image.src === selectedGallerySrc),
+        ...visibleGallery.filter((image) => image.src !== selectedGallerySrc),
+      ]
+    : visibleGallery;
 
   const features = [
     'Student Management — register, edit, view, search, and manage student records.',
@@ -301,7 +356,7 @@ export function WITBarcode(): React.JSX.Element {
         <div className="mt-10">
           <Card label="Overview">
             <h3 className="flex items-center justify-center gap-2 text-2xl font-extrabold">
-              <Gamepad2 className="h-6 w-6 text-accent" aria-hidden="true" focusable="false" />
+              <Monitor className="h-6 w-6 text-accent" aria-hidden="true" focusable="false" />
               Overview
             </h3>
             <p className="mx-auto mt-4 max-w-3xl text-center text-muted">
@@ -345,10 +400,9 @@ export function WITBarcode(): React.JSX.Element {
               Dashboard
             </h3>
             <figure className="mx-auto mt-6 max-w-4xl overflow-hidden rounded-2xl border border-line bg-card">
-              <img
+              <ProjectImage
                 src={asset('images/wit-barcode/01_dashboard.png')}
                 alt="WIT Barcode Student Information System main dashboard"
-                loading="lazy"
                 width={1280}
                 height={720}
                 className="aspect-video w-full object-cover object-center"
@@ -358,10 +412,9 @@ export function WITBarcode(): React.JSX.Element {
               Main Dashboard — WIT Barcode Student Information System.
             </p>
             <figure className="mx-auto mt-6 max-w-4xl overflow-hidden rounded-2xl border border-line bg-card">
-              <img
+              <ProjectImage
                 src={asset('images/wit-barcode/02_dashboard_student_selected.png')}
                 alt="WIT Barcode dashboard with a student selected"
-                loading="lazy"
                 width={1280}
                 height={720}
                 className="aspect-video w-full object-cover object-center"
@@ -377,31 +430,17 @@ export function WITBarcode(): React.JSX.Element {
         <div className="mt-10">
           <Card label="Student Management">
             <h3 className="flex items-center justify-center gap-2 text-2xl font-extrabold">
-              <Users className="h-6 w-6 text-accent" aria-hidden="true" />
+              <GraduationCap className="h-6 w-6 text-accent" aria-hidden="true" />
               Student Management
             </h3>
-            <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {screenshotsFor('Student Management').map((shot) => (
-                <figure
-                  key={shot.src}
-                  className="group flex flex-col overflow-hidden rounded-2xl border border-line bg-card transition-all duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-xl"
-                >
-                  <div className="block overflow-hidden bg-black">
-                    <img
-                      src={asset(shot.src)}
-                      alt={shot.alt}
-                      loading="lazy"
-                      width={640}
-                      height={360}
-                      className="aspect-video w-full object-cover object-center transition-transform duration-300 group-hover:scale-[1.02]"
-                    />
-                  </div>
-                  <figcaption className="flex flex-1 flex-col gap-1.5 p-4 text-sm">
-                    <span className="font-bold">{shot.caption}</span>
-                  </figcaption>
-                </figure>
-              ))}
-            </div>
+            <ScreenshotGrid
+              images={filterGallery('student-management')}
+              onSelect={(src) => {
+                setSelectedGallerySrc(src);
+                setGalleryOpen(true);
+              }}
+              columns="sm:grid-cols-2 lg:grid-cols-4"
+            />
           </Card>
         </div>
 
@@ -409,31 +448,17 @@ export function WITBarcode(): React.JSX.Element {
         <div className="mt-10">
           <Card label="Enrollment">
             <h3 className="flex items-center justify-center gap-2 text-2xl font-extrabold">
-              <Users className="h-6 w-6 text-accent" aria-hidden="true" />
+              <GraduationCap className="h-6 w-6 text-accent" aria-hidden="true" />
               Enrollment Management
             </h3>
-            <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
-              {screenshotsFor('Enrollment').map((shot) => (
-                <figure
-                  key={shot.src}
-                  className="group flex flex-col overflow-hidden rounded-2xl border border-line bg-card transition-all duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-xl"
-                >
-                  <div className="block overflow-hidden bg-black">
-                    <img
-                      src={asset(shot.src)}
-                      alt={shot.alt}
-                      loading="lazy"
-                      width={640}
-                      height={360}
-                      className="aspect-video w-full object-cover object-center transition-transform duration-300 group-hover:scale-[1.02]"
-                    />
-                  </div>
-                  <figcaption className="flex flex-1 flex-col gap-1.5 p-4 text-sm">
-                    <span className="font-bold">{shot.caption}</span>
-                  </figcaption>
-                </figure>
-              ))}
-            </div>
+            <ScreenshotGrid
+              images={filterGallery('enrollment')}
+              onSelect={(src) => {
+                setSelectedGallerySrc(src);
+                setGalleryOpen(true);
+              }}
+              columns="sm:grid-cols-2 lg:grid-cols-5"
+            />
           </Card>
         </div>
 
@@ -441,31 +466,17 @@ export function WITBarcode(): React.JSX.Element {
         <div className="mt-10">
           <Card label="Assessment and Payments">
             <h3 className="flex items-center justify-center gap-2 text-2xl font-extrabold">
-              <Star className="h-6 w-6 text-accent" aria-hidden="true" />
+              <Wallet className="h-6 w-6 text-accent" aria-hidden="true" />
               Assessment & Payments
             </h3>
-            <div className="mt-6 grid gap-6 sm:grid-cols-2">
-              {screenshotsFor('Assessment').map((shot) => (
-                <figure
-                  key={shot.src}
-                  className="group flex flex-col overflow-hidden rounded-2xl border border-line bg-card transition-all duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-xl"
-                >
-                  <div className="block overflow-hidden bg-black">
-                    <img
-                      src={asset(shot.src)}
-                      alt={shot.alt}
-                      loading="lazy"
-                      width={640}
-                      height={360}
-                      className="aspect-video w-full object-cover object-center transition-transform duration-300 group-hover:scale-[1.02]"
-                    />
-                  </div>
-                  <figcaption className="flex flex-1 flex-col gap-1.5 p-4 text-sm">
-                    <span className="font-bold">{shot.caption}</span>
-                  </figcaption>
-                </figure>
-              ))}
-            </div>
+            <ScreenshotGrid
+              images={filterGallery('assessment-payments')}
+              onSelect={(src) => {
+                setSelectedGallerySrc(src);
+                setGalleryOpen(true);
+              }}
+              columns="sm:grid-cols-2"
+            />
           </Card>
         </div>
 
@@ -473,31 +484,17 @@ export function WITBarcode(): React.JSX.Element {
         <div className="mt-10">
           <Card label="Reports and Analytics">
             <h3 className="flex items-center justify-center gap-2 text-2xl font-extrabold">
-              <Trophy className="h-6 w-6 text-accent" aria-hidden="true" />
+              <ChartNoAxesCombined className="h-6 w-6 text-accent" aria-hidden="true" />
               Reports & Analytics
             </h3>
-            <div className="mt-6 grid gap-6 sm:grid-cols-2">
-              {screenshotsFor('Reports').map((shot) => (
-                <figure
-                  key={shot.src}
-                  className="group flex flex-col overflow-hidden rounded-2xl border border-line bg-card transition-all duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-xl"
-                >
-                  <div className="block overflow-hidden bg-black">
-                    <img
-                      src={asset(shot.src)}
-                      alt={shot.alt}
-                      loading="lazy"
-                      width={640}
-                      height={360}
-                      className="aspect-video w-full object-cover object-center transition-transform duration-300 group-hover:scale-[1.02]"
-                    />
-                  </div>
-                  <figcaption className="flex flex-1 flex-col gap-1.5 p-4 text-sm">
-                    <span className="font-bold">{shot.caption}</span>
-                  </figcaption>
-                </figure>
-              ))}
-            </div>
+            <ScreenshotGrid
+              images={filterGallery('reports')}
+              onSelect={(src) => {
+                setSelectedGallerySrc(src);
+                setGalleryOpen(true);
+              }}
+              columns="sm:grid-cols-2"
+            />
           </Card>
         </div>
 
@@ -505,31 +502,17 @@ export function WITBarcode(): React.JSX.Element {
         <div className="mt-10">
           <Card label="Barcode Scanner">
             <h3 className="flex items-center justify-center gap-2 text-2xl font-extrabold">
-              <Map className="h-6 w-6 text-accent" aria-hidden="true" />
+              <ScanBarcode className="h-6 w-6 text-accent" aria-hidden="true" />
               Barcode Scanner
             </h3>
-            <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {screenshotsFor('Barcode Scanner').map((shot) => (
-                <figure
-                  key={shot.src}
-                  className="group flex flex-col overflow-hidden rounded-2xl border border-line bg-card transition-all duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-xl"
-                >
-                  <div className="block overflow-hidden bg-black">
-                    <img
-                      src={asset(shot.src)}
-                      alt={shot.alt}
-                      loading="lazy"
-                      width={640}
-                      height={360}
-                      className="aspect-video w-full object-cover object-center transition-transform duration-300 group-hover:scale-[1.02]"
-                    />
-                  </div>
-                  <figcaption className="flex flex-1 flex-col gap-1.5 p-4 text-sm">
-                    <span className="font-bold">{shot.caption}</span>
-                  </figcaption>
-                </figure>
-              ))}
-            </div>
+            <ScreenshotGrid
+              images={filterGallery('scanner')}
+              onSelect={(src) => {
+                setSelectedGallerySrc(src);
+                setGalleryOpen(true);
+              }}
+              columns="sm:grid-cols-2 lg:grid-cols-4"
+            />
           </Card>
         </div>
 
@@ -540,28 +523,14 @@ export function WITBarcode(): React.JSX.Element {
               <Layers className="h-6 w-6 text-accent" aria-hidden="true" />
               AI Training Center
             </h3>
-            <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {screenshotsFor('AI Training').map((shot) => (
-                <figure
-                  key={shot.src}
-                  className="group flex flex-col overflow-hidden rounded-2xl border border-line bg-card transition-all duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-xl"
-                >
-                  <div className="block overflow-hidden bg-black">
-                    <img
-                      src={asset(shot.src)}
-                      alt={shot.alt}
-                      loading="lazy"
-                      width={640}
-                      height={360}
-                      className="aspect-video w-full object-cover object-center transition-transform duration-300 group-hover:scale-[1.02]"
-                    />
-                  </div>
-                  <figcaption className="flex flex-1 flex-col gap-1.5 p-4 text-sm">
-                    <span className="font-bold">{shot.caption}</span>
-                  </figcaption>
-                </figure>
-              ))}
-            </div>
+            <ScreenshotGrid
+              images={filterGallery('ai-training')}
+              onSelect={(src) => {
+                setSelectedGallerySrc(src);
+                setGalleryOpen(true);
+              }}
+              columns="sm:grid-cols-2 lg:grid-cols-3"
+            />
           </Card>
         </div>
 
@@ -569,72 +538,90 @@ export function WITBarcode(): React.JSX.Element {
         <div className="mt-10">
           <Card label="Settings">
             <h3 className="flex items-center justify-center gap-2 text-2xl font-extrabold">
-              <Layers className="h-6 w-6 text-accent" aria-hidden="true" />
+              <GraduationCap className="h-6 w-6 text-accent" aria-hidden="true" />
               Settings
             </h3>
-            <div className="mt-6 grid gap-6 sm:grid-cols-2">
-              {screenshotsFor('Settings').map((shot) => (
-                <figure
-                  key={shot.src}
-                  className="group flex flex-col overflow-hidden rounded-2xl border border-line bg-card transition-all duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-xl"
-                >
-                  <div className="block overflow-hidden bg-black">
-                    <img
-                      src={asset(shot.src)}
-                      alt={shot.alt}
-                      loading="lazy"
-                      width={640}
-                      height={360}
-                      className="aspect-video w-full object-cover object-center transition-transform duration-300 group-hover:scale-[1.02]"
-                    />
-                  </div>
-                  <figcaption className="flex flex-1 flex-col gap-1.5 p-4 text-sm">
-                    <span className="font-bold">{shot.caption}</span>
-                  </figcaption>
-                </figure>
-              ))}
-            </div>
+            <ScreenshotGrid
+              images={filterGallery('settings')}
+              onSelect={(src) => {
+                setSelectedGallerySrc(src);
+                setGalleryOpen(true);
+              }}
+              columns="sm:grid-cols-2"
+            />
           </Card>
         </div>
 
-        {/* Full gallery */}
+        {/* Full Gallery */}
         <div className="mt-10">
           <Card label="Project Gallery">
             <h3 className="flex items-center justify-center gap-2 text-2xl font-extrabold">
               <Layers className="h-6 w-6 text-accent" aria-hidden="true" />
               Project Gallery
             </h3>
+
             <p className="mx-auto mt-3 max-w-2xl text-center text-sm text-muted">
-              All {GALLERY.length} screenshots from the WIT Barcode Student Information System,
-              captured from the actual desktop application.
+              Explore {visibleGallery.length} of {GALLERY.length} screenshots
+              from the actual WIT Barcode desktop application.
+              Select a screenshot to view it in the gallery.
             </p>
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
+
+            <div
+              aria-label="Screenshot categories"
+              className="mt-6 flex flex-wrap items-center justify-center gap-2"
+            >
               {GALLERY_CATEGORIES.map((category) => (
                 <button
                   key={category.id}
                   type="button"
+                  aria-pressed={galleryCategory === category.id}
                   onClick={() => {
                     setGalleryCategory(category.id);
+                    setSelectedGallerySrc(null);
                   }}
-                  className={`min-h-11 rounded-full border px-5 py-2 text-sm font-semibold transition-colors ${
+                  className={`min-h-11 rounded-full border px-4 py-2 text-sm font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
                     galleryCategory === category.id
                       ? 'border-accent bg-accent/15 text-accent'
                       : 'border-line bg-card text-ink hover:border-accent'
                   }`}
                 >
                   {category.label}
+                  <span className="ml-2 text-xs opacity-70">
+                    {category.id === 'all'
+                      ? GALLERY.length
+                      : filterGallery(category.id).length}
+                  </span>
                 </button>
               ))}
             </div>
-            <button
-              type="button"
-              onClick={() => {
+
+            <ScreenshotGrid
+              images={visibleGallery}
+              onSelect={(src) => {
+                setSelectedGallerySrc(src);
                 setGalleryOpen(true);
               }}
-              className="btn-primary mt-6 min-h-11 px-6 py-2.5 text-sm"
-            >
-              View Full Gallery
-            </button>
+              columns="sm:grid-cols-2 lg:grid-cols-3"
+            />
+
+            {visibleGallery.length === 0 && (
+              <p className="mt-8 text-center text-sm text-muted">
+                No screenshots found in this category.
+              </p>
+            )}
+
+            <div className="mt-8 text-center">
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedGallerySrc(null);
+                  setGalleryOpen(true);
+                }}
+                className="btn-primary min-h-11 px-6 py-2.5 text-sm"
+              >
+                Open Complete Gallery
+              </button>
+            </div>
           </Card>
         </div>
 
@@ -642,7 +629,7 @@ export function WITBarcode(): React.JSX.Element {
         <div className="mt-10">
           <Card label="Core Features">
             <h3 className="flex items-center justify-center gap-2 text-2xl font-extrabold">
-              <Gamepad2 className="h-6 w-6 text-accent" aria-hidden="true" />
+              <Layout className="h-6 w-6 text-accent" aria-hidden="true" />
               Core Features
             </h3>
             <ul className="mx-auto mt-6 grid max-w-4xl gap-3 text-left sm:grid-cols-2 lg:grid-cols-4">
@@ -719,10 +706,11 @@ export function WITBarcode(): React.JSX.Element {
       </Reveal>
 
       <GalleryModal
-        images={visibleGallery}
+        images={modalImages}
         open={galleryOpen}
         onClose={() => {
           setGalleryOpen(false);
+          setSelectedGallerySrc(null);
         }}
         title="WIT Barcode — Project Gallery"
       />

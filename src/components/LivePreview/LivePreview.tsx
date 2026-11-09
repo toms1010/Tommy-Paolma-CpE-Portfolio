@@ -16,7 +16,7 @@ import {
  * device modes, fullscreen, refresh, and "open in new tab" controls.
  *
  * It gracefully handles sites that block iframe embedding (X-Frame-Options /
- * CSP frame-ancestors) by falling back to a clear error state with a prominent
+ * CSP frame-ancestors) by falling back to a clear neutral state with a prominent
  * "Open in New Tab" button so visitors can still reach the live site.
  */
 
@@ -153,39 +153,50 @@ interface PreviewPaneProps {
   onClose: () => void;
 }
 
-/** The stateful preview pane. Remounted (via `key` in LivePreview) whenever the
- *  dialog opens/closes so its loading state resets cleanly without calling
- *  setState synchronously inside an effect. */
+/**
+ * The stateful preview pane. Remounted (via `key` in LivePreview) whenever the
+ * dialog opens/closes so its loading state resets cleanly.
+ */
 function PreviewPane({ url, title, onClose }: PreviewPaneProps): React.JSX.Element {
   const [mode, setMode] = useState<DeviceMode>(DEFAULT_MODE);
   const [fullscreen, setFullscreen] = useState(false);
   const [loadStatus, setLoadStatus] = useState<
     'idle' | 'loaded' | 'failed'
   >('idle');
-  const [blocked, setBlocked] = useState(false);
   const prefersReducedMotion = useReducedMotion();
 
-  const iframeRef = useRef<HTMLIFrameElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const prevFocus = useRef<HTMLElement | null>(null);
   const loadTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const loadStatusRef = useRef(loadStatus);
 
-  // Keep the ref in sync with the latest load status (updated in an effect, not
-  // during render, so the timeout callback reads the current value).
+  // Keep the ref in sync with the latest load status.
   useEffect(() => {
     loadStatusRef.current = loadStatus;
   }, [loadStatus]);
 
   const device = DEVICE_MODES.find((d) => d.mode === mode) ?? DEVICE_MODES[0];
 
-  // Safety timeout: if the iframe hasn't settled after 15s, treat it as a load
-  // problem so the visitor isn't stuck on a spinner forever. State is updated
-  // inside the timeout callback (not directly in the effect body).
+  // Body scroll lock while the dialog is open.
+  useEffect(() => {
+    if (!fullscreen) {
+      prevFocus.current = document.activeElement as HTMLElement | null;
+      document.body.style.overflow = 'hidden';
+    }
+    return () => {
+      document.body.style.overflow = '';
+      prevFocus.current?.focus();
+    };
+  }, [fullscreen]);
+
+  // Safety timeout: neutral timeout state (not "blocked") so visitors aren't
+  // stuck on a spinner forever. An iframe onLoad does not guarantee successful
+  // cross-origin rendering, so we never claim the site "blocks embedding."
   useEffect(() => {
     loadTimeoutRef.current = setTimeout(() => {
       if (loadStatusRef.current === 'idle') {
         setLoadStatus('failed');
-        setBlocked(true);
       }
     }, 15000);
     return () => {
@@ -201,25 +212,17 @@ function PreviewPane({ url, title, onClose }: PreviewPaneProps): React.JSX.Eleme
   const handleIframeError = useCallback((): void => {
     if (loadTimeoutRef.current) clearTimeout(loadTimeoutRef.current);
     setLoadStatus('failed');
-    setBlocked(true);
   }, []);
 
-  const toggleFullscreen = useCallback((): void => {
-    setFullscreen((prev) => {
-      const next = !prev;
-      if (next && containerRef.current) {
-        requestFullscreenOn(containerRef.current);
-      } else {
-        exitFullscreenIfActive();
-      }
-      return next;
-    });
-  }, []);
-
-  // Keep the React fullscreen flag in sync with the browser fullscreen state.
+  // Synchronize React fullscreen state with the browser's actual fullscreen state.
+  // Only exit fullscreen if this container currently owns it.
   useEffect(() => {
     const handler = (): void => {
-      setFullscreen(!!document.fullscreenElement);
+      const doc = document as unknown as FullscreenDocument;
+      const ownsFullscreen =
+        !!containerRef.current &&
+        doc.fullscreenElement === containerRef.current;
+      setFullscreen(ownsFullscreen);
     };
     document.addEventListener('fullscreenchange', handler);
     document.addEventListener('webkitfullscreenchange', handler);
@@ -230,7 +233,13 @@ function PreviewPane({ url, title, onClose }: PreviewPaneProps): React.JSX.Eleme
   }, []);
 
   const close = useCallback((): void => {
-    exitFullscreenIfActive();
+    // Only exit fullscreen if this container owns it.
+    const doc = document as unknown as FullscreenDocument;
+    if (doc.fullscreenElement === containerRef.current) {
+      void doc.exitFullscreen?.().catch(() => {
+        /* ignore */
+      });
+    }
     setFullscreen(false);
     onClose();
   }, [onClose]);
@@ -241,7 +250,27 @@ function PreviewPane({ url, title, onClose }: PreviewPaneProps): React.JSX.Eleme
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent): void => {
-      if (e.key === 'Escape') close();
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        close();
+      }
+      // Trap Tab / Shift+Tab inside the dialog.
+      if (e.key === 'Tab') {
+        const dialog = containerRef.current;
+        if (!dialog) return;
+        const focusable = dialog.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     },
     [close]
   );
@@ -251,32 +280,13 @@ function PreviewPane({ url, title, onClose }: PreviewPaneProps): React.JSX.Eleme
     setFullscreen(false);
   }, []);
 
-  const failedOrBlocked = loadStatus === 'failed' || blocked;
+  const failed = loadStatus === 'failed';
   const isLoading = loadStatus === 'idle';
-  const isMobileViewport =
-    typeof window !== 'undefined' && window.innerWidth < 768;
-
-  const dialogClass = `
-    fixed inset-0 z-[70] flex items-center justify-center
-    ${fullscreen ? 'p-0' : 'p-4 sm:p-6'}
-  `;
-
-  const overlayClass = `
-    absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity
-    ${prefersReducedMotion ? 'duration-0' : 'duration-300'}
-  `;
-
-  const containerStyle: React.CSSProperties = {
-    width: device.width,
-    height: device.height,
-    maxWidth: isMobileViewport ? '92vw' : '100%',
-    maxHeight: isMobileViewport ? '82vh' : '100%',
-  };
 
   return (
     <AnimatePresence>
       <motion.div
-        className={dialogClass}
+        className="fixed inset-0 z-[70] flex items-center justify-center"
         role="dialog"
         aria-modal="true"
         aria-labelledby="live-preview-title"
@@ -291,7 +301,7 @@ function PreviewPane({ url, title, onClose }: PreviewPaneProps): React.JSX.Eleme
       >
         {/* Backdrop — tap empty area to close. */}
         <motion.div
-          className={overlayClass}
+          className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -299,11 +309,11 @@ function PreviewPane({ url, title, onClose }: PreviewPaneProps): React.JSX.Eleme
           aria-hidden="true"
         />
 
-        {/* Dialog panel — browser-style preview container. */}
+        {/* Dialog panel — responsive flex-column layout. */}
         <motion.div
           ref={containerRef}
           className={`
-            relative mx-auto w-full max-w-[1180px] rounded-3xl border border-line bg-card shadow-2xl overflow-hidden
+            relative mx-auto w-full max-w-full max-h-[90vh] rounded-3xl border border-line bg-card shadow-2xl overflow-hidden flex flex-col
             ${fullscreen ? 'fixed inset-0 z-[71] max-w-none h-screen w-screen rounded-none p-0' : ''}
             ${prefersReducedMotion ? 'duration-0' : ''}
           `}
@@ -317,39 +327,51 @@ function PreviewPane({ url, title, onClose }: PreviewPaneProps): React.JSX.Eleme
             duration: prefersReducedMotion ? 0 : undefined,
           }}
         >
-          {/* Close + fullscreen (top-right corner). Fullscreen is desktop-only;
-           * on mobile/tablet the Close button still appears on the far right. */}
-          <div className="absolute top-4 right-4 flex gap-2 z-20">
-            {/* Fullscreen button — desktop only (fullscreen API is less useful on
-             * small viewports where the dialog already fills the screen). */}
-            <div className="hidden lg:flex items-center">
+          {/* Header: title, close, fullscreen. */}
+          <header className="flex items-center justify-between border-b border-line bg-page/50 px-5 py-3.5 z-20 shrink-0">
+            <div className="flex items-center gap-2">
+              <h2 id="live-preview-title" className="text-sm font-semibold text-ink">
+                Live Preview — {title}
+              </h2>
+            </div>
+            <div className="flex items-center gap-2">
+              {/* Fullscreen button — desktop only. */}
+              <div className="hidden lg:flex items-center">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const next = !fullscreen;
+                    setFullscreen(next);
+                    if (next && containerRef.current) {
+                      requestFullscreenOn(containerRef.current);
+                    } else if (!next) {
+                      exitFullscreenIfActive();
+                    }
+                  }}
+                  aria-label={fullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
+                  className="min-h-10 min-w-10 flex items-center justify-center rounded-xl border border-line bg-card text-ink transition-colors hover:bg-accent/5 hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                >
+                  {fullscreen ? (
+                    <Minimize className="h-5 w-5" aria-hidden="true" />
+                  ) : (
+                    <Maximize className="h-5 w-5" aria-hidden="true" />
+                  )}
+                </button>
+              </div>
               <button
                 type="button"
-                onClick={toggleFullscreen}
-                aria-label={fullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
-                className="min-h-10 min-w-10 flex items-center justify-center rounded-xl border border-line bg-card text-ink transition-colors hover:bg-accent/5 hover:text-accent"
+                onClick={close}
+                aria-label="Close preview"
+                className="min-h-10 min-w-10 flex items-center justify-center rounded-xl border border-line bg-card text-ink transition-colors hover:bg-accent/5 hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
               >
-                {fullscreen ? (
-                  <Minimize className="h-5 w-5" aria-hidden="true" />
-                ) : (
-                  <Maximize className="h-5 w-5" aria-hidden="true" />
-                )}
+                <X className="h-5 w-5" aria-hidden="true" />
               </button>
             </div>
-            <button
-              type="button"
-              onClick={close}
-              aria-label="Close preview"
-              className="min-h-10 min-w-10 flex items-center justify-center rounded-xl border border-line bg-card text-ink transition-colors hover:bg-accent/5 hover:text-accent"
-            >
-              <X className="h-5 w-5" aria-hidden="true" />
-            </button>
-          </div>
+          </header>
 
-          {/* Browser chrome: address bar + device controls. */}
-          <header className="flex items-center justify-between border-b border-line bg-page/50 px-5 py-3.5 z-20">
+          {/* Browser chrome: address bar + device controls + refresh. */}
+          <div className="flex items-center justify-between border-b border-line bg-page/50 px-5 py-3 z-20 shrink-0">
             <div className="flex items-center gap-3">
-              {/* Security indicator + address bar. */}
               <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-line bg-card/60 text-xs font-mono text-muted">
                 <span className="text-accent/70">🔒</span>
                 <span className="truncate max-w-xs" title={url}>
@@ -360,12 +382,11 @@ function PreviewPane({ url, title, onClose }: PreviewPaneProps): React.JSX.Eleme
                 type="button"
                 onClick={openInNewTab}
                 aria-label={`Open ${title} in a new tab`}
-                className="flex min-h-9 min-w-9 items-center justify-center rounded-lg border border-line bg-card text-muted transition-colors hover:bg-accent/5 hover:text-accent"
+                className="flex min-h-9 min-w-9 items-center justify-center rounded-lg border border-line bg-card text-muted transition-colors hover:bg-accent/5 hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
               >
                 <ExternalLink className="h-4 w-4" aria-hidden="true" />
               </button>
             </div>
-
             <div className="flex items-center gap-2">
               {/* Device mode segmented control. */}
               <div className="inline-flex items-center rounded-xl border border-line bg-card text-sm font-medium p-0.5">
@@ -397,40 +418,42 @@ function PreviewPane({ url, title, onClose }: PreviewPaneProps): React.JSX.Eleme
               <div className="flex items-center gap-2">
                 <button
                   type="button"
-                  onClick={refresh}
+                  onClick={() => {
+                    setLoadStatus('idle');
+                    loadTimeoutRef.current = setTimeout(() => {
+                      if (loadStatusRef.current === 'idle') {
+                        setLoadStatus('failed');
+                      }
+                    }, 15000);
+                    const iframe = iframeRef.current;
+                    if (!iframe) return;
+                    const src = iframe.src;
+                    iframe.src = src;
+                  }}
                   aria-label="Refresh preview"
                   disabled={isLoading}
-                  className="min-h-9 min-w-9 flex items-center justify-center rounded-lg border border-line bg-card text-muted transition-colors hover:bg-accent/5 hover:text-accent disabled:opacity-50 disabled:pointer-events-none"
+                  className="min-h-9 min-w-9 flex items-center justify-center rounded-lg border border-line bg-card text-muted transition-colors hover:bg-accent/5 hover:text-accent disabled:opacity-50 disabled:pointer-events-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                 >
                   <RefreshCw className="h-4 w-4" aria-hidden="true" />
                 </button>
               </div>
             </div>
-          </header>
+          </div>
 
           {/* Main preview area: device-sized iframe. */}
           <section
-            className={`relative w-full min-h-[300px] bg-black overflow-hidden ${
+            className={`relative w-full flex-1 bg-black overflow-hidden ${
               fullscreen ? 'h-full' : ''
             }`}
           >
-            <motion.div
+            <div
+              className="relative mx-auto w-full"
               style={{
-                ...containerStyle,
-                margin: '0 auto',
-                display: 'block',
-              }}
-              className="relative mx-auto"
-              initial={{ width: device.width, height: device.height }}
-              animate={{
                 width: device.width,
                 height: device.height,
-              }}
-              transition={{
-                type: 'spring',
-                damping: 26,
-                stiffness: 340,
-                duration: prefersReducedMotion ? 0 : undefined,
+                maxWidth: '100%',
+                maxHeight: '100%',
+                margin: '0 auto',
               }}
             >
               <iframe
@@ -446,7 +469,7 @@ function PreviewPane({ url, title, onClose }: PreviewPaneProps): React.JSX.Eleme
                 onLoad={handleIframeLoad}
                 onError={handleIframeError}
               />
-            </motion.div>
+            </div>
           </section>
 
           {/* Animated loading indicator. */}
@@ -487,8 +510,8 @@ function PreviewPane({ url, title, onClose }: PreviewPaneProps): React.JSX.Eleme
             </motion.div>
           )}
 
-          {/* Embedding-blocked / load-failed fallback. */}
-          {failedOrBlocked && (
+          {/* Load-failed fallback — neutral message, no false "blocked" claim. */}
+          {failed && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -497,66 +520,56 @@ function PreviewPane({ url, title, onClose }: PreviewPaneProps): React.JSX.Eleme
             >
               <div className="w-full max-w-md">
                 <div className="flex items-center justify-center h-16 w-16 rounded-full bg-accent/10 text-accent mb-4">
-                  {blocked ? (
-                    <svg
-                      className="h-7 w-7"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                  ) : (
-                    <svg
-                      className="h-7 w-7"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                  )}
+                  <svg
+                    className="h-7 w-7"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
                 </div>
                 <h3 className="text-lg font-bold text-ink mb-2">
-                  {blocked
-                    ? "This site can't be embedded here"
-                    : 'Unable to load preview'}
+                  Unable to load preview
                 </h3>
                 <p className="text-sm text-muted mb-6">
-                  {blocked
-                    ? 'The live site blocks embedding in iframes (X-Frame-Options / CSP). Open it directly below.'
-                    : 'The preview could not be loaded. It may be offline or blocking embedding.'}
+                  The preview could not be loaded. The site may be offline or
+                  may block embedding in iframes.
                 </p>
                 <button
                   type="button"
                   onClick={openInNewTab}
                   className="w-full inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-accent bg-accent px-4 py-2 text-xs font-bold text-white transition-colors hover:bg-accent/90"
                 >
-                  Open {title} in New Tab <ExternalLink className="h-4 w-4" aria-hidden="true" />
+                  Open {title} in New Tab{' '}
+                  <ExternalLink className="h-4 w-4" aria-hidden="true" />
                 </button>
-                {loadStatus === 'failed' && !blocked && (
-                  <button
-                    type="button"
-                    onClick={refresh}
-                    disabled={isLoading}
-                    className="mt-3 w-full inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-line bg-card text-sm font-semibold text-muted transition-colors hover:bg-accent/5 hover:text-accent disabled:opacity-50"
-                  >
-                    <RefreshCw className="h-4 w-4" aria-hidden="true" />
-                    Try Again
-                  </button>
-                )}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setLoadStatus('idle');
+                    loadTimeoutRef.current = setTimeout(() => {
+                      if (loadStatusRef.current === 'idle') {
+                        setLoadStatus('failed');
+                      }
+                    }, 15000);
+                    const iframe = iframeRef.current;
+                    if (!iframe) return;
+                    const src = iframe.src;
+                    iframe.src = src;
+                  }}
+                  disabled={isLoading}
+                  className="mt-3 w-full inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-line bg-card text-sm font-semibold text-muted transition-colors hover:bg-accent/5 hover:text-accent disabled:opacity-50"
+                >
+                  <RefreshCw className="h-4 w-4" aria-hidden="true" />
+                  Try Again
+                </button>
               </div>
             </motion.div>
           )}
@@ -564,26 +577,6 @@ function PreviewPane({ url, title, onClose }: PreviewPaneProps): React.JSX.Eleme
       </motion.div>
     </AnimatePresence>
   );
-
-  function refresh(): void {
-    if (!iframeRef.current) return;
-    setLoadStatus('idle');
-    setBlocked(false);
-    if (loadTimeoutRef.current) clearTimeout(loadTimeoutRef.current);
-    loadTimeoutRef.current = setTimeout(() => {
-      if (loadStatusRef.current === 'idle') {
-        setLoadStatus('failed');
-        setBlocked(true);
-      }
-    }, 15000);
-    const src = iframeRef.current.src;
-    iframeRef.current.src = 'about:blank';
-    requestAnimationFrame(() => {
-      if (iframeRef.current) {
-        iframeRef.current.src = src;
-      }
-    });
-  }
 }
 
 interface LivePreviewProps {

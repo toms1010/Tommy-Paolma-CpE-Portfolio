@@ -102,12 +102,12 @@ test.describe('Portfolio responsive suite', () => {
       await expect(menuButton).toBeHidden();
       const links = page.locator('nav ul a');
       expect(await links.count()).toBeGreaterThan(0);
-      await page.locator('nav ul a[href="#projects"]').click();
+      await page.locator('header nav ul a[href="#projects"]').click();
       await expect(page.locator('#projects')).toBeInViewport();
       // Contact lives inside the About dropdown (per the navigation wireframe),
       // so open the dropdown and click Contact from there.
-      await page.locator('nav ul button[aria-label="ABOUT submenu"]').click();
-      await page.locator('[role="menu"] a[href="#contact"]').click();
+      await page.locator('nav ul button[aria-label="EXPLORE submenu"]').click();
+      await page.locator('nav[aria-label="EXPLORE submenu"] a[href="#contact"]').click();
       await expect(page.locator('#contact')).toBeInViewport();
     }
   });
@@ -158,11 +158,12 @@ test.describe('Portfolio responsive suite', () => {
     const featured = page.locator('#projects [aria-label="Featured projects"]');
     await expect(featured.getByRole('heading', { name: 'JDAJNSH' })).toBeVisible();
     await expect(featured.getByRole('heading', { name: 'MARPOL Ocean Adventure' })).toBeVisible();
+    // The View Screenshot button is available on all viewports.
     await expect(
-      featured.getByRole('button', { name: /JDAJNSH fullscreen picture/i })
+      featured.getByRole('button', { name: /JDAJNSH view screenshot/i })
     ).toBeVisible();
     await expect(
-      featured.getByRole('button', { name: /MARPOL Ocean Adventure fullscreen picture/i })
+      featured.getByRole('button', { name: /MARPOL Ocean Adventure view screenshot/i })
     ).toBeVisible();
     // Source code links are not rendered on project cards (removed per design).
     await expect(featured.getByRole('link', { name: /source code on GitHub/i })).toHaveCount(0);

@@ -18,7 +18,7 @@ export function Layout(): React.JSX.Element {
         Skip to main content
       </a>
       <Navbar />
-      <main id="main" className="mx-auto max-w-6xl px-4 sm:px-6">
+      <main id="main" className="mx-auto max-w-6xl px-4 sm:px-6 bg-depth">
         <Outlet />
       </main>
       <Footer />
