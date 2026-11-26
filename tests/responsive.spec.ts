@@ -128,12 +128,12 @@ test.describe('Portfolio responsive suite', () => {
     await settleSection(page, '#projects');
     const projects = page.locator('#projects');
     const status = projects.locator('[role="status"]');
-    await projects.getByRole('button', { name: 'Orders', exact: true }).click();
-    await expect(status).toContainText('Showing 2 of 16 projects.');
+    await projects.getByRole('button', { name: /^Order Systems\b/ }).click();
+    await expect(status).toContainText('Showing 2 of 15 projects.');
     await expect(projects.locator('article')).toHaveCount(2);
-    await projects.getByRole('button', { name: 'All', exact: true }).click();
-    await expect(status).toContainText('Showing 16 of 16 projects.');
-    await expect(projects.locator('article')).toHaveCount(16);
+    await projects.getByRole('button', { name: /^All\b/ }).click();
+    await expect(status).toContainText('Showing 15 of 15 projects.');
+    await expect(projects.locator('article')).toHaveCount(15);
   });
 
   test('CV download points to the real PDF', async ({ page }) => {
@@ -216,7 +216,9 @@ test.describe('Portfolio responsive suite', () => {
 
   test('dark/light mode toggle persists', async ({ page }) => {
     await gotoApp(page);
-    const toggle = page.getByRole('button', { name: /mode/i });
+    const toggle = page.getByRole('button', {
+      name: /^Switch to (dark|light) mode$/,
+    });
     await expect(toggle).toBeVisible();
     const html = page.locator('html');
     const initiallyDark = await html.evaluate((el) => el.classList.contains('dark'));

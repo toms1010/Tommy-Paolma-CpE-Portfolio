@@ -643,6 +643,32 @@ export const PROJECTS: Project[] = [
       'Responsive educational reference for students',
     ],
   },
+  {
+    title: 'Barangay Bakhaw Website',
+    projectId: 'barangay-bakhaw',
+    kicker: 'Web Application · Community Website',
+    description:
+      'A barangay website designed to provide information, services, and digital access to community-related resources.',
+    technologies: [],
+    image: 'images/barangay-bakhaw/screenshot.png',
+    imageAlt: 'Barangay Bakhaw Website',
+    demo: 'https://barangay-bakhaw-website.vercel.app/',
+    categories: ['web'],
+    featured: false,
+  },
+  {
+    title: 'Windows & Linux Academy',
+    projectId: 'windows-linux-academy',
+    kicker: 'Web Application · Educational Platform',
+    description:
+      'An educational platform focused on Windows and Linux operating systems, featuring learning resources and technical information.',
+    technologies: [],
+    image: 'images/windows-linux-academy/screenshot.png',
+    imageAlt: 'Windows & Linux Academy',
+    demo: 'https://windows-linux-academy.vercel.app/',
+    categories: ['web'],
+    featured: false,
+  },
 ];
 
 /**
