@@ -54,7 +54,7 @@ export function Hero(): React.JSX.Element {
             Tommy Paolma
           </h1>
           <p className="mt-3 text-sm font-semibold tracking-wider text-muted uppercase tech-label">
-            Computer Engineering Student · Software Engineer · Technical Writer
+            Computer Engineering Student · Software Developer · Full-Stack &amp; Systems Development
           </p>
           <p className="mt-6 max-w-xl text-lg text-muted">
             {typed}
@@ -63,9 +63,10 @@ export function Hero(): React.JSX.Element {
             )}
           </p>
           <p className="mt-5 max-w-xl text-lg text-muted">
-            I build practical software solutions across web, desktop, mobile, and embedded systems —
-            turning engineering ideas into working products through programming, system design, and
-            hardware-software integration.
+            Computer Engineering student passionate about software development, system design, and
+            hardware-software integration. I build practical applications across web, desktop, and
+            game development, focusing on solving real-world problems through engineering and
+            programming.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <a href="#projects" className="btn-primary">

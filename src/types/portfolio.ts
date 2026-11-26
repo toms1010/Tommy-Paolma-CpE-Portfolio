@@ -128,6 +128,11 @@ export interface TimelineItem {
   responsibilities?: string[];
 }
 
+export interface ExperienceGroup {
+  title: string;
+  items: TimelineItem[];
+}
+
 export type SocialIcon = 'x' | 'github' | 'linkedin' | 'facebook' | 'mail';
 
 export interface SocialLink {

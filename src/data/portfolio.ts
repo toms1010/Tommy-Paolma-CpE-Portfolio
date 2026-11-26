@@ -1,5 +1,5 @@
 import type { Project, SkillGroup } from '../types/portfolio';
-import type { Certification, SocialLink, TimelineItem } from '../types/portfolio';
+import type { Certification, SocialLink, TimelineItem, ExperienceGroup } from '../types/portfolio';
 
 export const EMAIL = 'tpaolma@gmail.com';
 
@@ -171,7 +171,7 @@ export const PROJECTS: Project[] = [
     imageLocal: true,
     github: 'https://github.com/toms1010',
     categories: ['game'],
-    featured: false,
+    featured: true,
     badges: ['Desktop Game', '2D Action', 'Computer Engineering'],
     screenshots: [
       {
@@ -513,7 +513,7 @@ export const PROJECTS: Project[] = [
     imageLocal: true,
     demo: 'https://marpol-ocean-adventure.vercel.app/',
     categories: ['web', 'game'],
-    featured: true,
+    featured: false,
     objectives: [
       'Educational web experience about marine pollution prevention',
       'Study resources: PDF documents and video lessons',
@@ -533,6 +533,7 @@ export const PROJECTS: Project[] = [
     imageAlt: 'Battle of Bands registration web app for real-time band entry management and event check-in',
     demo: 'https://script.google.com/macros/s/AKfycbxRmkaE5fOwuG8KZj-TJBtDwBvFmKe_gPDik-jyjMYlCPRxmSBbi9vqbo9l0Qm3MPyhpw/exec',
     categories: ['web', 'registration'],
+    featured: true,
   },
   {
     title: 'Pre-Event Registration',
@@ -547,6 +548,7 @@ export const PROJECTS: Project[] = [
     imageAlt: 'Pre-Event Registration web app with email confirmation and QR codes for attendee check-in',
     demo: 'https://script.google.com/macros/s/AKfycbyOjf_tjqrhi2JpCymJ9fCZ2TyYzYzCsTRas734Zjl1X_hb2WcZpC-pYPpKGHmk1cOFRg/exec',
     categories: ['web', 'registration'],
+    featured: true,
   },
   {
     title: 'Cap Order Manager',
@@ -635,7 +637,7 @@ export const PROJECTS: Project[] = [
     imageLocal: true,
     demo: 'https://peroidic-table.vercel.app/',
     categories: ['web'],
-    featured: true,
+    featured: false,
     badges: ['Web Application', 'Educational', 'Responsive'],
     objectives: [
       'Searchable, filterable periodic table of the elements',
@@ -693,8 +695,6 @@ export const SKILLS_USED_IN_PROJECTS: SkillGroup[] = [
       { name: 'Java', note: 'Certified', tier: 'used', logo: 'images/tech/java.svg' },
       { name: 'JavaScript', note: 'Shipped web apps', tier: 'used', logo: 'images/tech/javascript.svg' },
       { name: 'Python', note: 'WIT Barcode + Shadow Hunter', tier: 'used' },
-      { name: 'Assembly Language', note: 'Low-level programming, computer architecture', tier: 'familiar' },
-      { name: 'VHDL', note: 'Digital logic design, FPGA development', tier: 'familiar' },
     ],
   },
   {
@@ -756,6 +756,8 @@ export const SKILLS_FAMILIAR_WITH: SkillGroup[] = [
     items: [
       { name: 'C#', note: 'Certified', tier: 'familiar', logo: 'images/tech/csharp.svg' },
       { name: 'TypeScript', note: 'This portfolio', tier: 'familiar', logo: 'images/tech/typescript.svg' },
+      { name: 'Assembly Language', note: 'Low-level programming, computer architecture', tier: 'familiar' },
+      { name: 'VHDL', note: 'Digital logic design, FPGA development', tier: 'familiar' },
     ],
   },
   {
@@ -856,7 +858,6 @@ export const SKILLS_CURRENTLY_LEARNING: SkillGroup[] = [
     title: 'DevOps / Infrastructure',
     icon: 'chip',
     items: [
-      { name: 'Docker', tier: 'learning', logo: 'images/tech/docker.svg' },
       { name: 'Terraform', tier: 'learning', logo: 'images/tech/terraform.png' },
       { name: 'Ansible', tier: 'learning', logo: 'images/tech/ansible.svg' },
     ],
@@ -1149,5 +1150,171 @@ export const GALLERY: { src: string; alt: string; caption: string }[] = [
     src: 'https://i.ibb.co/nNsPHxP1/questioning-about-the-technology.webp',
     alt: 'Technical Q and A session',
     caption: 'The best way to learn is to ask — technical Q&A.',
+  },
+];
+
+/**
+ * Combined experience data organized into four groups for OJT presentation.
+ * Merges technical experience from EXPERIENCE with leadership from LEADERSHIP.
+ */
+export const EXPERIENCE_GROUPS: ExperienceGroup[] = [
+  {
+    title: 'Software Development Experience',
+    items: [
+      {
+        kicker: 'Technical Experience',
+        title: 'JDAJNSH School Website Consultant / Developer',
+        organization: 'Jose Diva Avelino Jr. National High School',
+        date: '2024',
+        description:
+          'Consultant and software developer on a team-built rules and information website presenting the school, its motto, and the Student Code of Conduct.',
+        responsibilities: [
+          'Consulted on site structure and student-code-of-conduct content.',
+          'Developed frontend pages using HTML, CSS, and JavaScript.',
+          'Collaborated with a team to deploy a live information site for students and parents.',
+        ],
+      },
+      {
+        kicker: 'Technical Experience',
+        title: 'Event Management Web Application Developer',
+        organization: 'Self-initiated / deployed at real events',
+        date: '2024–2025',
+        description:
+          'Designed, built, and deployed 7 live web apps for registrations, merchandise orders, venue navigation, scoring, and sports scheduling — used during actual events.',
+        responsibilities: [
+          'Built registration, pre-registration (QR), cap and T-shirt order, venue navigation, participant rating, and sports event manager apps.',
+          'Used Google Apps Script, HTML, CSS, and JavaScript for each deployment.',
+          'Deployed live tools used by real attendees during events.',
+        ],
+      },
+    ],
+  },
+  {
+    title: 'Technical Leadership',
+    items: [
+      {
+        kicker: 'ICpEP.SE Region VI',
+        title: 'Regional Auditor',
+        organization: 'ICpEP.SE (Student Chapter of the Institute of Computer Engineers of the Philippines) — Region VI',
+        date: '2024–2025 Academic Year',
+        description:
+          'Regional Auditor for the ICpEP.SE student organization, overseeing financial transparency and records for the region.',
+        responsibilities: [
+          'Audited organizational financial records and transactions.',
+          'Maintained transparent financial documentation for the regional chapter.',
+          'Reported audit findings to officers and members.',
+        ],
+      },
+      {
+        kicker: 'ACES',
+        title: 'First Year Representative',
+        organization: 'ACES (Association of Computer Engineering Students)',
+        date: '2024–2025 Academic Year',
+        description:
+          'First Year Representative representing incoming computer engineering students in the student organization.',
+        responsibilities: [
+          'Voiced first-year student concerns in organization meetings.',
+          'Helped onboard new members and organize orientation activities.',
+          'Served as liaison between first-year students and organization officers.',
+        ],
+      },
+      {
+        kicker: 'NSTP',
+        title: 'President',
+        organization: 'NSTP (National Service Training Program) class',
+        date: '2024–2025 Academic Year',
+        description:
+          'Class President for the NSTP cohort, leading classmates through civic-welfare and community-service activities.',
+        responsibilities: [
+          'Led the NSTP class in planning and executing community-service activities.',
+          'Coordinated with instructors and class officers on civic-welfare projects.',
+          'Represented the class in program-wide meetings and events.',
+        ],
+      },
+    ],
+  },
+  {
+    title: 'Competitions & Achievements',
+    items: [
+      {
+        kicker: 'Technical Experience',
+        title: 'ICPEP — C Programming Competition',
+        organization: 'ICPEP (Institute of Computer Engineers of the Philippines)',
+        date: '2024',
+        description:
+          'Competed in C Programming, solving live problems and answering technical questions in front of judges.',
+        responsibilities: [
+          'Solved timed C programming problems under competition conditions.',
+          'Defended technical solutions during live Q&A with judges.',
+          'Applied memory management, pointers, and algorithmic thinking in C.',
+        ],
+      },
+    ],
+  },
+  {
+    title: 'Workshops & Mentoring',
+    items: [
+      {
+        kicker: 'Technical Experience',
+        title: 'Arduino Workshop Facilitator',
+        organization: 'Student workshops',
+        date: '2024–2025',
+        description:
+          'Mentored fellow students in Arduino basics and programming fundamentals through hands-on workshops.',
+        responsibilities: [
+          'Facilitated hands-on Arduino workshops for beginner students.',
+          'Taught programming fundamentals and embedded-systems concepts.',
+          'Guided students through wiring, coding, and debugging microcontroller projects.',
+        ],
+      },
+      {
+        kicker: 'Technical Experience',
+        title: 'Programming Fundamentals Mentor',
+        organization: 'Peer mentoring',
+        date: '2024–2025',
+        description:
+          'Mentored fellow students in programming fundamentals, reinforcing C, Python, and Java concepts.',
+        responsibilities: [
+          'Explained programming fundamentals to peers in one-on-one and small-group sessions.',
+          'Reviewed code and helped debug assignments in C, Python, and Java.',
+          'Reinforced problem-solving techniques and structured thinking.',
+        ],
+      },
+    ],
+  },
+];
+
+/**
+ * Contribution areas for OJT applications — areas where I can contribute
+ * and continue developing my skills.
+ */
+export const CONTRIBUTION_AREAS: { title: string; description: string }[] = [
+  {
+    title: 'Web Application Development',
+    description: 'Building responsive web applications using HTML, CSS, JavaScript, and Google Apps Script.',
+  },
+  {
+    title: 'Desktop Application Development',
+    description: 'Developing desktop software using C++, Qt, PySide6, and Python.',
+  },
+  {
+    title: 'Database Design and Management',
+    description: 'Designing and managing databases using MySQL, with experience in CSV persistence.',
+  },
+  {
+    title: 'Software Testing and Debugging',
+    description: 'Testing and debugging applications using pytest, manual testing, and code review.',
+  },
+  {
+    title: 'System Analysis and Design',
+    description: 'Analyzing system requirements and designing layered architectures with domain-driven design.',
+  },
+  {
+    title: 'Basic Hardware and Embedded Systems Integration',
+    description: 'Working with Arduino, microcontrollers, and embedded systems for hardware-software integration.',
+  },
+  {
+    title: 'Technical Documentation',
+    description: 'Writing clear technical documentation, READMEs, and engineering guides for software projects.',
   },
 ];

@@ -27,15 +27,22 @@ const CATEGORY_LABELS: Record<ProjectCategory, string> = {
 const FILTER_ORDER: ProjectCategory[] = [
   'desktop',
   'web',
-  'mobile',
   'game',
   'electronics',
   'registration',
   'orders',
   'events',
-  'assembly',
-  'vhdl',
   'other',
+];
+
+// Featured projects display order (by project title)
+const FEATURED_ORDER: string[] = [
+  'WIT Barcode Student Information System',
+  'Student Transport Management System',
+  'Shadow Hunter',
+  'Battle of Bands Registration',
+  'Pre-Event Registration',
+  'JDAJNSH',
 ];
 
 const FILTERS: { value: ProjectCategory | 'all'; label: string }[] = [
@@ -114,7 +121,25 @@ function ProjectCard({
           >
             Read More <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" focusable="false" />
           </Button>
-          {(project.demo || project.image) && (
+          {project.categories.includes('web') && project.demo ? (
+            <a
+              href={project.demo}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${project.title} live demo (opens in a new tab)`}
+              className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-accent bg-accent px-4 py-2 text-xs font-bold text-white transition-colors hover:bg-accent/90 mt-3"
+            >
+              Live Demo <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" focusable="false" />
+            </a>
+          ) : project.categories.includes('web') && !project.demo ? (
+            <button
+              disabled
+              aria-label={`${project.title} demo unavailable`}
+              className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-line bg-card/50 text-muted/50 pointer-events-none mt-3"
+            >
+              Demo Unavailable
+            </button>
+          ) : (
             <button
               key="screenshot"
               type="button"
@@ -159,7 +184,12 @@ export function Projects(): React.JSX.Element {
     });
   }, [filter, searchQuery]);
 
-  const featured = filtered.filter((p) => p.featured);
+  const featured = filtered
+    .filter((p) => p.featured)
+    .sort(
+      (a, b) =>
+        FEATURED_ORDER.indexOf(a.title) - FEATURED_ORDER.indexOf(b.title)
+    );
   const more = filtered.filter((p) => !p.featured);
 
   const categoryCounts = useMemo(() => {
@@ -230,6 +260,7 @@ export function Projects(): React.JSX.Element {
           <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2 mb-8">
             {FILTERS.map((f) => {
               const count = categoryCounts[f.value] ?? 0;
+              if (count === 0) return null;
               return (
                 <button
                   key={f.value}

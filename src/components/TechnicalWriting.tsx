@@ -1,4 +1,5 @@
 import { FileText, Code, Microchip, Terminal, Gamepad2, Database, LayoutGrid, ShieldCheck, ExternalLink } from 'lucide-react';
+import { CONTRIBUTION_AREAS } from '../data/portfolio';
 import { Reveal } from './Reveal';
 import { SectionHeading } from './SectionHeading';
 
@@ -101,6 +102,39 @@ export function TechnicalWriting(): React.JSX.Element {
           >
             View GitHub repositories <ExternalLink className="h-4 w-4" aria-hidden="true" />
           </a>
+        </div>
+      </Reveal>
+    </section>
+  );
+}
+
+export function WhatICanContribute(): React.JSX.Element {
+  return (
+    <section
+      id="contributions"
+      aria-labelledby="contributions-heading"
+      className="scroll-mt-24 py-16"
+    >
+      <Reveal>
+        <SectionHeading id="contributions-heading" accent="Contribute">
+          What I Can Contribute
+        </SectionHeading>
+        <p className="mx-auto mt-4 max-w-2xl text-center text-muted">
+          Areas where I can contribute and continue developing my skills
+          during OJT and beyond.
+        </p>
+        <div className="mt-10 grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {CONTRIBUTION_AREAS.map((area) => (
+            <article
+              key={area.title}
+              className="rounded-3xl border border-line bg-card p-6 sm:p-8 hover:border-accent/50 transition-colors duration-200"
+            >
+              <h3 className="mb-3 text-lg font-bold text-ink">
+                {area.title}
+              </h3>
+              <p className="text-sm text-muted">{area.description}</p>
+            </article>
+          ))}
         </div>
       </Reveal>
     </section>

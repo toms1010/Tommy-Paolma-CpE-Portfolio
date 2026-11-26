@@ -11,8 +11,7 @@ import { PeriodicTable } from '../components/PeriodicTable';
 import { Skills } from '../components/Skills';
 import { Education } from '../components/Education';
 import { Experience } from '../components/Experience';
-import { Leadership } from '../components/Leadership';
-import { TechnicalWriting } from '../components/TechnicalWriting';
+import { WhatICanContribute } from '../components/TechnicalWriting';
 import { Certifications } from '../components/Certifications';
 import { Resume } from '../components/Resume';
 import { Contact } from '../components/Contact';
@@ -47,8 +46,7 @@ export function AppRoutes(): React.JSX.Element {
               <Skills />
               <Education />
               <Experience />
-              <Leadership />
-              <TechnicalWriting />
+              <WhatICanContribute />
               <Certifications />
               <Resume />
               <Contact />
