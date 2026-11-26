@@ -39,6 +39,8 @@ function categoryLabel(category: ProjectCategory): string {
     registration: 'Registration Systems',
     orders: 'Order Systems',
     events: 'Events & Scoring',
+    assembly: 'Assembly',
+    vhdl: 'VHDL / Hardware Description Language',
     other: 'Other Projects',
   };
   return labels[category];

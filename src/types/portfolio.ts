@@ -7,6 +7,8 @@ export type ProjectCategory =
   | 'desktop'
   | 'mobile'
   | 'electronics'
+  | 'assembly'
+  | 'vhdl'
   | 'other';
 
 export interface Project {

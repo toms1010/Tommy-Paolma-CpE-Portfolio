@@ -693,6 +693,8 @@ export const SKILLS_USED_IN_PROJECTS: SkillGroup[] = [
       { name: 'Java', note: 'Certified', tier: 'used', logo: 'images/tech/java.svg' },
       { name: 'JavaScript', note: 'Shipped web apps', tier: 'used', logo: 'images/tech/javascript.svg' },
       { name: 'Python', note: 'WIT Barcode + Shadow Hunter', tier: 'used' },
+      { name: 'Assembly Language', note: 'Low-level programming, computer architecture', tier: 'familiar' },
+      { name: 'VHDL', note: 'Digital logic design, FPGA development', tier: 'familiar' },
     ],
   },
   {

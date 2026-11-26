@@ -19,6 +19,8 @@ const CATEGORY_LABELS: Record<ProjectCategory, string> = {
   registration: 'Registration Systems',
   orders: 'Order Systems',
   events: 'Events & Scoring',
+  assembly: 'Assembly',
+  vhdl: 'VHDL / Hardware Description Language',
   other: 'Other Projects',
 };
 
@@ -31,6 +33,8 @@ const FILTER_ORDER: ProjectCategory[] = [
   'registration',
   'orders',
   'events',
+  'assembly',
+  'vhdl',
   'other',
 ];
 
