@@ -344,9 +344,7 @@ function MobileNav({
       document.body.style.overflow = '';
       document.removeEventListener('keydown', handleKeyDown);
       // Restore focus to the hamburger button.
-      const trigger = document.querySelector<HTMLElement>(
-        '[aria-label="Open navigation menu"], [aria-label="Close navigation menu"]'
-      );
+      const trigger = document.getElementById('mobile-nav-toggle');
       trigger?.focus();
     };
   }, [open, onClose]);
@@ -635,6 +633,7 @@ export function Navbar(): React.JSX.Element {
               }}
               aria-label={open ? 'Close navigation menu' : 'Open navigation menu'}
               aria-expanded={open}
+              id="mobile-nav-toggle"
               className="inline-flex min-h-11 min-w-11 flex-col items-center justify-center gap-[5px] rounded-xl border border-line px-2.5 text-ink lg:hidden"
             >
               <span

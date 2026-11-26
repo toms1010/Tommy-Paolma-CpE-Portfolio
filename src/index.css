@@ -91,23 +91,6 @@ body {
     radial-gradient(circle at 80% 70%, rgba(99, 102, 241, 0.08) 0%, transparent 45%);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.001s !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001s !important;
-  }
-  .reveal {
-    opacity: 1;
-    transform: none;
-  }
-}
-
 img {
   max-width: 100%;
   display: block;
